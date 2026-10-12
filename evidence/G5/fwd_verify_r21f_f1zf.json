@@ -1,0 +1,78 @@
+{
+  "tolerance": 0.005,
+  "contract": "o/ht max-abs-diff <= 5e-3 vs G5-A JAX fp64 refs (same inputs)",
+  "gpu": {
+    "util_pct": 0,
+    "mem_used_mib": 8945,
+    "sm_clock_mhz": 1590
+  },
+  "f2_segments": 1,
+  "results": {
+    "small_B1T512H4": {
+      "staged": {
+        "o_max_abs_diff": 0.0006381628427999872,
+        "ht_max_abs_diff": 0.000638462425262748,
+        "o_over_tol": 0,
+        "ht_over_tol": 0,
+        "o_total": 262144,
+        "ht_total": 262144,
+        "ref_keys": [
+          "ref__o_f64",
+          "ref__ht_f64"
+        ],
+        "intermediates": {
+          "u_nonzero": 262144,
+          "w_nonzero": 262144,
+          "h_all_nonzero": 458752
+        },
+        "status": "PASS"
+      },
+      "fused": {
+        "o_max_abs_diff": 0.00047520316689585174,
+        "ht_max_abs_diff": 0.0006997311685345009,
+        "o_over_tol": 0,
+        "ht_over_tol": 0,
+        "o_total": 262144,
+        "ht_total": 262144,
+        "ref_keys": [
+          "ref__o_f64",
+          "ref__ht_f64"
+        ],
+        "status": "PASS"
+      }
+    },
+    "bench_B1T2048H16": {
+      "staged": {
+        "o_max_abs_diff": 0.0006486400961875916,
+        "ht_max_abs_diff": 0.0007493123412132263,
+        "o_over_tol": 0,
+        "ht_over_tol": 0,
+        "o_total": 4194304,
+        "ht_total": 4194304,
+        "ref_keys": [
+          "ref__o_f32",
+          "ref__ht_f32"
+        ],
+        "intermediates": {
+          "u_nonzero": 4194300,
+          "w_nonzero": 4194301,
+          "h_all_nonzero": 8126464
+        },
+        "status": "PASS"
+      },
+      "fused": {
+        "o_max_abs_diff": 0.0005750507116317749,
+        "ht_max_abs_diff": 0.0007929280400276184,
+        "o_over_tol": 0,
+        "ht_over_tol": 0,
+        "o_total": 4194304,
+        "ht_total": 4194304,
+        "ref_keys": [
+          "ref__o_f32",
+          "ref__ht_f32"
+        ],
+        "status": "PASS"
+      }
+    }
+  }
+}

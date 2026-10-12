@@ -1,0 +1,538 @@
+{
+  "description": "G4 numeric verification: 20 configs vs exact fp64 reference twins on the GPU (same embedded inputs)",
+  "thresholds": {
+    "bf16/f16-io": 0.005,
+    "f32-io": 0.001
+  },
+  "contract": "stage outputs graded at o/ht level: 5e-3 bf16-io, 1e-3 f32-io (fla-derived; full-op validation in G5)",
+  "seed": 7,
+  "generator_determinism": {
+    "same_seed_identical": true,
+    "seed_changes_data": true
+  },
+  "shared_gpu": true,
+  "results_order": [
+    "kkt_bf16_mma_p0_t64x64x32_w4",
+    "kkt_bf16_mma_p2_t64x64x32_w4",
+    "kkt_bf16_mma_p3_t64x64x32_w4",
+    "kkt_bf16_mma_p2_t64x64x16_w4",
+    "kkt_bf16_mma_p2_t32x64x32_w4",
+    "kkt_bf16_mma_p2_t64x64x32_w8",
+    "kkt_bf16_mma_p2_t64x64x32_w2",
+    "kkt_bf16_nomma_p2_t64x64x32_w4",
+    "kkt_bf16_nomma_p0_t64x64x32_w4",
+    "kkt_bf16_nomma_p2_t64x32x32_w4",
+    "o_bf16_mma_p2_t64x64x32_w4_K64V64",
+    "o_bf16_mma_p3_t64x128x16_w8_K128V128",
+    "o_bf16_mma_p0_t32x64x32_w2_K64V64",
+    "o_bf16_nomma_p2_t64x64x32_w4_K64V64",
+    "o_f32_mma_p2_t64x64x32_w4_K64V64",
+    "o_f32_nomma_p0_t64x64x32_w4_K64V64",
+    "ref_f16_sm80_atom",
+    "kkt_bf16_mma_p2_t64x64x64_w4_ws",
+    "kkt_bf16_mma_tma_ws",
+    "ref_ldmatrix"
+  ],
+  "results": {
+    "kkt_bf16_mma_p0_t64x64x32_w4": {
+      "name": "kkt_bf16_mma_p0_t64x64x32_w4",
+      "build": "[smem_fix] kkt_bf16_mma_p0_t64x64x32_w4: malloc_callseqs=2 cvta_patched=2 shared_decls=[('__gdn_smem0', 4096), ('__gdn_smem1', 4096)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 1.7
+    },
+    "kkt_bf16_mma_p2_t64x64x32_w4": {
+      "name": "kkt_bf16_mma_p2_t64x64x32_w4",
+      "build": "[smem_fix] kkt_bf16_mma_p2_t64x64x32_w4: malloc_callseqs=2 cvta_patched=2 shared_decls=[('__gdn_smem0', 8192), ('__gdn_smem1', 8192)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 2.2
+    },
+    "kkt_bf16_mma_p3_t64x64x32_w4": {
+      "name": "kkt_bf16_mma_p3_t64x64x32_w4",
+      "build": "[smem_fix] kkt_bf16_mma_p3_t64x64x32_w4: malloc_callseqs=2 cvta_patched=2 shared_decls=[('__gdn_smem0', 12288), ('__gdn_smem1', 12288)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 3.0
+    },
+    "kkt_bf16_mma_p2_t64x64x16_w4": {
+      "name": "kkt_bf16_mma_p2_t64x64x16_w4",
+      "build": "[smem_fix] kkt_bf16_mma_p2_t64x64x16_w4: malloc_callseqs=2 cvta_patched=2 shared_decls=[('__gdn_smem0', 4096), ('__gdn_smem1', 4096)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 1.8
+    },
+    "kkt_bf16_mma_p2_t32x64x32_w4": {
+      "name": "kkt_bf16_mma_p2_t32x64x32_w4",
+      "build": "[smem_fix] kkt_bf16_mma_p2_t32x64x32_w4: malloc_callseqs=2 cvta_patched=2 shared_decls=[('__gdn_smem0', 4096), ('__gdn_smem1', 8192)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        2,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 2.0
+    },
+    "kkt_bf16_mma_p2_t64x64x32_w8": {
+      "name": "kkt_bf16_mma_p2_t64x64x32_w8",
+      "build": "[smem_fix] kkt_bf16_mma_p2_t64x64x32_w8: malloc_callseqs=2 cvta_patched=2 shared_decls=[('__gdn_smem0', 8192), ('__gdn_smem1', 8192)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 2.2
+    },
+    "kkt_bf16_mma_p2_t64x64x32_w2": {
+      "name": "kkt_bf16_mma_p2_t64x64x32_w2",
+      "build": "[smem_fix] kkt_bf16_mma_p2_t64x64x32_w2: malloc_callseqs=2 cvta_patched=2 shared_decls=[('__gdn_smem0', 8192), ('__gdn_smem1', 8192)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        64,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 2.5
+    },
+    "kkt_bf16_nomma_p2_t64x64x32_w4": {
+      "name": "kkt_bf16_nomma_p2_t64x64x32_w4",
+      "build": "[smem_fix] kkt_bf16_nomma_p2_t64x64x32_w4: malloc_callseqs=3 cvta_patched=3 shared_decls=[('__gdn_smem0', 16384), ('__gdn_smem1', 16384), ('__gdn_smem2', 16384)] const_params_substituted=132 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 2.0
+    },
+    "kkt_bf16_nomma_p0_t64x64x32_w4": {
+      "name": "kkt_bf16_nomma_p0_t64x64x32_w4",
+      "build": "[smem_fix] kkt_bf16_nomma_p0_t64x64x32_w4: malloc_callseqs=3 cvta_patched=3 shared_decls=[('__gdn_smem0', 16384), ('__gdn_smem1', 16384), ('__gdn_smem2', 16384)] const_params_substituted=132 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 2.0
+    },
+    "kkt_bf16_nomma_p2_t64x32x32_w4": {
+      "name": "kkt_bf16_nomma_p2_t64x32x32_w4",
+      "build": "[smem_fix] kkt_bf16_nomma_p2_t64x32x32_w4: malloc_callseqs=3 cvta_patched=3 shared_decls=[('__gdn_smem0', 8192), ('__gdn_smem1', 16384), ('__gdn_smem2', 8192)] const_params_substituted=132 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        2,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 1.9
+    },
+    "o_bf16_mma_p2_t64x64x32_w4_K64V64": {
+      "name": "o_bf16_mma_p2_t64x64x32_w4_K64V64",
+      "build": "[smem_fix] o_bf16_mma_p2_t64x64x32_w4_K64V64: malloc_callseqs=4 cvta_patched=4 shared_decls=[('__gdn_smem0', 8192), ('__gdn_smem1', 8192), ('__gdn_smem2', 8192), ('__gdn_smem3', 8192)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_o_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 4096,
+      "ref_nonzero_elems": 4096,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 2.8
+    },
+    "o_bf16_mma_p3_t64x128x16_w8_K128V128": {
+      "name": "o_bf16_mma_p3_t64x128x16_w8_K128V128",
+      "build": "[smem_fix] o_bf16_mma_p3_t64x128x16_w8_K128V128: malloc_callseqs=4 cvta_patched=4 shared_decls=[('__gdn_smem0', 6144), ('__gdn_smem1', 12288), ('__gdn_smem2', 6144), ('__gdn_smem3', 12288)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ],
+      "kernel": "gdn_o_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.001953125,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 8192,
+      "nonzero_elems": 8192,
+      "ref_nonzero_elems": 8192,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 3.4
+    },
+    "o_bf16_mma_p0_t32x64x32_w2_K64V64": {
+      "name": "o_bf16_mma_p0_t32x64x32_w2_K64V64",
+      "build": "[smem_fix] o_bf16_mma_p0_t32x64x32_w2_K64V64: malloc_callseqs=4 cvta_patched=4 shared_decls=[('__gdn_smem0', 2048), ('__gdn_smem1', 4096), ('__gdn_smem2', 2048), ('__gdn_smem3', 4096)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        2,
+        1,
+        1
+      ],
+      "block": [
+        64,
+        1,
+        1
+      ],
+      "kernel": "gdn_o_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 4096,
+      "ref_nonzero_elems": 4096,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 1.8
+    },
+    "o_bf16_nomma_p2_t64x64x32_w4_K64V64": {
+      "name": "o_bf16_nomma_p2_t64x64x32_w4_K64V64",
+      "build": "[smem_fix] o_bf16_nomma_p2_t64x64x32_w4_K64V64: malloc_callseqs=3 cvta_patched=3 shared_decls=[('__gdn_smem0', 8192), ('__gdn_smem1', 8192), ('__gdn_smem2', 16384)] const_params_substituted=130 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_o_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 4096,
+      "ref_nonzero_elems": 4096,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 2.3
+    },
+    "o_f32_mma_p2_t64x64x32_w4_K64V64": {
+      "name": "o_f32_mma_p2_t64x64x32_w4_K64V64",
+      "build": "[smem_fix] o_f32_mma_p2_t64x64x32_w4_K64V64: malloc_callseqs=4 cvta_patched=4 shared_decls=[('__gdn_smem0', 16384), ('__gdn_smem1', 16384), ('__gdn_smem2', 16384), ('__gdn_smem3', 16384)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_o_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0,
+      "threshold": 0.001,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 4096,
+      "ref_nonzero_elems": 4096,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 4.8
+    },
+    "o_f32_nomma_p0_t64x64x32_w4_K64V64": {
+      "name": "o_f32_nomma_p0_t64x64x32_w4_K64V64",
+      "build": "[smem_fix] o_f32_nomma_p0_t64x64x32_w4_K64V64: malloc_callseqs=3 cvta_patched=3 shared_decls=[('__gdn_smem0', 16384), ('__gdn_smem1', 16384), ('__gdn_smem2', 16384)] const_params_substituted=130 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ],
+      "kernel": "gdn_o_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0,
+      "threshold": 0.001,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 4096,
+      "ref_nonzero_elems": 4096,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 3.1
+    },
+    "ref_f16_sm80_atom": {
+      "name": "ref_f16_sm80_atom",
+      "build": "[smem_fix] ref_f16_sm80_atom: malloc_callseqs=0 cvta_patched=0 shared_decls=[] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        1,
+        1
+      ],
+      "kernel": "gdn_ref_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 128,
+      "nonzero_elems": 128,
+      "ref_nonzero_elems": 128,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 1.5
+    },
+    "kkt_bf16_mma_p2_t64x64x64_w4_ws": {
+      "name": "kkt_bf16_mma_p2_t64x64x64_w4_ws",
+      "build": "[smem_fix] kkt_bf16_mma_p2_t64x64x64_w4_ws: malloc_callseqs=2 cvta_patched=2 shared_decls=[('__gdn_smem0', 8192), ('__gdn_smem1', 8192)] const_params_substituted=136 dynamic_params_kept=3 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        160,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 2.9
+    },
+    "kkt_bf16_mma_tma_ws": {
+      "name": "kkt_bf16_mma_tma_ws",
+      "build": "[smem_fix] kkt_bf16_mma_tma_ws: malloc_callseqs=3 cvta_patched=5 shared_decls=[('__gdn_smem0', 8192), ('__gdn_smem1', 8192), ('__gdn_smem2', 8192)] const_params_substituted=19 dynamic_params_kept=6 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        160,
+        1,
+        1
+      ],
+      "kernel": "gdn_kkt_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0009765625,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 4096,
+      "nonzero_elems": 2080,
+      "ref_nonzero_elems": 2080,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 1.5
+    },
+    "ref_ldmatrix": {
+      "name": "ref_ldmatrix",
+      "build": "[smem_fix] ref_ldmatrix: malloc_callseqs=2 cvta_patched=2 shared_decls=[('__gdn_smem0', 512), ('__gdn_smem1', 512)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin",
+      "grid": [
+        1,
+        1,
+        1
+      ],
+      "block": [
+        32,
+        1,
+        1
+      ],
+      "kernel": "gdn_ref_ldmatrix_kernel_kernel",
+      "seed": 7,
+      "max_abs_diff": 0.0,
+      "threshold": 0.005,
+      "n_over_threshold": 0,
+      "out_total_elems": 128,
+      "nonzero_elems": 128,
+      "ref_nonzero_elems": 128,
+      "deterministic": true,
+      "status": "PASS",
+      "wall_s": 1.1
+    }
+  }
+}

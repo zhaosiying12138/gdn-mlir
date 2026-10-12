@@ -1,0 +1,238 @@
+{
+ "stage": "kkt",
+ "dims": {
+  "K": 128,
+  "V": null
+ },
+ "shape": {
+  "B": 4,
+  "T": 8192,
+  "H": 16
+ },
+ "n_chunks": 8192,
+ "constraints_mode": "strict",
+ "model_form": "v3",
+ "space_size": 368,
+ "enumeration_seconds": 0.261,
+ "z3": {
+  "seed": 7,
+  "rlimit": 20000000,
+  "last_check": "unsat"
+ },
+ "calibration_source": "<fallback>",
+ "calibration_fallback_keys": [
+  "bar_sync_ns",
+  "clock_hz",
+  "clock_hz(derived)",
+  "cpasync_bw",
+  "ex2_rate",
+  "gmem_bw",
+  "l2_bw",
+  "launch_ns",
+  "malloc_ns",
+  "mma_bf16_peak_flops",
+  "smem_bw"
+ ],
+ "ranking": [
+  {
+   "name": "kkt_bf16_mma_p3_t64x64x32_w2",
+   "config": {
+    "stage": "kkt",
+    "dtype": "bf16",
+    "prec": "bf16",
+    "dims": {
+     "K": 128,
+     "V": 64
+    },
+    "tile": {
+     "M": 64,
+     "N": 64,
+     "K": 32
+    },
+    "warps": 2,
+    "mma": true,
+    "pipeline": 3,
+    "warpspec": "off",
+    "tma": "off",
+    "name": "kkt_bf16_mma_p3_t64x64x32_w2"
+   },
+   "predicted_ms": 0.1403463298245614,
+   "terms_ms": {
+    "T_launch": 0.004000000000000001,
+    "T_mma": 0.000411403023923445,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0006106763636363636,
+    "T_smem": 0.0002015232,
+    "overlap": 0.0006106763636363636,
+    "T_bar": 0.00024000000000000003,
+    "T_spill": 0.0,
+    "T_ex2": 0.00010177939393939394,
+    "T_lsu": 0.0005013974354066986,
+    "T_alloc": 0.004000000000000001
+   },
+   "smem_model_bytes": 24576,
+   "has_index_features": false,
+   "rank": 1
+  },
+  {
+   "name": "kkt_bf16_mma_p0_t64x64x64_w2",
+   "config": {
+    "stage": "kkt",
+    "dtype": "bf16",
+    "prec": "bf16",
+    "dims": {
+     "K": 128,
+     "V": 64
+    },
+    "tile": {
+     "M": 64,
+     "N": 64,
+     "K": 64
+    },
+    "warps": 2,
+    "mma": true,
+    "pipeline": 0,
+    "warpspec": "off",
+    "tma": "off",
+    "name": "kkt_bf16_mma_p0_t64x64x64_w2"
+   },
+   "predicted_ms": 0.15266948542264755,
+   "terms_ms": {
+    "T_launch": 0.004000000000000001,
+    "T_mma": 0.000411403023923445,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0006106763636363636,
+    "T_smem": 0.0002015232,
+    "overlap": 0.0012236025875598086,
+    "T_bar": 0.00012000000000000002,
+    "T_spill": 0.0,
+    "T_ex2": 0.00010177939393939394,
+    "T_lsu": 0.0005013974354066986,
+    "T_alloc": 0.004000000000000001
+   },
+   "smem_model_bytes": 16384,
+   "has_index_features": false,
+   "rank": 2
+  },
+  {
+   "name": "kkt_bf16_mma_p0_t64x64x32_w2",
+   "config": {
+    "stage": "kkt",
+    "dtype": "bf16",
+    "prec": "bf16",
+    "dims": {
+     "K": 128,
+     "V": 64
+    },
+    "tile": {
+     "M": 64,
+     "N": 64,
+     "K": 32
+    },
+    "warps": 2,
+    "mma": true,
+    "pipeline": 0,
+    "warpspec": "off",
+    "tma": "off",
+    "name": "kkt_bf16_mma_p0_t64x64x32_w2"
+   },
+   "predicted_ms": 0.15566948542264755,
+   "terms_ms": {
+    "T_launch": 0.004000000000000001,
+    "T_mma": 0.000411403023923445,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0006106763636363636,
+    "T_smem": 0.0002015232,
+    "overlap": 0.0012236025875598086,
+    "T_bar": 0.00024000000000000003,
+    "T_spill": 0.0,
+    "T_ex2": 0.00010177939393939394,
+    "T_lsu": 0.0005013974354066986,
+    "T_alloc": 0.004000000000000001
+   },
+   "smem_model_bytes": 8192,
+   "has_index_features": false,
+   "rank": 3
+  },
+  {
+   "name": "kkt_bf16_mma_p2_t64x64x64_w2",
+   "config": {
+    "stage": "kkt",
+    "dtype": "bf16",
+    "prec": "bf16",
+    "dims": {
+     "K": 128,
+     "V": 64
+    },
+    "tile": {
+     "M": 64,
+     "N": 64,
+     "K": 64
+    },
+    "warps": 2,
+    "mma": true,
+    "pipeline": 2,
+    "warpspec": "off",
+    "tma": "off",
+    "name": "kkt_bf16_mma_p2_t64x64x64_w2"
+   },
+   "predicted_ms": 0.18535100856140355,
+   "terms_ms": {
+    "T_launch": 0.004000000000000001,
+    "T_mma": 0.000411403023923445,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0006106763636363636,
+    "T_smem": 0.0002015232,
+    "overlap": 0.0006106763636363636,
+    "T_bar": 0.00012000000000000002,
+    "T_spill": 0.0,
+    "T_ex2": 0.00010177939393939394,
+    "T_lsu": 0.0005013974354066986,
+    "T_alloc": 0.004000000000000001
+   },
+   "smem_model_bytes": 32768,
+   "has_index_features": false,
+   "rank": 4
+  },
+  {
+   "name": "kkt_f32_mma_p0_t64x64x32_w2",
+   "config": {
+    "stage": "kkt",
+    "dtype": "f32",
+    "prec": "tf32",
+    "dims": {
+     "K": 128,
+     "V": 64
+    },
+    "tile": {
+     "M": 64,
+     "N": 64,
+     "K": 32
+    },
+    "warps": 2,
+    "mma": true,
+    "pipeline": 0,
+    "warpspec": "off",
+    "tma": "off",
+    "name": "kkt_f32_mma_p0_t64x64x32_w2"
+   },
+   "predicted_ms": 0.1965446257097289,
+   "terms_ms": {
+    "T_launch": 0.004000000000000001,
+    "T_mma": 0.00082280604784689,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0012213527272727273,
+    "T_smem": 0.0004030464,
+    "overlap": 0.002447205175119617,
+    "T_bar": 0.00024000000000000003,
+    "T_spill": 0.0,
+    "T_ex2": 0.00010177939393939394,
+    "T_lsu": 0.0009128004593301437,
+    "T_alloc": 0.004000000000000001
+   },
+   "smem_model_bytes": 16384,
+   "has_index_features": false,
+   "rank": 5
+  }
+ ]
+}

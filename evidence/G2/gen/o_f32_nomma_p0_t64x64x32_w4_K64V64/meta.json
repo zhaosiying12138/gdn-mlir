@@ -1,0 +1,72 @@
+{
+  "name": "o_f32_nomma_p0_t64x64x32_w4_K64V64",
+  "stage": "o",
+  "dtype": "f32",
+  "dims": {
+    "K": 64,
+    "V": 64
+  },
+  "tile": {
+    "M": 64,
+    "N": 64,
+    "K": 32
+  },
+  "warps": 4,
+  "mma": false,
+  "pipeline": 0,
+  "prec": "tf32",
+  "metrics": {
+    "registers": 255,
+    "smem_static": null,
+    "spill_stores": 32,
+    "spill_loads": 32,
+    "stack_frame": 24,
+    "smem_dynamic": 0
+  },
+  "ptx_features": {
+    "mma.sync": 0,
+    "cp.async": 2052,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 0,
+    "st.global": 1,
+    "ld.shared": 7,
+    "st.shared": 3,
+    "bar.sync": 4,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 0,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "ex2.approx": 0
+  },
+  "sass_ops": {
+    "HMMA": 0,
+    "LDGSTS": 2048,
+    "LDS": 13,
+    "STS": 3,
+    "LDL": 8,
+    "STL": 8,
+    "BAR.SYNC": 4,
+    "LDSM": 0,
+    "EX2": 0
+  },
+  "ptx_size_bytes": 370693,
+  "sass_size_bytes": 500500,
+  "sass_line_count": 7688,
+  "mma_signatures": [],
+  "ex2_variants": [],
+  "ldmatrix": 0,
+  "ptx_version": "8.7",
+  "tools": {
+    "ptxas": "Build cuda_13.3.r13.3/compiler.38244171_0"
+  },
+  "extraction_method": "gpu-lower-to-nvvm-pipeline cubin-format=assembly -> gpu.binary #gpu.object assembly attr -> python unescape"
+}

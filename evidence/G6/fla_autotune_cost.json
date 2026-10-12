@@ -1,0 +1,169 @@
+{
+ "what": "fla chunk_gated_delta_rule autotune cost (cold vs warm)",
+ "shape": {
+  "B": 1,
+  "T": 2048,
+  "H": 16,
+  "K": 128,
+  "V": 128
+ },
+ "env": {
+  "FLA_FLASH_QLA": "0",
+  "FLA_CACHE_MODE": "disabled",
+  "TRITON_CACHE_DIR": "/tmp/g6_fla_triton_cache",
+  "triton": "3.8.0",
+  "torch": "2.14.1+cu130",
+  "gpu": "NVIDIA GeForce RTX 5090 Laptop GPU"
+ },
+ "smi_before": {
+  "gpu": "22 %, 18216 MiB",
+  "compute_apps": "3411456, [N/A]\n3663481, [N/A]"
+ },
+ "cold_fwd_s": 16.551,
+ "triton_cache_entries_after_cold_fwd": 31,
+ "tuners_after_cold_fwd": {
+  "chunk_local_cumsum_scalar_kernel": {
+   "n_calls": 1,
+   "n_configs_listed_first_call": 4,
+   "n_configs_after_prune": 4,
+   "n_tuned_keys": 1
+  },
+  "chunk_gated_delta_rule_fwd_kkt_solve_kernel": {
+   "n_calls": 1,
+   "n_configs_listed_first_call": 6,
+   "n_configs_after_prune": 6,
+   "n_tuned_keys": 1
+  },
+  "recompute_w_u_fwd_kernel": {
+   "n_calls": 1,
+   "n_configs_listed_first_call": 9,
+   "n_configs_after_prune": 9,
+   "n_tuned_keys": 1
+  },
+  "chunk_gated_delta_rule_fwd_kernel_h_blockdim64": {
+   "n_calls": 1,
+   "n_configs_listed_first_call": 4,
+   "n_configs_after_prune": 4,
+   "n_tuned_keys": 1
+  },
+  "chunk_fwd_kernel_o": {
+   "n_calls": 1,
+   "n_configs_listed_first_call": 2,
+   "n_configs_after_prune": 2,
+   "n_tuned_keys": 1
+  }
+ },
+ "warm_fwd_ms": {
+  "median": 0.4912,
+  "min": 0.4178,
+  "samples_ms": [
+   4.7613,
+   0.5469,
+   0.4841,
+   0.4979,
+   0.6317,
+   0.4178,
+   0.4369,
+   0.4845,
+   0.4507,
+   0.5268
+  ]
+ },
+ "cold_bwd_s": 23.261,
+ "triton_cache_entries_after_cold_bwd": 67,
+ "tuners_after_cold_bwd": {
+  "chunk_local_cumsum_scalar_kernel": {
+   "n_calls": 12,
+   "n_configs_listed_first_call": 4,
+   "n_configs_after_prune": 4,
+   "n_tuned_keys": 2
+  },
+  "chunk_gated_delta_rule_fwd_kkt_solve_kernel": {
+   "n_calls": 11,
+   "n_configs_listed_first_call": 6,
+   "n_configs_after_prune": 6,
+   "n_tuned_keys": 1
+  },
+  "recompute_w_u_fwd_kernel": {
+   "n_calls": 12,
+   "n_configs_listed_first_call": 9,
+   "n_configs_after_prune": 9,
+   "n_tuned_keys": 1
+  },
+  "chunk_gated_delta_rule_fwd_kernel_h_blockdim64": {
+   "n_calls": 12,
+   "n_configs_listed_first_call": 4,
+   "n_configs_after_prune": 4,
+   "n_tuned_keys": 2
+  },
+  "chunk_fwd_kernel_o": {
+   "n_calls": 11,
+   "n_configs_listed_first_call": 2,
+   "n_configs_after_prune": 2,
+   "n_tuned_keys": 1
+  },
+  "chunk_bwd_kernel_dv_local": {
+   "n_calls": 1,
+   "n_configs_listed_first_call": 9,
+   "n_configs_after_prune": 9,
+   "n_tuned_keys": 1
+  },
+  "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64": {
+   "n_calls": 1,
+   "n_configs_listed_first_call": 4,
+   "n_configs_after_prune": 4,
+   "n_tuned_keys": 1
+  },
+  "chunk_bwd_kernel_dqkwg": {
+   "n_calls": 1,
+   "n_configs_listed_first_call": 9,
+   "n_configs_after_prune": 9,
+   "n_tuned_keys": 1
+  },
+  "prepare_wy_repr_bwd_kernel": {
+   "n_calls": 1,
+   "n_configs_listed_first_call": 1,
+   "n_configs_after_prune": 1,
+   "n_tuned_keys": 0
+  }
+ },
+ "warm_bwd_ms": {
+  "median": 1.3488,
+  "min": 0.9809,
+  "samples_ms": [
+   1.5437,
+   1.5619,
+   1.1666,
+   1.3508,
+   0.9809,
+   1.0739,
+   1.5832,
+   1.4771,
+   1.3468,
+   1.0473
+  ]
+ },
+ "autotune_delta_fwd_s": 16.551,
+ "autotune_delta_bwd_s": 23.26,
+ "configs_benchmarked_fwd": {
+  "chunk_local_cumsum_scalar_kernel": 4,
+  "chunk_gated_delta_rule_fwd_kkt_solve_kernel": 6,
+  "recompute_w_u_fwd_kernel": 9,
+  "chunk_gated_delta_rule_fwd_kernel_h_blockdim64": 4,
+  "chunk_fwd_kernel_o": 2
+ },
+ "configs_benchmarked_bwd_new": {
+  "chunk_bwd_kernel_dv_local": 9,
+  "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64": 4,
+  "chunk_bwd_kernel_dqkwg": 9,
+  "prepare_wy_repr_bwd_kernel": 1
+ },
+ "n_configs_total_fwd": 25,
+ "n_configs_total_bwd_new": 23,
+ "n_configs_total": 48,
+ "smi_after": {
+  "gpu": "76 %, 18882 MiB",
+  "compute_apps": "3411456, [N/A]\n3663481, [N/A]"
+ },
+ "shared_gpu": true
+}

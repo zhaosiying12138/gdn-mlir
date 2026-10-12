@@ -1,0 +1,473 @@
+{
+ "gate_threshold": 0.7,
+ "n_measured": 18,
+ "n_missing_index_entry": [],
+ "n_g3_rebuild_features": 20,
+ "times_skipped_by_status": [
+  [
+   "kkt_bf16_mma_p2_t64x64x64_w4_ws",
+   "TIMEOUT"
+  ],
+  [
+   "kkt_bf16_mma_tma_ws",
+   "NOT_TIMED"
+  ]
+ ],
+ "launch_anchor_s": 6.072918501043351e-06,
+ "calibration_source": "/home/zhaosiying/codebase/gdn-mlir/evidence/G3/calibration.json",
+ "calibration_table": {
+  "mma_bf16_peak_flops": 115535360000000.0,
+  "gmem_bw": 824640000000.0,
+  "l2_bw": 2144330000000.0,
+  "smem_bw": 113050150000000.0,
+  "ex2_rate": 3233200000000.0,
+  "bar_sync_ns": 7.707,
+  "launch_ns": 6072.918501043351,
+  "malloc_ns": 2000.0,
+  "clock_hz": 2722000000.0,
+  "sm_count": 82,
+  "smem_usable_b": 100352,
+  "regs_per_sm": 65536,
+  "cpasync_bw": 1388210000000.0,
+  "device_name": "NVIDIA GeForce RTX 5090 Laptop GPU",
+  "mma_tf32_peak_derived": 57767680000000.0,
+  "cuda_fp32_peak_derived": 57767680000000.0,
+  "shared_gpu": true
+ },
+ "calibration_fallback_keys": [
+  "malloc_ns"
+ ],
+ "shared_gpu": true,
+ "forms": {
+  "v1": {
+   "spearman": 0.8900362569675171,
+   "spearman_per_stage": {
+    "kkt": 0.9118583155200969,
+    "o": 0.8285714285714286,
+    "ref": null,
+    "ref_ldmatrix": null
+   },
+   "top5_overlap": 0.8
+  },
+  "v2": {
+   "spearman": 0.8962314049278478,
+   "spearman_per_stage": {
+    "kkt": 0.9361745372672994,
+    "o": 0.8285714285714286,
+    "ref": null,
+    "ref_ldmatrix": null
+   },
+   "top5_overlap": 0.8
+  },
+  "v3": {
+   "spearman": 0.8962314049278478,
+   "spearman_per_stage": {
+    "kkt": 0.9361745372672994,
+    "o": 0.8285714285714286,
+    "ref": null,
+    "ref_ldmatrix": null
+   },
+   "top5_overlap": 0.8
+  }
+ },
+ "per_config": [
+  {
+   "name": "kkt_bf16_mma_p0_t64x64x32_w4",
+   "stage": "kkt",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.105056,
+   "pred_v1_ms": 0.008592186932671659,
+   "pred_v2_ms": 0.00947389156162096,
+   "pred_v3_ms": 0.009473891561620961,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0007442157275486915,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0015663260785420156,
+    "T_smem": 5.942000076956997e-05,
+    "overlap": 0.0023699618068602772,
+    "T_bar": 6.165600000000001e-05,
+    "T_spill": 0.0,
+    "T_ex2": 8.765062476803166e-05,
+    "T_lsu": 0.000881704628949302,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "kkt_bf16_mma_p2_t32x64x32_w4",
+   "stage": "kkt",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.018752,
+   "pred_v1_ms": 0.0072829438669964105,
+   "pred_v2_ms": 0.00792364923069957,
+   "pred_v3_ms": 0.00792364923069957,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.00037210786377434577,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0010964282549794108,
+    "T_smem": 3.5652000461741976e-05,
+    "overlap": 0.0010964282549794108,
+    "T_bar": 6.165600000000001e-05,
+    "T_spill": 0.0,
+    "T_ex2": 5.19411109736484e-05,
+    "T_lsu": 0.0006407053637031595,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "kkt_bf16_mma_p2_t64x64x16_w4",
+   "stage": "kkt",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.02048,
+   "pred_v1_ms": 0.007850207204353398,
+   "pred_v2_ms": 0.008731911833302701,
+   "pred_v3_ms": 0.008731911833302701,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0007442157275486915,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0015663260785420156,
+    "T_smem": 5.942000076956997e-05,
+    "overlap": 0.0015663260785420156,
+    "T_bar": 0.00012331200000000001,
+    "T_spill": 0.0,
+    "T_ex2": 8.765062476803166e-05,
+    "T_lsu": 0.000881704628949302,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "kkt_bf16_mma_p2_t64x64x32_w2",
+   "stage": "kkt",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.014848,
+   "pred_v1_ms": 0.0077788122460458395,
+   "pred_v2_ms": 0.008237298653099476,
+   "pred_v3_ms": 0.008237298653099476,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0007442157275486915,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0015663260785420156,
+    "T_smem": 3.5652000461741976e-05,
+    "overlap": 0.0015663260785420156,
+    "T_bar": 6.165600000000001e-05,
+    "T_spill": 0.0,
+    "T_ex2": 7.791166646047259e-05,
+    "T_lsu": 0.00045848640705363703,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "kkt_bf16_mma_p2_t64x64x32_w4",
+   "stage": "kkt",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.021216,
+   "pred_v1_ms": 0.007788551204353398,
+   "pred_v2_ms": 0.0086702558333027,
+   "pred_v3_ms": 0.0086702558333027,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0007442157275486915,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0015663260785420156,
+    "T_smem": 5.942000076956997e-05,
+    "overlap": 0.0015663260785420156,
+    "T_bar": 6.165600000000001e-05,
+    "T_spill": 0.0,
+    "T_ex2": 8.765062476803166e-05,
+    "T_lsu": 0.000881704628949302,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "kkt_bf16_mma_p2_t64x64x32_w8",
+   "stage": "kkt",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.034176,
+   "pred_v1_ms": 0.007804782801532663,
+   "pred_v2_ms": 0.009532923874273295,
+   "pred_v3_ms": 0.009532923874273297,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0007442157275486915,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0015663260785420156,
+    "T_smem": 0.00010695600138522596,
+    "overlap": 0.0015663260785420156,
+    "T_bar": 6.165600000000001e-05,
+    "T_spill": 0.0,
+    "T_ex2": 0.0001038822219472968,
+    "T_lsu": 0.001728141072740632,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "kkt_bf16_mma_p3_t64x64x32_w4",
+   "stage": "kkt",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.02056,
+   "pred_v1_ms": 0.007788551204353398,
+   "pred_v2_ms": 0.0086702558333027,
+   "pred_v3_ms": 0.0086702558333027,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0007442157275486915,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0015663260785420156,
+    "T_smem": 5.942000076956997e-05,
+    "overlap": 0.0015663260785420156,
+    "T_bar": 6.165600000000001e-05,
+    "T_spill": 0.0,
+    "T_ex2": 8.765062476803166e-05,
+    "T_lsu": 0.000881704628949302,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "kkt_bf16_nomma_p0_t64x64x32_w4",
+   "stage": "kkt",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 1.072544,
+   "pred_v1_ms": 2.116427798751069,
+   "pred_v2_ms": 2.1171919427628247,
+   "pred_v3_ms": 2.1171919427628243,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0,
+    "T_ffma": 1.9261131520940484,
+    "T_gmem": 0.0015663260785420156,
+    "T_smem": 0.0,
+    "overlap": 1.9276794781725903,
+    "T_bar": 3.8535e-05,
+    "T_spill": 0.18263362075799902,
+    "T_ex2": 3.246319435853025e-06,
+    "T_lsu": 0.0007641440117560617,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "kkt_bf16_nomma_p2_t64x32x32_w4",
+   "stage": "kkt",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.507856,
+   "pred_v1_ms": 0.9691712758675033,
+   "pred_v2_ms": 0.9697414448608905,
+   "pred_v3_ms": 0.9697414448608905,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0,
+    "T_ffma": 0.9630565760470242,
+    "T_gmem": 0.0010964282549794108,
+    "T_smem": 0.0,
+    "overlap": 0.9630565760470242,
+    "T_bar": 3.8535e-05,
+    "T_spill": 0.0,
+    "T_ex2": 3.246319435853025e-06,
+    "T_lsu": 0.0005701689933872153,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "kkt_bf16_nomma_p2_t64x64x32_w4",
+   "stage": "kkt",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.991808,
+   "pred_v1_ms": 2.0235446622935274,
+   "pred_v2_ms": 2.0243088063052834,
+   "pred_v3_ms": 2.024308806305283,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0,
+    "T_ffma": 1.9261131520940484,
+    "T_gmem": 0.0015663260785420156,
+    "T_smem": 0.0,
+    "overlap": 1.9261131520940484,
+    "T_bar": 3.8535e-05,
+    "T_spill": 0.09131681037899951,
+    "T_ex2": 3.246319435853025e-06,
+    "T_lsu": 0.0007641440117560617,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "o_bf16_mma_p0_t32x64x32_w2_K64V64",
+   "stage": "o",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.045024,
+   "pred_v1_ms": 0.007626878620104936,
+   "pred_v2_ms": 0.007961926379105672,
+   "pred_v3_ms": 0.007961926379105672,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.00037210786377434577,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0010964282549794108,
+    "T_smem": 2.376800030782799e-05,
+    "overlap": 0.0014923041190615847,
+    "T_bar": 6.165600000000001e-05,
+    "T_spill": 0.0,
+    "T_ex2": 0.0,
+    "T_lsu": 0.00033504775900073476,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "o_bf16_mma_p2_t64x64x32_w4_K64V64",
+   "stage": "o",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.020304,
+   "pred_v1_ms": 0.007700900579585367,
+   "pred_v2_ms": 0.008582605208534669,
+   "pred_v3_ms": 0.008582605208534669,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0007442157275486915,
+    "T_ffma": 0.0,
+    "T_gmem": 0.0015663260785420156,
+    "T_smem": 5.942000076956997e-05,
+    "overlap": 0.0015663260785420156,
+    "T_bar": 6.165600000000001e-05,
+    "T_spill": 0.0,
+    "T_ex2": 0.0,
+    "T_lsu": 0.000881704628949302,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "o_bf16_mma_p3_t64x128x16_w8_K128V128",
+   "stage": "o",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.084448,
+   "pred_v1_ms": 0.01544339190855059,
+   "pred_v2_ms": 0.020451474200982624,
+   "pred_v3_ms": 0.020451474200982624,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.002976862910194766,
+    "T_ffma": 0.0,
+    "T_gmem": 0.004385713019917643,
+    "T_smem": 0.0002376800030782799,
+    "overlap": 0.004385713019917643,
+    "T_bar": 0.00024662400000000003,
+    "T_spill": 0.004738136387589597,
+    "T_ex2": 0.0,
+    "T_lsu": 0.005008082292432035,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "o_bf16_nomma_p2_t64x64x32_w4_K64V64",
+   "stage": "o",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 2.349232,
+   "pred_v1_ms": 1.9322323125950918,
+   "pred_v2_ms": 1.9329964566068478,
+   "pred_v3_ms": 1.9329964566068478,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0,
+    "T_ffma": 1.9261131520940484,
+    "T_gmem": 0.0015663260785420156,
+    "T_smem": 0.0,
+    "overlap": 1.9261131520940484,
+    "T_bar": 4.6241999999999995e-05,
+    "T_spill": 0.0,
+    "T_ex2": 0.0,
+    "T_lsu": 0.0007641440117560617,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "o_f32_mma_p2_t64x64x32_w4_K64V64",
+   "stage": "o",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.033296,
+   "pred_v1_ms": 0.00926722665812738,
+   "pred_v2_ms": 0.010901319237113422,
+   "pred_v3_ms": 0.010901319237113422,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.001488431455097383,
+    "T_ffma": 0.0,
+    "T_gmem": 0.003132652157084031,
+    "T_smem": 0.00011884000153913994,
+    "overlap": 0.003132652157084031,
+    "T_bar": 6.165600000000001e-05,
+    "T_spill": 0.0,
+    "T_ex2": 0.0,
+    "T_lsu": 0.0016340925789860396,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "o_f32_nomma_p0_t64x64x32_w4_K64V64",
+   "stage": "o",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 2.464224,
+   "pred_v1_ms": 1.9378710864778432,
+   "pred_v2_ms": 1.939387618439636,
+   "pred_v3_ms": 1.939387618439636,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 0.0,
+    "T_ffma": 1.9261131520940484,
+    "T_gmem": 0.003132652157084031,
+    "T_smem": 0.0,
+    "overlap": 1.9292458042511325,
+    "T_bar": 4.6241999999999995e-05,
+    "T_spill": 0.0025061217256672247,
+    "T_ex2": 0.0,
+    "T_lsu": 0.0015165319617927993,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "ref_f16_sm80_atom",
+   "stage": "ref",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.00616,
+   "pred_v1_ms": 0.006117377692843497,
+   "pred_v2_ms": 0.006117377692843497,
+   "pred_v3_ms": 0.006117377692843497,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 2.9070926857370763e-06,
+    "T_ffma": 0.0,
+    "T_gmem": 3.9158151963550386e-05,
+    "T_smem": 5.570625072147184e-07,
+    "overlap": 4.2622307156502184e-05,
+    "T_bar": 0.0,
+    "T_spill": 0.0,
+    "T_ex2": 0.0,
+    "T_lsu": 1.836884643644379e-06,
+    "T_alloc": 0.0
+   }
+  },
+  {
+   "name": "ref_ldmatrix",
+   "stage": "ref_ldmatrix",
+   "feature_source": "g3_gen_noargs",
+   "measured_ms": 0.007328,
+   "pred_v1_ms": 0.006143088384424612,
+   "pred_v2_ms": 0.006143088384424612,
+   "pred_v3_ms": 0.006143088384424612,
+   "terms_ms": {
+    "T_launch": 0.006072918501043351,
+    "T_mma": 2.9070926857370763e-06,
+    "T_ffma": 0.0,
+    "T_gmem": 3.9158151963550386e-05,
+    "T_smem": 1.7826000230870988e-05,
+    "overlap": 5.989124488015845e-05,
+    "T_bar": 7.707000000000001e-06,
+    "T_spill": 0.0,
+    "T_ex2": 0.0,
+    "T_lsu": 2.571638501102131e-06,
+    "T_alloc": 0.0
+   }
+  }
+ ],
+ "best_form": "v2",
+ "verdict": "PASS"
+}

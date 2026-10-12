@@ -1,0 +1,20 @@
+== small_B1T512H4  bf16-emulation=False
+   serial : o 4.262e-08  ht 6.647e-08
+   S=2   : o 4.262e-08  ht 6.647e-08  o-vs-serial 0.000e+00  ||Mseg||inf 1.891e-53  | naive(matmul-free) o 4.262e-08  naiveEdelta 0.000e+00
+   S=4   : o 4.262e-08  ht 6.647e-08  o-vs-serial 0.000e+00  ||Mseg||inf 1.315e-26  | naive(matmul-free) o 4.262e-08  naiveEdelta 0.000e+00
+   S=8   : o 4.262e-08  ht 6.647e-08  o-vs-serial 1.388e-17  ||Mseg||inf 3.569e-13  | naive(matmul-free) o 4.262e-08  naiveEdelta 1.079e-14
+== small_B1T512H4  bf16-emulation=True
+   serial : o 1.813e-04  ht 4.330e-04
+   S=2   : o 1.813e-04  ht 4.330e-04  o-vs-serial 0.000e+00  ||Mseg||inf 1.891e-53  | naive(matmul-free) o 4.145e-05  naiveEdelta 0.000e+00
+   S=4   : o 1.813e-04  ht 4.330e-04  o-vs-serial 0.000e+00  ||Mseg||inf 1.315e-26  | naive(matmul-free) o 4.505e-05  naiveEdelta 0.000e+00
+   S=8   : o 1.813e-04  ht 4.330e-04  o-vs-serial 0.000e+00  ||Mseg||inf 3.569e-13  | naive(matmul-free) o 5.620e-05  naiveEdelta 0.000e+00
+== bench_B1T2048H16  bf16-emulation=False
+   serial : o 5.013e-08  ht 1.160e-07
+   S=2   : o 5.013e-08  ht 1.160e-07  o-vs-serial 0.000e+00  ||Mseg||inf 6.833e-211  | naive(matmul-free) o 5.013e-08  naiveEdelta 0.000e+00
+   S=4   : o 5.013e-08  ht 1.160e-07  o-vs-serial 0.000e+00  ||Mseg||inf 2.136e-105  | naive(matmul-free) o 5.013e-08  naiveEdelta 0.000e+00
+   S=8   : o 5.013e-08  ht 1.160e-07  o-vs-serial 0.000e+00  ||Mseg||inf 4.261e-52  | naive(matmul-free) o 5.013e-08  naiveEdelta 0.000e+00
+== bench_B1T2048H16  bf16-emulation=True
+   serial : o 2.124e-04  ht 5.175e-04
+   S=2   : o 2.124e-04  ht 5.175e-04  o-vs-serial 0.000e+00  ||Mseg||inf 6.833e-211  | naive(matmul-free) o 5.917e-05  naiveEdelta 0.000e+00
+   S=4   : o 2.124e-04  ht 5.175e-04  o-vs-serial 0.000e+00  ||Mseg||inf 2.136e-105  | naive(matmul-free) o 6.123e-05  naiveEdelta 0.000e+00
+   S=8   : o 2.124e-04  ht 5.175e-04  o-vs-serial 0.000e+00  ||Mseg||inf 4.261e-52  | naive(matmul-free) o 8.720e-05  naiveEdelta 0.000e+00

@@ -1,0 +1,92 @@
+{
+  "description": "G3-A one-time sm_120 (RTX 5090 Laptop) calibration microbench: mma peak / smem+gmem+L2 bandwidth / SFU ex2 / bar.sync / cp.async",
+  "method": "CUDA events, >=5 warmup + 50 timed iterations, median; per-SM/clk normalized against the peak (attribute) clock",
+  "shared_gpu": false,
+  "coload": {
+    "start": {
+      "util_pct": 0,
+      "mem_used_mib": 2154,
+      "sm_clock_mhz": 180
+    },
+    "pre_run": {
+      "util_pct": 0,
+      "mem_used_mib": 2154,
+      "sm_clock_mhz": 180
+    },
+    "end": {
+      "util_pct": 99,
+      "mem_used_mib": 2154,
+      "sm_clock_mhz": 1987
+    },
+    "compute_apps": "",
+    "note": "clean window: no other compute apps resident in the start/pre-run/end snapshots; numbers are unconditional"
+  },
+  "timestamp_utc": "2026-10-09T16:08:53.969715Z",
+  "rerun": "scripts/run_calib.sh (idempotent; overwrites calibration.json)",
+  "measurements": {
+    "device": {
+      "name": "NVIDIA GeForce RTX 5090 Laptop GPU",
+      "sm_count": 82,
+      "l2_bytes": 67108864,
+      "clock_peak_khz": 1597000,
+      "clock_peak_mhz": 1597,
+      "shared_per_sm_optin": 101376,
+      "regs_per_sm": 65536
+    },
+    "mma_bf16_m16n8k16": {
+      "median_ms": 1.51728,
+      "min_ms": 1.50704,
+      "max_ms": 1.548992,
+      "instr_per_s": 906710000000.0,
+      "flops": 3713900000000000.0,
+      "instr_per_sm_clk_peaknorm": 6.92,
+      "kernel_reps": 2048,
+      "ilp": 8,
+      "warmup": 5,
+      "iters": 50
+    },
+    "smem_read_bw_gbps": {
+      "median_ms": 0.376896,
+      "min_ms": 0.37376,
+      "max_ms": 0.409088,
+      "gbps": 114067.59,
+      "bytes_moved": 42990000000.0
+    },
+    "gmem_read_l2resident": {
+      "median_ms": 0.01552,
+      "min_ms": 0.01408,
+      "max_ms": 0.01776,
+      "gbps": 2162.01,
+      "buffer_mb": 32.0
+    },
+    "gmem_read_dram": {
+      "median_ms": 0.63056,
+      "min_ms": 0.626528,
+      "max_ms": 0.659072,
+      "gbps": 851.42,
+      "buffer_mb": 512
+    },
+    "sfu_ex2_f32": {
+      "median_ms": 3.007392,
+      "min_ms": 3.003168,
+      "max_ms": 3.043392,
+      "elem_per_s": 3659600000000.0,
+      "elem_per_sm_clk": 27.946
+    },
+    "bar_sync_roundtrip": {
+      "median_ms": 0.153888,
+      "min_ms": 0.15184,
+      "max_ms": 0.18,
+      "ns_per_bar": 7.694,
+      "reps": 20000,
+      "block_threads": 128
+    },
+    "cp_async_16b": {
+      "median_ms": 13.956128,
+      "min_ms": 13.873184,
+      "max_ms": 16.286976,
+      "gbps": 1540.24,
+      "src_window_mb": 1.0
+    }
+  }
+}

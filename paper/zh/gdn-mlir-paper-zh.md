@@ -1,0 +1,407 @@
+# 调度即 IR：基于原生 MLIR 的 Gated DeltaNet 算子编译期确定性调度及其 PTX 级验证
+
+> 术语约定（全文先定义后用）：**原生 MLIR**（stock MLIR）指未经 fork 的 LLVM/MLIR 主干（本文锚定 2026 年 10 月主干）；**旋钮**（knob）指以 IR 属性或 transform dialect 脚本参数形式存在的调度自由度；**覆盖矩阵**（coverage matrix）指编译器生成物与手写参考在 PTX 指令族与结构层面的可核查对照表；**逃生舱**（escape hatch）指绕过原生 MLIR 表达边界、以自定义 NVVM 操作直书 PTX 的机制，其总数受预算约束（本文预算 ≤5）；**交错终判**（interleaved adjudication）指在同一 GPU 窗口内将本方与基线交替成对计时的判定协议；**共载**（co-load）指共享 GPU 上常驻的其它计算任务。全部 GPU 计时取自共载机会窗口（源 JSON 均标注 `shared_gpu: true`，正式记录附窗口快照），绝对毫秒数按受扰下界解读，加速比一律以同窗交错对内比较为分母。
+
+## 摘要
+
+面向 Gated DeltaNet（GDN）一类线性注意力算子的高性能 kernel 长期处于手写领地：调度知识被冻结在 Triton 或 TileLang 源码之中，并以逐新形状的在设备 autotune 形式反复支付。本文提出**调度即 IR（schedule-as-IR）**：一套面向 GDN 前向与反向的原生 MLIR 渐进下降栈，其中全部调度决策——分块、流水深度、warp 专化、融合边界、数值路径——均为可调 IR 旋钮，由编译期确定性 Z3 枚举在一次性标定、零逐配置拟合常数的解析成本模型上求解。我们不把"生成代码可信"当作结论，而是给出结构化验证：覆盖矩阵横跨 33 族指令契约与两个手写设计极点（fla/Triton 多级流水极点、FlashQLA/TileLang warp 专化 TMA 极点），逃生舱预算五个自定义操作仅用其一。在消费级 Blackwell（RTX 5090 Laptop，sm_120a，无 tcgen05）上，前向经 G5 五轮收官与 R7–R25 杠杆战役后在全部三个基准形状以交错终判胜过 fla 的 Triton kernel——现行正式记录 B1T2048 **2.125×**（30/30 对，p=9.3×10⁻¹⁰）、B4T2048 **1.2211×**、B1T8192 **1.3493×**；离线调度以 Spearman **0.8962** 排序配置，搜索成本 0.8 秒纯 CPU 对 fla 在设备 autotune 冷启动实测 39.8 秒（约 50×；缓存摊销后 7.7×–67×）。反向在 26 轮自提速（58.88→2.15 ms，约 27×）后达 fla 的 0.479×，本文给出其值恒等类与新数值类两重穷尽证明，并将形状域变更评测作为进行中的开放战线如实报告。
+
+**关键词**：线性注意力；MLIR；transform dialect；编译期调度；SMT 求解；PTX 覆盖验证；交错终判；sm_120
+
+---
+
+## 1 引言
+
+### 1.1 问题：线性注意力算子工程是手写领地，且以 autotune 税的形式持续收费
+
+现代线性注意力模型（Gated DeltaNet 及其同族）的前向与反向 kernel 几乎完全由手写专家 kernel 占据：fla（flash-linear-attention，Triton）、FlashQLA（TileLang）、FlashKDA、CUTLASS 系各有自己的调度决策集——tile 形状、流水深度、warp 专化、融合边界——这些决策被固化在 kernel 源码与各自的 autotune 候选空间里，无法作为可变换、可验证、可复用的编译器中间表示（IR）沉淀。这一现状收取三重代价。其一，**调参成本在部署侧支付**：fla/Triton 在首次调用时按形状键在设备上逐候选编译并计时，实测一个 B1T2048 形状的前向首调 16.55 秒（25 个候选配置、5 个 kernel）、反向首调 23.26 秒（23 个配置、4 个 kernel），合计 39.81 秒，且按进程、按形状键重复支付（evidence/G6/search_cost.md）。其二，**表达能力被 DSL 边界锁死**：TileLang 的 Z3 modulo 调度器只存在于 Ascend 后端，CUDA 侧退化为运行时 autotune。其三，**验证缺失**："编译器生成的 kernel 与手写 kernel 同构"缺乏可核查证据，性能声明无法与覆盖声明互证——一个只报加速比的编译工作，无法回答"它到底学到了手写 kernel 的什么"。
+
+### 1.2 论点：调度即 IR
+
+本文的论点可以一句话陈述：**把 kernel 的全部调度自由度表达为原生 MLIR 的旋钮，调度决策就成为编译期可求最优、可复现、可验证的对象**。展开为四个支柱，并与 Google TPU/XLA 栈逐条对位。第一，**语义单一事实源**：`gdn` 方言 L0 层（`gdn.fwd`/`gdn.bwd` 操作与 GdnConfigAttr 属性）加 JAX 可执行规约（前向 chunk 实现 + `jax.vjp` 推导反向，fp64 紧验证），对位 HLO 与自动微分——语义只有一份，下游全部下降自它。第二，**编译期确定性调度**：以 Z3 在合法性约束下枚举旋钮空间、按一次性硬件标定的解析成本模型排序，对位 XLA 的"非运行时 autotune"哲学；调度决策可逐字节复现。第三，**分层可验证 IR**：L0–L4 每层有独立 oracle（JAX 对拍、CPU 执行对拍、ptxas/SASS 静态复核、GPU fp64 孪生对拍），对位分层验证。第四，**布局系统**：共享内存与寄存器布局作为旋钮族（swizzle、补列、fragment 映射），对位布局传播。四支柱合起来构成一个主张的完整证据链：前向对 fla 的全形状胜利是正例，反向 26 轮轨迹与穷尽账目是可解释的开阔地——二者共同支撑"调度即 IR"。
+
+### 1.3 贡献
+
+**C1（方法论）PTX 级覆盖证明。** 为"编译器生成 kernel 与手写专家 kernel 同构"给出第一个可核查的验证契约，分两层：T1 指令族覆盖——从 fla（22/22 配置）与 FlashQLA（5/5 kernel）的 PTX/SASS 中提取 33 族指令契约，逐族判定本方 20 配置生成物的覆盖状态，终态 8 YES / 19 PARTIAL / 6 NO，其中 feature 层 15 族为 8/6/2，全部 PARTIAL 残差均为变体级（拼写、向量宽度、代码生成旗标）而非能力缺口，mma 签名层双 YES（bf16 m16n8k16：本方 552 条 vs fla 2708 / FlashQLA 2496；tf32 m16n8k8 经逃生舱翻 PARTIAL→YES，即 fla 的精确拼写）；T2 结构匹配——fla 极点（multistage、255 寄存器顶格 + spill，寄存器包络 [40,255] 落入本方 [28,255]）与 FlashQLA 极点（warp 专化 + TMA：setmaxnreg dec96/inc224 将 spill 从 22,844 B 压至 48 B，5 个 TMA 操作替换 1026 条经典拷贝）皆在旋钮格内可表达、皆经硬件数值验证（G4 20/20）。覆盖契约由**逃生舱预算**封顶：五个允许的自定义 NVVM 操作仅消耗一个（`gdn.mma.tf32k8`）。（evidence/G6/coverage_hatch_summary.md；evidence/G2/coverage_matrix.md）
+
+**C2（系统机制）编译期确定性 SMT 调度。** 将 TileLang 仅存在于 Ascend 后端的 Z3 modulo-scheduler 机制上移一层移植到 CUDA/sm_120：决策变量直接是旋钮向量，约束编码结构合法性、旋钮耦合与资源容量（共享内存字节模型 ≤98 KB、寄存器 $32\,(w+w_{\text{spec}})\cdot 255\le 65536$），目标为最小化解析成本模型。模型的一切速率来自一次性 GPU 标定表（mma.sync bf16 峰值 115.5 TFLOP/s、共享内存读 113.1 TB/s、bar.sync 7.71 ns 等）或 SASS 导出的结构常数（nomma 路径 10 cyc/MAC），**零逐配置拟合常数**；静态特征公式对 PTX 计数 18/18 精确。对 18 个实测配置的排序 Spearman **0.8962**（kkt 0.936 / o 0.829），对全部结构常数 ±2× 扰动稳定于 [0.882, 0.902]；合法空间（kkt 368 / o 465 配置）以固定 seed+rlimit 逐字节确定性复现。搜索成本账目：每新形状约 0.8 秒纯 CPU 对 fla 在设备 autotune 冷启动 39.81 秒（约 50×；fla 磁盘缓存摊销后 7.7×–67×），且本方 GPU 秒为零。（evidence/G3/solver_report.md；evidence/G6/search_cost.md、fla_amortize_r26.json）
+
+**C3（端到端结果）前向在全部基准形状上胜过 fla Triton，及支撑该主张的交错终判方法学。** 经 G5 五轮收官与 R7–R25 杠杆战役，现行正式记录（R25 档案代，n=30 同窗交错，单一 cubin 代）为：B1T2048 **2.125×**（30/30 对，p=9.3×10⁻¹⁰，中位 0.1866 ms vs fla 0.3964 ms）、B4T2048 **1.2211×**（25/30，p=1.6×10⁻⁴）、B1T8192 **1.3493×**（29/30，p=2.9×10⁻⁸）。数值契约同时达成：4/4 配置对 fp64 JAX 参考 o ≤6.85×10⁻⁴、ht ≤7.93×10⁻⁴，T8192 在分段分裂 S=1/4/8 间位级一致。方法学贡献在于判分协议本身：单窗中位数之比对有噪对手会夸大确定性，本文的交错逐对判据 + 配对 A/B + 稳定最小值三重交叉，把 B4T2048 的窗口摆动从"本方回归的表象"正确归因为基线方差——该案例作为共享 GPU 环境下性能主张的诚实性协议写入本文。（evidence/G5/final_adjudicate_r25f_w32p.json；evidence/G5/fwd_report.md round 25）
+
+**C4（开放发现账本）原生 MLIR 工具链缺陷的定位、探针验证与修复。** 构建该栈的过程产出一批此前未被记录的工具链发现，每条均以最小探针在硬件上验证、给出根因与修复：workgroup 空间分配被降为设备侧 malloc 导致首跑即非法地址（PTX 级静态共享内存重写救活 18/18 配置）；launch 区域常量捕获爆炸至约 140 个 `.b64` kernel 参数；`create_async_groups` 的 wait_group-0 机器约束（源码级证明）使 transform 路线结构性无法重叠预取与计算；ptxas 对内联 PTX mma 的 D-onto-A 操作数腐蚀与 early-clobber 规则；mma fragment 布局律；TMA 三重接线缺口；验证 harness 的 H2D 重分级掩盖效应；以及共享内存块均匀 staging 的 256 倍冗余、cluster 可用性修正、forced-.maxnreg 分配器定律、模块布局彩票等战役级发现。它们构成独立的知识产出与可上游化清单。（evidence/G6/failure_longscroll.md；evidence/G5/fwd_report.md、bwd_report.md 各轮）
+
+### 1.4 结果预览与诚实边界
+
+前向现行记录表（R25 档案代）一行一形状见 §5.1 表 2；反向一行：共载最小约 2.15 ms @B1T2048H16，为 fla 同窗 1.03 ms 的 **0.479×**，自 R1 的 58.88 ms 累计约 27× 自提速，其完整瓶颈账目与两重穷尽证明见 §5.5。本文明确声明范围：单卡（RTX 5090 Laptop，sm_120a 消费级 Blackwell）、共享窗口口径、单算子（GDN 前向 + 反向；GVA/varlen/h0 属性已在 L0 定义但未硬件验证）、无模型级端到端。这些边界的逐条讨论见 §6。
+
+## 2 背景与相关工作
+
+本节的职责是把三个坐标系立起来：GDN 算子的数学结构（本文全部下降的源头）、手写 kernel 生态的两个设计极点（覆盖矩阵的靶）、编译与调度系统的已有版图（本文填的空白在哪）。
+
+### 2.1 GDN 算子与 chunked WY 数学
+
+Gated DeltaNet 的逐步递推定义为（门更新先于 delta 更新，此次序是语义约定的一部分）：
+
+$$h_t = e^{g_t}\,h_{t-1} + \beta_t\, k_t\left(v_t^\top - k_t^\top e^{g_t}\, h_{t-1}\right),\qquad o_t = q_t^\top h_t$$
+
+其中 $k_t, q_t \in \mathbb{R}^{K}$，$v_t \in \mathbb{R}^{V}$，$\beta_t$ 为逐 token 门控标量，$g_t$ 为衰减门（对数域；kernel 内乘 $\log_2 e$ 后用 exp2 换域）。逐步递推不可并行，chunk 化的 WY 表示将长度 T 的序列切成块长 C 的块（本文 C=64），块内构造
+
+$$M[i,j] = -\beta_i\,(k_i\!\cdot\! k_j)\,e^{cd_i-cd_j}\ (i>j),\qquad T = (I+M)^{-1}$$
+
+（$(I+M)^{-1}$ 由前代换求逆，单位下三角），继而 $w = T(\beta v)$、$u = T(\beta k\, e^{cd})$，跨块状态递推为
+
+$$S_n = e^{cd_{\mathrm{last}}}\,S_{n-1} + (k \odot e^{cd_{\mathrm{last}}-cd})^\top (w - u\,S_{n-1})$$
+
+输出由块内注意力项与状态项合成（对角保留、同一衰减因子，仅严格上三角掩蔽）。该阶段结构与 fla v0.6.0 同构：前向 KKT→三角求逆→w/u→状态递推→输出；反向为 dh 反递推→重算 h/w/u→dqkwg→dv/dv_local→wy_bwd。
+
+反向的关键数学成果是 **dA 的双侧掩蔽精确公式**。记 $\mathrm{d}v_p$ 为重算路径的值梯度、$S_n$ 为块末状态，定义 $G = \mathrm{d}v_p\,(\beta v)^\top + \mathrm{d}W\,(\beta k\, e^{gc})^\top$，$\mathrm{d}W = -\mathrm{d}v_p\, S_n^\top$，则
+
+$$\mathrm{d}A = -\operatorname{stricttril}\!\big(T^\top\,\operatorname{stricttril}(G)\,T^\top\big)$$
+
+$G$ 必须先掩蔽再两侧乘 $T^\top$；单侧修正式对 C≥3 不成立（符号级验证）。该式与 fla `prepare_wy_repr_bwd` 计入其转置 A 存储后的实现等价（evidence/G1/GATE_REPORT.md）。语义层闭合三角为 MLIR-L1 ⇄ JAX ⇄ fla naive 三方对拍：JAX 规约 44/44，MLIR L1 对 JAX fp64 前向约 6×10⁻⁷、六梯度 ≤6.4×10⁻⁶，JAX 对 fla naive 1.2×10⁻⁷/2.3×10⁻⁶（fp32 口径）。反向扫描还有一条本文反复使用的**仿射携带形**：余切链可精确写成
+
+$$X_{n-1} = \big(2^{g_{cl}} I - W^\top \hat{B}\big)\,X_n + \big(Q_g^\top - W^\top P^\top\big)\,\mathrm{d}O$$
+
+对真序贯迹误差 2–3 ulp（fp64），全分段与近单位门 stress 下均成立；且门算子超收缩（$\rho(A_n)\le 2.3\times10^{-18}$、$\|A_n\|\le 2.2\times10^{-17}$）为弱门场景安全性给出结构性保证。
+
+### 2.2 手写 kernel 生态与两个设计极点
+
+覆盖矩阵需要靶子；生态中恰好存在两个风格相反的手写设计极点。**fla 极点**（Triton）：multistage `ld.global`/`cp.async` 路线，反向 kernel 全部 255 寄存器顶格 + spill（prepare_wy 4808 B、dhu 3236 B、dqkwg 1544 B），无 TMA/mbarrier/setmaxnreg；dtype 真相为 A/h/dh/do=bf16、ht/dg=fp32、solve_tril 输入 fp32 输出 bf16。G0 阶段以 Triton AOT `GPUTarget("cuda",120,32)` 纯 CPU 采集 22/22 配置资源表。**FlashQLA 极点**（TileLang）：warp 专化——setmaxnreg + elect.sync + mbarrier + TMA，全部 kernel ≤128 寄存器零 spill（fused_bwd 单 kernel 1600 条 mma.sync），5/5 kernel 资源表经锁 target 采集。两极点即 T2 结构覆盖的靶（§5.2）。平台事实：sm_120 上 FlashQLA 官方仅前向 bf16 可用；其 SM120 反向在源码层完整存在（v0.1.3），但出厂默认在本机不可启动——autograd 链内前向 kernel 请求 112,640 B 动态共享内存，超出 sm_120 的 101,376 B opt-in 上限；在已披露的 block_DV=64 适配（不改动反向 kernel）下全算子反向温态中位 1.4348 ms，与 fla Triton 反向同窗近似持平（1.06× 慢）。本点为共享窗口单点测量（无交错判定、无梯度交叉验证），TileLang 代表性的正式数据点仍是 §5.1 的前向交错比较；本文反向对标因此选 fla Triton。
+
+### 2.3 编译与调度系统：逐家点名与空白
+
+**TileLang**：tile DSL + TVM 分析器；Z3 modulo-scheduler 仅 Ascend 后端（变量 = 开始时间 + buffer 版本，目标 min II）。本文将该机制上移一层移植到 CUDA/sm_120：决策变量 = 旋钮向量，约束 = 资源容量 + 结构合法性，目标 = 解析时延——CUDA 侧无先例。**FlexLA**：线性注意力家族 kernel 生成器，覆盖面广但调度靠模板 + 搜索，非原生 MLIR IR 旋钮、无 SMT 约束求解、无 PTX 覆盖证明。**Hexcute / TileLoom**：层级 tile 调度框架——调度是显式编程模型而非可求最小化的目标，不提供确定性编译期搜索与硬件覆盖对拍。**CAKE**：自改进步 kernel 优化闭环（失败→约束规则库/IR 原语/归因表）——本文采用其"失败→规则"纪律组织证据链（失败长卷的组织方式即此），但搜索由 SMT 显式枚举替代。**PEAK / BaCO**：代价模型代理 +（贝叶斯）autotuning 的代码参数优化——在设备或仿真侧迭代测量；本文成本模型零逐配置拟合常数、一次性标定、离线确定性，与拟合式代理形成方法论对照。空白陈述：上述系统无一同时做到「原生 MLIR 渐进下降 + 编译期确定性 SMT 调度 + PTX 级覆盖验证」——本文填的正是这个三角。
+
+### 2.4 MLIR 栈与 transform dialect
+
+transform dialect 使"脚本即参数化工件"成立：一段 transform 脚本就是对 payload IR 施加的调度变换序列，其参数（tile 尺寸、multibuffer 因子、流水深度）就是旋钮的载体。2026 年 10 月主干已收录 setmaxnreg/elect.sync/mbarrier/TMA/ldmatrix/stmatrix 等词汇——计划阶段预留的多数逃生舱因此失效（这是好消息：原生 MLIR 表达力边界已推进到覆盖 TileLang/CUTLASS 级 warp 专化词汇表，§3.5）。树内 sm80 transform-mma 集成测试（multibuffer + async groups + pipeline_shared_memory_copies + rewrite_matmul_as_mma_sync 配方）在 5090 上真跑通过，构成本栈的起步锚。transform 拼写现状的工程事实（`tile_using_for`、multibuffer 的 `skip_analysis`、`create_async_groups` 的 `bypass_l1`、pipeliner 要求扁平 K 循环体、smem matmul 不能走 vectorize）在 G2 过程中逐一沉淀。
+
+## 3 设计：调度即 IR
+
+本章把 §1.2 的四支柱落成可执行的架构：先给总体分层（旋钮晶格），再分别展开 Z3 形式化、解析成本模型与标定、逃生舱机制、验证塔——每一块都是"编译期决策"链条上不可缺的一环，缺则确定性或可验证性断裂。
+
+### 3.1 总体架构与四支柱
+
+语义单一事实源（支柱一）保证"实现只有一份语义"：L0 的 `gdn.fwd`/`gdn.bwd` 携带 GdnConfigAttr（dtype、chunk_size、use_g、use_gk、h0、β-sigmoid、varlen、GVA 等属性面），JAX 规约以 fp64 可执行形式钉死数值语义。编译期确定性调度（支柱二）是本文核心机制，§3.3–3.4 展开。分层可验证（支柱三）：每层下降产物都有 oracle（§3.6）。布局系统（支柱四）：共享内存/寄存器布局不是隐藏决策而是旋钮族——补列（LDSM 的 +8 列）、swizzle、fragment 映射、warp 内行重排（§5.1 的 W32P 即布局旋钮的实例）。四支柱的关系是：支柱一给语义，支柱四给表达，支柱二给决策，支柱三给信任。
+
+### 3.2 旋钮晶格 L0–L4
+
+**表 1 旋钮晶格（层 | 旋钮 | 载体 | oracle）**
+
+| 层 | 旋钮 | 载体 | oracle |
+|---|---|---|---|
+| L0 语义 | dtype、chunk_size、use_g/use_gk、h0、β-sigmoid、varlen、GVA | GdnConfigAttr | JAX 规约（fp64） |
+| L1 算法结构 | chunk ∈ {16,32,64}、solve 变体（前代换/Schur 合并/融合 KKT+solve）、recompute-vs-materialize、decay 域（log2/exp2）、状态精度（fp32/bf16）、门融合位置 | L1 展开 pass | CPU linalg 执行 ⇄ JAX |
+| L2 调度 | BT/BK/BV/BC、grid 映射（rows × V-split × 可选两段式 WY）、num_warps、融合边界（FLA 六 kernel 任意切分 ↔ 单 kernel persistent 两档） | transform 脚本参数 | ptxas -v / SASS 静态复核 |
+| L3 流水/向量化 | multibuffer factor、create_async_groups / rewrite_copy_as_tma、pipeline_shared_memory_copies depth、rewrite_matmul_as_mma_sync（m16n8k16 bf16→fp32）、手动 warp 专化（warp 词汇 + setmaxregister）、swizzle/补列 | transform 脚本 | GPU fp64 孪生逐元素对拍 |
+| L4 目标 | `gpu-lower-to-nvvm-pipeline="cubin-chip=sm_120a"` | 编译管线 | e2e fla 容差契约 |
+
+由此得到一个可检验的论断：FLA / FlashKDA / FlashQLA 的风格差异 = 该配置空间中的三个点；复现一个手写 kernel 是调参，不是重写。§5.2 的 T2 结构匹配将此论断对两个极点实例化。
+
+### 3.3 Z3 形式化：变量、约束、目标、确定性
+
+求解器的存在意义：把"选哪个配置"从工程直觉变成带确定性契约的机械过程。**变量**（固定声明序）：dtype、prec、tile_M、tile_N、tile_K、warps、pipeline、mma、warpspec、tma；域 tile ∈ {32,64,128}（合法子集）、warps ∈ {2,4,8}、pipeline ∈ {0,2,3}。**约束**三类。结构合法性：整除与 mma fragment 对齐（$M \equiv 0 \pmod{16}$；bf16 要求 $K \equiv 0 \pmod{16}$、tf32 要求 $K \equiv 0 \pmod 4$；$N \equiv 0 \pmod{8\cdot\text{warps}}$）；流水深 ≤ K 循环趟数。旋钮耦合：warpspec ⇒ kkt ∧ bf16 ∧ mma；tma ⇒ warpspec。资源容量：
+
+$$\text{smem} = (bt\cdot bk + bk\cdot bv)\cdot esz \cdot \max(p,1)\cdot n_{\text{gemm}} \le 98\,\text{KB},\qquad 32\,(w + w_{\text{spec}})\cdot 255 \le 65536$$
+
+（warpspec 形态为单缓冲 pair + 64×64 TMA staging + 8 B mbarrier；第二个不等式禁止如 8 warp + 生产 warp 的组合）。**目标**是最小化解析成本模型；因模型非线性（max/混合/除法），v1 以 SAT + blocking 子句枚举全合法空间（kkt=368 / o=465 配置）、在求解器外排序——TileLang 的 rlimit + 固定种子确定性纪律被保留。**确定性契约**：`random_seed=7`、`rlimit=20e6`、固定变量序与阻塞序、终排序键 `(predicted, name)`；两次独立运行的 368 项排名逐字节一致（G6 复测再证）。**回环设计**：解 → transform 脚本实例化 → 编译 → ptxas -v/SASS 静态复核 →（窗口期）top-K 设备计时；未编译配置按 spills=0 排序，命中已编译向量自动拾取实测资源特征。如实披露的环境毛刺：o K64V64 子空间在 rlimit 上限下存在 Z3 partial-model 伪影崩溃（tools/gdn_solver.py:187），已公开记录，两个规范空间逐字节复现。
+
+### 3.4 解析成本模型与一次性标定
+
+成本模型承担"把旋钮向量映射成时延估计"的全部职责，其诚信性由零拟合契约保证。模型形式（v2）：
+
+$$T = T_{\text{launch}} + \operatorname{ov}\!\big(T_{\text{tensor}} \mid T_{\text{ffma}},\ T_{\text{gmem}},\ T_{\text{smem}}\big) + T_{\text{lsu}} + T_{\text{bar}} + T_{\text{spill}} + T_{\text{ex2}}$$
+
+$\operatorname{ov}=\max$（流水化）或 $\sum$（pipeline=0 串行同步拷贝）。nomma 项不是拟合而是 SASS 导出：`convert-linalg-to-loops` 给出的未分布标量三重循环内环为 39 条 SASS 指令（10 条 IADD.64 寻址 + 循环控制 + 3 条标量 LDS.U16 + 1 条 FMA）对应每 MAC 约 10 周期，故 $T_{\text{nomma}} = \text{MACs}\cdot 10\,\text{cyc}/f_{\text{clk}}$——常数读自反汇编，从未对实测调参。v3 增加波次/占用项 $\lceil \text{CTAs}/(82\cdot\text{occ})\rceil$。launch 常数 6.12 µs 由纯发射锚核导出。标定表（单 GPU 窗口、分钟级、<2 GB，一次性沉没成本）：mma.sync m16n8k16 bf16→fp32 峰值 115.5 TFLOP/s（标定文件的 flops 字段按线程级 ×32 过计，已修正）；共享内存读 113.1 TB/s；gmem L2 驻留读 2144 GB/s / DRAM 825 GB/s（受共载挤占下界；干净窗口刷新 851.4 GB/s，+3.2%）；SFU ex2 3.23 Telem/s；bar.sync 往返 7.71 ns；cp.async 16B 1388 GB/s。自检：静态特征公式对 PTX 计数 18/18 精确（mma/ld.shared/bar.sync 计数；cp.async 偏差 ≤1.6%）。模型迭代本身是一条失败保留的长卷：v1 契约形 Spearman 0.7352 → v2 增 LSU-issue 与设备分配项 0.7475 → nomma 项 SASS 化 **0.8962** → launch 锚定（秩不变）→ v3 波次项（单 CTA 测点集不可分辨，全形状生效；v2↔v3 top-5 翻转即占用项在工作，构成 G5 可检验预测）。已记录盲区如实呈现：pipeline=0 的 `.ca` 串行化幅度未建模（实测 5×，模型仅 2.4 µs）；mma 路径绝对时间系统性低估 3–5×（秩不变）；DRAM 带宽为共载下界。
+
+### 3.5 逃生舱机制与账本
+
+逃生舱机制的存在意义：为"原生 MLIR 无法表达"的词汇留一条受预算约束的出路，从而把"原生 MLIR 足以复现手写 kernel"从修辞变成带预算的定量主张。机制分两级。**零预算级（GdnHatch 方言）**：11 个操作（setmaxnreg、elect、mbarrier 四件套、TMA load/store/prefetch、bulk commit/wait）各自 1:1 薄封装到在树 nvgpu/nvvm 操作——机制已演练、预算未动；计划阶段以为需要逃生舱的词汇（setmaxnreg/elect.sync/mbarrier/TMA/prefetch/ldmatrix/shfl）在 2026 年 10 月主干已全部在树，原生 MLIR 表达力边界已覆盖 TileLang/CUTLASS 级 warp 专化。**真逃生舱（唯一一例，`gdn.mma.tf32k8`）**：降级为 `llvm.inline_asm` 直书 `mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32`。其必要性有双重根据：其一，NVVM 表生成限制——`nvgpu.mma.sync` 强制 8x8x128b 基本片使 tf32 封顶 K=4，表列 `nvvm.mma.sync` 的 m16n8k8 仅 f16/bf16/i8；其二，正确性规则——不声明 early-clobber（`=&f`）时 ptxas 合法地把 D 四元组映射上 A 四元组（SASS `HMMA R12,R12,R10,R16`），K=16 链确定性 118/128 单元失败；fragment 布局由硬件探针导出（a0=(g,2t)、a1=(g+8,2t)、a2=(g,2t+1)、a3=(g+8,2t+1)，b0/b1=(2t{,+1},g)，D 列索引 = 2·tig——而非 B 的 groupID）。实测收益：反向 e2e 14.16→11.06 ms（1.28×）、dqkwg 1.71×、wyb 2.19×，16 个 GEMM 位点，6/6 数值过门。账本：**1/≤5**。
+
+### 3.6 验证塔
+
+验证塔把"信任"分摊到每一层：L0 ⇄ JAX 规约（fp64）；L1 CPU linalg 执行 ⇄ JAX dumps；L2 编译 + ptxas/SASS 静态资源复核；L3/L4 GPU 上 fp64 孪生逐元素对拍（同嵌入输入）；端到端对 fla 容差契约（o/ht 5×10⁻³，dq/dk/dv 8×10⁻³，dβ/dg 2×10⁻²，对 naive fp32 参考缓存）。§2.1 的 dA 双侧公式与仿射携带形即验证塔的数学地基；反向 pass1 只存入口态、pass2 正步长逆走 chunk 的两遍结构，与 dg 链的严格前缀和约定，均在 L1 层以 JAX 对拍钉死后才进入 GPU。
+
+## 4 实现
+
+本章回答"这个栈在真实工具链上是如何立起来的"：先给代码栈组成与 sm_120 的架构现实，再以账本形式给出每一条工具链发现——后者与正向结果同等重要，因为没有这些修复，任何一条配置都跑不到硬件上。
+
+### 4.1 代码栈组成
+
+LLVM 2026 年 10 月 worktree 有限构建（mlir-opt/mlir-runner/cuda-runtime/Python 绑定，1.9 GB Release）；`gdn` 方言（ODS + 展开 pass + gdn-opt）；生成器 `tools/gdn_l2_gen.py`（payload + transform 参数化）；执行链 `scripts/run_l2.sh` → `tools/gdn_smem_fix.py` → `tools/gdn_time.py`/`tools/gdn_verify.py`；终判器 `tools/gdn_final_adjudicate.py`；求解器 `tools/gdn_solver.py` + `tools/gdn_costmodel.py`；全算子生成器 `tools/gdn_full_gen.py`（前向）/`tools/gdn_bwd_gen.py`（反向）。基线侧参考 PTX 采集：fla 经 Triton AOT（自带 ptxas -v）、FlashQLA 经 TileLang 锁 target + `get_kernel_source()` + nvcc -ptx；SASS 特征以 nvdisasm 提取。
+
+### 4.2 sm_120 现实：消费级 Blackwell 的编译目标真相
+
+sm_120（RTX 5090 Laptop，82 SM，GDDR7）无 tcgen05——消费级 Blackwell 使用 Ampere 风格 `mma.sync`，mma.sync 即本架构张量算子上限；共享内存 opt-in 上限 99 KB/CTA（静态上限 101,376 B）；初判"cluster 仅 1×1×1"的 G0 论断后被设备实测推翻（cluster 2/4/8 可用、属性开销约 0）——该修正本身作为发现记入账本。mma 管线配方 = multibuffer + create_async_groups + pipeline_shared_memory_copies + rewrite_matmul_as_mma_sync；树内 sm80 transform-mma 集成测试为模板。
+
+### 4.3 工具链发现账本（每条：现象→探针→根因→修复→验证）
+
+**(1) workgroup 空间分配被降为设备侧 malloc。** 现象：一切含 smem tile 的配置首跑即 `CUDA_ERROR_ILLEGAL_ADDRESS`。探针：逐配置裸 cubin 启动。根因：`-gpu-lower-to-nvvm-pipeline` 将 `memref.alloc() : workgroup` 降为设备侧 `call.uni malloc` + 通用堆指针 cvta；裸 ptxas cubin 上 CALL.ABS 蹦床未解析，堆指针被重解释为共享窗口偏移。修复：PTX 级静态共享内存重写（`tools/gdn_smem_fix.py`）——删除 malloc 调用序列、`mov.u64 %rd, __gdn_smemN`、`.shared .align 16 .b8 __gdn_smemN[size]`（与 MLIR 自身为 mbarrier 发的惯用式相同）。验证：18/18 配置由死转生。
+
+**(2) 常量捕获爆炸。** 现象：kernel 参数最多膨胀至约 140 个 `.b64`（一个 bf16 pad 成为 `.param .align 2 .b8[2]`）。根因：tiling 与 hatch 下降把 launch 区域常量抬回宿主，kernel 外联化将其逐个变成参数。修复：同一工具解析宿主 `gpu.launch_func args(...)` 实参序，逐参折叠 `ld.param::entry` 为立即数；18/20 配置成为真零参数 kernel。
+
+**(3) wait_group-0 机器约束（源码级证明）。** `create_async_groups` 转换的每段 staging 后**立即**紧跟 `cp.async.wait_group 0`（NVGPU/Transforms/CreateAsyncGroups.cpp）——transform 路线在结构上永远无法让预取与计算重叠。这解释了本项目中一切 ping-pong 双缓冲的零增益（§5.4）；手动 `device_async_copy` 原样透传、等待位置归本方，是唯一出路。
+
+**(4) ptxas D-onto-A 操作数腐蚀与 early-clobber 规则。** 见 §3.5——无 `=&f` 时 ptxas 合法复用 A 寄存器为 D，K=16 链确定性 118/128 失败；同族发现是 **mma fragment 布局律**：D-fragment 列索引 = 2·线程组内 ID（非 B-fragment 的 groupID），错用导致 kkt 1168/2080 单元欠覆盖，实测值恰等于 bf16 量化仿真预测 9.765625×10⁻⁴；ldmatrix 需逐 lane 象限地址（uniform 基址导致行广播）。
+
+**(5) TMA 三重接线缺口。** 宿主 CUtensorMap 编码契约（秩与 CUDA 序 globalDim/boxDim）、坐标维序须 K 最内且 B tile K 连续布局、`.shared` 目的强制 128 B 对齐——16 B 对齐时 ptxas 放出 16B-非-128B 偏移触发 `MISALIGNED_ADDRESS`（compute-sanitizer 定位 `UTMALDG.4D`）。
+
+**(6) 验证 harness 的 H2D 重分级掩盖效应。** 逐级重初始化中间量的 harness 掩盖了生产者/消费者契约破坏——dqkwg 的 B̂ 自 R2 起被分级进 bf16 tile（2×10⁻³ 相对误差），因 harness 每次启动前重灌输入而潜伏三轮不可见；教训升级为端到端验证规约（链条必须经由 bench 实际运行的生产者验证）。
+
+**(7) cp.async 写入对 ldmatrix 的静默损坏。** 以手动 `nvgpu.device_async_copy`（SASS LDGSTS.E.BYPASS.128）staging 的 mma A tile：通用 `ld.shared` 读回正确（对全局源位级一致），而 `ldmatrix` 对依赖构建调度表的行子集读错（双 mma 构建中行 32–63、三 mma 构建中行 48–63；确定性、逐构建可复现）；同一 tile 改由 `st.shared` 写入则位级正确——第二种有记录的手动 cp.async 静默失败模式。修复：A tile 改元素级 bf16 原始拷贝。
+
+**(8) 战役级发现（R7–R26）。** rt.build 陈旧缓存信任洞（以 cache_key 键控闭合；R3 曾由此洞喂入陈旧 cubin）；forced-.maxnreg 分配器定律（任意 cap 皆非零 spill，cap 174 下地板 40/60 B——自然 ≤128 寄存器 ≠ 零 spill，R22 38 探针审计）；`--mb3 --depth3` 在 2-trip 循环上流水前置条件硬失败；模块布局彩票（f3 ±10.5±6 µs、PTX 字节恒等而布局重排；R25 三形重建 md5 全数复现，反证工具链输出在不变输入下确定）；zero_up 单指令破案（§5.1）。
+
+其余 12+6 条负结果（staging 冗余、pipeliner suppress 子句失效、Amdahl 反驳、tf32 双负、重建混沌位点、树扫描负经济学、async 零投递悬案等）完整保留于失败长卷并编入 §5 各节。
+
+### 4.4 复现工程
+
+全链 CPU 可复现（编译、求解、静态覆盖矩阵）；GPU 步骤幂等脚本 + 证据目录结构（payload/transform/ptx/cubin/ptxas_v/sass 逐配置落盘）；`make repro-g0`…`repro-g6` 一键复现各 gate（附录 C）。
+
+## 5 实验：连续探索长卷
+
+本章的体裁是长卷而非成绩单：同一主题单节展开，失败保留为推进动力——每一轮的负结果都为下一轮的假设设定了边界。**章首协议段（全章共用）**：交错终判 = 同一 GPU 窗口内本方与基线交替成对计时（逐对比值取中位/符号检验），由 `tools/gdn_final_adjudicate.py` 执行，除非另有说明，一切加速比的分母是同窗交错测得的基线；全部计时取自共载机会窗口（正式记录附 cubin md5 与窗口快照）；数值分母为前向输出对 fp64 JAX 参考的逐元素最大绝对差、反向六梯度对 fp64 VJP 参考的容差契约；基线为 fla v0.6.0 纯 Triton 路径（`FLA_FLASH_QLA=0`）；形状集 B1T2048 / B4T2048 / B1T8192（H=16，K=V=128，bf16 io / fp32 门）加 T512 验证级。
+
+### 5.1 前向终局：三代纪录、交错方法学与可判定规则
+
+本节的存在意义：前向是本文的正例主张，而一个诚实的加速比主张需要的不是一次漂亮的测量，而是一套能区分"真效应"与"窗口噪声"的判分协议——本节把整场战役的终点（三代正式记录）与协议本身一起交付。
+
+**三代纪录表。** 正式记录随 cubin 代际迁移，每代注明其 cubin 生成（md5 前 8 位）与判定口径：
+
+**表 2 前向正式记录的三代迁移（n=30 同窗交错，fla Triton 为分母）**
+
+| 代际（cubin） | B1T2048 | B4T2048 | B1T8192 |
+|---|---|---|---|
+| 第一代 G5 收官（r19/r20 单形记录） | 1.592× | 1.05–1.19×（两窗口全披露；配对 A/B 实测 −148 µs；波动归因 fla 中位方差） | 1.253×/1.312×（第 4 轮 1.021× 平手→过线） |
+| 第二代 R22 F1ZF 代（三形 n=30 单一 cubin 代） | 2.1184×（29/30） | 1.1417×（30/30，p=9.3×10⁻¹⁰） | 1.2226×（27/30，p=8×10⁻⁶） |
+| 第三代 R25 W32P 档案代 | **2.1250×**（30/30，p=9.3×10⁻¹⁰；本方中位 0.1866 ms vs fla 0.3964 ms） | **1.2211×**（25/30，p=1.6×10⁻⁴；本方 0.8213 vs 1.0029 ms） | **1.3493×**（29/30，p=2.9×10⁻⁸；本方 0.7851 vs 1.0593 ms） |
+
+代际 cubin 键控（md5 前 8 位）：第二代 T8192 `be8b914b`、B4T2048 `83898f74`、B1T2048 `3d47886a`；第三代 T8192 `e7c8eb4c`、B4T2048 `39f094c3`、B1T2048 `be5b2377`（第二代字节整体保存为 `.r22ship` 兄弟槽位）。
+
+三代读法：本方中位在每一形状逐代改善（T8192 0.7905→0.7851 ms、B4 0.8481→0.8213、T2048 0.1980→0.1866），R25 代的比值增幅部分来自该窗口 fla 侧波动（fla 中位 0.9665→1.0593 @T8192）——故表中同时记录逐对中位（robust 行：1.3307×/1.2029×/2.1174×），两行并陈、不取其一。
+
+**交错方法学。** 共载噪声经两种路径进入测量：落在配对两成员之间时同时拖慢双方（对消），落在某成员之内时制造离群对（不可对消）。协议因此报告中位数与逐对分布而非均值，并给出可判定规则：
+
+$$(\text{median}-1) > 3\cdot \text{IQR}/\text{median}$$
+
+即效应超过逐对相对散布的 3 倍方可判定；边缘案例一律不判，退守符号检验与干净窗口复测。B4T2048 案例是该方法学的教科书解剖：三窗口（r20 1.1883× / r21 1.2329× / r22 1.1417×）本方侧一致至 ±1%、分歧全部来自 fla 尾部（fla max 1.24–2.58 ms 对中位 0.97–1.04 ms——共载突发落在 fla 更胖的 kernel 里），而 v1 的 IQR 是尾敏感统计量，把 r22 的 30/30、p=9.3×10⁻¹⁰ 也拦下（差 0.039）。由此形成**可判定规则 v2**（内 80% 截尾 IQR，附加 wins ≥25/30 且 p ≤10⁻⁵；v1 保持记录规则，v2 主张必须双引两行）：r22 对上 B4T2048 判 v1-no/v2-yes（D1 决议：1.1417× 以双引口径主张）；R25 新对判 B1T2048 v2-yes（30/30，p=9.3×10⁻¹⁰，tIQR 相对 0.347 < 0.372）且中心跨两个正式窗口稳定（2.1113→2.1174，差 0.3%）；B1T8192 在两规则下均不可判（真双侧窗口）。可判定性的边界同样被协议自证：一个五对快速窗口在敌对共载下读出 B1T2048 中位比 2.316× 却被协议判"不可判定"（相对 IQR 0.31）——协议在窗口撑不住时拒绝开口。
+
+**19 轮前向杠杆长卷（R7–R25，胜负并陈）。** 战役从 G5 收官态起步：分阶段三 kernel 链（F1=WY、F2=扫描、F3=输出，mono cubin，w4/bv32）。R14 **F2US**（u 经预取管线分期）：F2 的 v_new 尾部以 fragment 映射逐元素从全局读 u——2 B 负载按 4 B 步幅落在 16 B 窗内，T8192 聚合约 32 MB 放大至 64 MB 且挂在串行链上；将 u 的 VT 切片 staging 进行乒乓 smem tile（+10,240 B）后 f2 0.4017→0.2972 ms、staged e2e 0.9551→0.8583 ms（0/60 对变慢），B1T8192 首次正式过线 1.101×。同轮以四种测量关闭了"≤49.5 KB 双 CTA F2 重设计"问题（资源墙）。R15 **WST 宽存单元遍历**入船；R16 FPIPE（fused 旗舰 6.27→4.53 ms）与 bf16-solve（数值 GO、性能中性）；R17–R18 **F1KS 双 CTA 攻坚**：R17 的 2-CTA 损坏悬案在 R18 根因化为两个叠加的、在 1-CTA 驻留下被掩盖的缺陷——(a) solve 的 phase-0 `zero_up` 单元循环以 32×8=256 步幅跨 128 线程块，768 单元/tile 永不被清零（1-CTA 时恰读零值；2-CTA 共驻时读活数据），SASS 对比定位到**恰好一条指令**（`MOV R4, 0x2490` vs `0x4410`——Tg 的 malloc 尺寸 9,360 vs 17,424）；修复 GDN_ZFIX（步幅改 nthr）；(b) Hillis-Steele 扫描的跨 warp 步内竞态（GDN_SCANDB 修复）；双修后 10/10 位级一致，F1KS 于三形状入船（f1 −53.5 µs @T8192，35–38/40 对更快）。R19–R20 校准 harness 的 B 侧偏置并根因为模块布局彩票；f3 双 CTA 转换构建正确但测负（bk16 减肥代价约 +110 µs 而双 CTA 仅赢约 +20 µs——f3 带宽界）；R21 建 f1 时间图（10 个删除探针 ×3 + ncu：uw 段 51.2%、kkt 26.2%、solve 串行相 14.3%——"phase-1 是关键路径"论点被测量处决）并落 **F1ZF**（phase-0 折入 phase-1 空闲线程，位级一致，f1 −7.4 µs）；R22 F1EP 单遍 epilogue 位级一致但测出洗涤（+0.0..+0.8 µs ×3）——**内核内串行化类在 2 CTA/SM 驻留下关闭**（共驻 CTA 填补 barrier 间隙；第三条调度器定律数据点）；R23 kkt 分裂图：该段 96% 是 K 循环、K 循环 73% 是 k-staging，而 staging 实测 826 GB/s 对同窗 D2D 校准 765 GB/s（读流超过读写聚合计速）——**kkt 作为性能之门关闭**（DRAM 界 = 算法最小流量），全部 R22 杠杆候选以测量定价死亡（exp2/beta 链 2–4 µs、BK32 +70 µs 占用损失、stores ≤2 µs）；R24 **GDN_W32P 无冲突按行 warp 重排**：BV=32 行的 (BV+8)=40 元素 = 80 B = 20 字步幅，平坦 pair 映射下 warp 跨两行、20 字步幅把 lane 28–31 撞上 lane 0–3（2 路冲突）；重排后两半 warp 落在互补的 16-bank 半区（80 mod 32 = 16），零冲突、纯索引算术、值恒等——f2 −17.9..−22.6 µs @T8192（×7 会话）/-9.7..−25.6 @B4/-2.0..−3.8 @T2048，链全形状为正；同轮 BV=64 重铺装以纸面算术关闭（F2US 后池 115,200 B > 101,376 B——r14 已实测该数字过不了 ptxas）。R25 档案化 n=30（表 2 第三代）。至此前向边界在三形状关闭：f1 端到端（uw 串行化关闭、s2g DRAM 界、staging 池阻塞、kkt 屋顶）、f2 写通道（W32P 是最后一个值恒等杠杆，各遍 DRAM 写界）、f3 带宽界。**旗舰判据的诚实重分类**：staged 三 kernel 链承载旗舰判据（0.79 ms 级）；fused 单 kernel 在移植全部可移植优化后仍慢 7.2×（6.35 ms @T8192）——chunk 串行链无法吸收 WY 阶段 2048-CTA 的并行性，这是结构差异而非 tile 工程缺口，作为带机理的负结果完整披露。
+
+### 5.2 覆盖矩阵与逃生舱（T1+T2）
+
+本节的存在意义：§5.1 只证明"更快"，本节回答"为什么可以相信它学到的是手写 kernel 的词汇"——覆盖是性能主张的结构性必要条件。
+
+**T1 指令族覆盖（终态）。** feature 层 15 族：8 YES（mma.sync、cp.async.classic、tma.bulk.ctrl、elect.sync、setmaxnreg、prefetch.tensormap、bar.sync 等）/ 6 PARTIAL / 2 NO；33 族总账 8 YES / 19 PARTIAL / 6 NO（G2 收官 7/20/6 → 逃生舱 #1 将 mma.sync 翻 YES）。全部 PARTIAL 残差为变体级：ldmatrix 缺 x1/x4.trans 操作数序变体（可由 numTiles/transpose 旋钮达；且 ldmatrix 是出厂全算子 fragment 装载路径）、mbarrier 仅拼写差（`.shared.b64` vs `.shared::cta.b64`，同一指令）、shfl 缺 bfly 变体、ex2 缺 `.ftz` 旗标（fla/qla 的 decay 路径用的正是本方发出的非 ftz 形）。两个 feature 级 NO 各有归宿：`stmatrix` 经测量判为错误模式（fragment 映射存储实测 +40% 慢：F2 249→380 µs——以测量关闭而非以拼写关闭）；`barrier` 族 NO 是命名伪影（`gpu.barrier` 覆盖 `bar.sync 0`，免费）。mma 签名层双 YES：bf16 m16n8k16（本方 552 条/10 配置，出厂工作负载路径）与 tf32 m16n8k8（逃生舱 #1，fla 的精确拼写，反向 16 GEMM 位点出厂）。
+
+**T2 结构匹配（两极点皆可表达且经硬件验证）。** fla 极点：multistage cp.async.ca/cg 由 pipeline 0/2/3 达（mma 16/48/64、LDGSTS 512/1536/2048），寄存器钉在 255 上限、栈帧 0–26.8 KB，包络匹配 fla 的 [40,255]。FlashQLA 极点：`kkt_bf16_mma_p2_t64x64x64_w4_ws` + `kkt_bf16_mma_tma_ws`——setmaxnreg dec96/inc224 将 spill 22,844 B 压至 48 B（FlashQLA 量级）、5 个 TMA 操作替换 1026 条经典拷贝、elect-leader mbarrier 协议；G4 修复死锁协议与宿主 CUtensorMap 接线后两极点在硬件上数值正确（20/20）。**边界声明**：PTX 匹配是必要非充分；静态覆盖为 gate，性能以 §5.1 计时为准——覆盖与计时分工明确，互不越界。
+
+### 5.3 编译期调度质量：排序精度与搜索成本
+
+本节的存在意义：C2 的"约 50×"若只有分子没有分母的口径学，就只是营销数字——本节把两侧的口径、摊销与稳健性全部摊开。
+
+**排序精度。** 对 18 个实测配置（G3 计时，中位 50 次 CUDA 事件）Spearman **0.8962**（kkt 0.936 / o 0.829）。稳健性：全部结构常数 ±2× 扰动下 ρ∈[0.882, 0.902]；实测时间 ±30% 噪声下 ρ≥0.856（200 次注入试验的 p5）——0.7 的门槛在比观测散布大近一个量级的噪声下仍过。静态特征自检 18/18 精确（§3.4）。模型迭代长卷（0.7352→0.7475→0.8962）中每一次失败的教训都写进了模型注释；v2↔v3 top-5 翻转（小 tile 赢单 CTA、大 tile 赢全形状）是占用项在工作的可检验预测。
+
+**表 3 搜索成本对照（B1T2048，fwd+bwd 首调合计）**
+
+| 口径 | fla/Triton（在设备） | 本方（离线 CPU） |
+|---|---|---|
+| 冷搜索（全新 Triton 缓存，FLA_CACHE_MODE=disabled） | **39.81 s** 存档（重载窗复测 43.9 s，同量级） | — |
+| fla 发行配置命中（strict），编译缓存冷 | 5.67 s（7.7×） | — |
+| fla 发行配置命中，编译缓存热 | 0.65 s（67.5×） | — |
+| Triton 自带 `.autotune.json` 持久缓存 | 1.07 s（41×） | — |
+| 枚举 + 全解排序（kkt 368 配置 0.378 s；o 465 配置 0.444 s） | — | **≈0.8 s**，零 GPU 秒，seed/rlimit 确定性复现 |
+
+诚实表述：约 50× 为冷启动口径，摊销后 7.7×–67×——其前提是首个进程已付全量搜索且部署固定缓存目录；本方 0.8 秒无需任何缓存基础设施。范围注：0.8 s 是本方 stage 旋钮空间的排序成本；全算子发运决策另用 GPU 配对 A/B（工程归因，非搜索）。暖中位自锚定回 G5 基线带（fwd 0.491 ms 对 0.316–0.517 ms 窗带；bwd 1.349 对 1.34 ms）证明冷数可信。
+
+### 5.4 消融矩阵：旋钮→效应，两级
+
+本节的存在意义：求解器排序的诚信最终由消融背书——同一张表里，赢的杠杆与死的杠杆并陈，且两级尺度缺一不可（级间交互是本文独有论点）。
+
+**级一（stage kernel 编译期研究，20 配置，PTX/SASS/资源三层 + 18 个 GPU 计时）。** mma 开→关 50–100×（nomma = 未分布标量循环，39 SASS 指令/MAC——成本模型在任何 GPU 时间花出之前抓住的唯一结构性死胡同）；pipeline 0→2 实测 5×（105→21 µs；`.ca` 串行化为模型最大盲区）；warps 反直觉（w2 14.9 < w4 21.2 < w8 34.2 µs——均匀地址拷贝流按 warp 重复发射，分布式拷贝下降会反转此律）；tile 尺度两难（小 tile 赢单 CTA、大 tile 赢全形状 = v2↔v3 翻转的占用项）；dtype f32/tf32 ≈1.6× bf16（33 对 20 µs）；warpspec+tma 资源包络（spill 22.8 KB→48 B）。
+
+**级二（全算子杠杆 A/B，配对交错）。** K 循环 transform 流水 2.2–2.7×（staged 前向 1.597→0.663 ms）；块均匀 staging 2× 慢（256× 冗余拷贝，负→修）；ping-pong 零增益（根因 wait_group-0 机器约束）；LDSM +8 列补列 = R3 决胜杠杆（F2 473→249 µs；根因 8 路 LDSM bank 冲突、63% MIO 停顿）；分段分裂扫描 16–33% 损失（Amdahl：链 + 共驻仅值 F2 的 17%——诚实反驳）；F2 barrier 2→1 +19.7 µs（+5 KB smem 挤占 L1 carveout；省下的 bar.sync 边际成本 7.7 ns 一文不值——近 99 KB 上限处每 KB 都有占用/切分代价）；F1UW −123 µs @T8192；反向侧 mma 化 4.2×、tf32 逃生舱 1.28×、split-bf16 3-mma 3.8×（dk 数值不变 1.730×10⁻³ 而 tf32 超 bar）、dhs 重构 1.56×、rgemm 访存序 0.83→0.59 ms；BV=64 重铺装资源墙（约 150 KB > 101,376 B）。**级间交互教训**：旋钮在 stage 尺度正确、在全算子尺度有毒（块均匀 staging 案例）——两级消融不可缺一。
+
+### 5.5 反向 26 轮长卷：轨迹、机制与双穷尽
+
+本节的存在意义：反向是本文的诚实开放战线，其价值不在"落后多少"而在"落后得可解释、可穷尽"——26 轮的每一步（包括全部死路）共同构成方法论可解释性的证据。
+
+**轨迹总览。** B1T2048H16 端到端：58.88 → 14.16 → 11.06 → 8.94 → **8.15 ms**（R1–R5，五轮 7.2× 自提速，对 fla 同窗 1.03 ms = 0.126×）→ 7.27（R6）→ 6.73（R7）→ 5.97（R8）→ ~5.2/4.66（R9）→ 逐轮压缩 → **~2.15 ms 共载最小**（R19 终稿字节；对 fla 0.479×；自 R1 累计约 27×）。数值 6/6 双形状全程在容差，最差梯度约 180× 裕量（dq 5.2×10⁻⁷ … dh0 1.1×10⁻⁸ @T512）。
+
+**逐轮机制（胜负并陈，每轮的负结果为下一轮设界）。** R2 mma 化 wy + fp32 链 + 线程分区 staging（58.88→14.16，4.2×）——同轮解剖出**四个独立缺陷，皆非**起初假设的 bf16 操作数放大：三个装配缺陷之外，**fp64 评分孪生本身有错**（反序循环用了过期 kkT；对同量化输入 |jax−twin| = 3.6×10⁻² 恰是 R1 的"失败"，而 |jax−GPU| = 1.5×10⁻⁵）。认识论教训入册：错误的参考 oracle 恰好制造你最不怀疑的误差签名；先给评分者评分、以两个独立参考交叉、装配证明之前不提精度。R3 tf32 逃生舱 16 位点（14.16→11.06，1.28×）+ tf32-in-dhu **双负**（占用悬崖 2→1 CTA/SM + 误差经携带态复合 dk 1.09×10⁻² > 8×10⁻³ bar——逐位点干净 ≠ 可发运；dh_w 的 tf32 误差骑着 dH 携带态跨全部 32 个反向块传播）。R4 dhu split→dkb + async 16B staging（11.13→8.94）+ **async 零投递悬案**（OPEN：同样的 burst 在隔离探针位级正确、在真实游走中全零，确定性复现，根因未明；门留默认关）。R5 携带扫描重构出厂（caryA/caryM/bpre 预复合 + 每 chunk 单 rgemm 0.59 ms；dhu 退役）+ split-bf16 3-mma dkb（0.96→0.25 ms；分拆仿真的正确用例）+ dv 零成本折进 wyb；携带数学对真序贯迹 2–3 ulp、超收缩发现（§2.1）。同轮抓到**陈伏 bug**：dqkwg 的 B̂ 自 R2 起被分级进 bf16 tile（2×10⁻³ 污染），被 harness 的 H2D 重分级掩盖三轮（§4.3-(6)）；且 tf32 化 dvp_bh 表现为**重建混沌**（三次数值等价构建 dbeta 1.5×10⁻⁵→2.9×10⁻³→5.8×10⁻³）——该位点保标量。R6 wy 列并行 solve + dvp_bh split-bf16 + cp.async→LDSM 静默损坏的发现与规避（§4.3-(7)）。R7 fwdscan F2 移植 + wy staging 复用（6.73 ms）。R8 dqkwg st.shared-ldsm 操作数 + warp 求和。R9 **dqkwg 16-warp 占用转换**（生命周期 arena 别名化将 smem 压到 50,176 B 下）。R10 dk 非确定性根因闭环（**两处竞态**：bpre 的 K 循环 mma 重分级竞态 + wyb 的 G_dvp/G_dW 累积循环竞态；N=10 位级一致）。R11–R14 wyb tv 3-mma、dhs A-window、dqkwg tf32 尾部分裂、NC-proof 前言（T8192 链可构建）、512 线程转换。R15 **dqkwg 双 CTA 落地**（池 100,864→47,616 B、.maxnreg 128：dqkwg 0.632→0.547 @T2048、2.323→1.844 @T8192——双 CTA 收益在 T8192 更大，2048 CTA 填满加倍后的 SM 槽，波次 6.24→3.12）。R16–R18 P11 vs-outer 重构、dhs BV=16 并行度减肥、bwd 侧 FPIPE、dkb 双 CTA 转换（1.20×/1.29×）。R19 终稿：dkb s5 树入船（1.05–1.07×/1.04×），dqkwg 相位重排定价关闭（tT 值精确但 0.99× 寄存器价；pt 段几何阻塞——arena 字节级满载）——**r19-final 字节冻结**。R20 fwdscan K-split GPU 移植：数学在 GPU 上证明、性能诚实负（warp 组 0.98–0.99×）。R21 其余各段（fwdscan/wyb/caryA/caryM/bpre/dhs/wy）经定价从候选清单划去。R22 **分配器审计**（38 编译探针：前缀图 36→92→…→174，删除 dvp/p11/tw 任一塌缩到 128 = 联合覆盖；K=64 fragment 质量是载体——R6 的 K=32 fragment 活跃域定律被违反 6 次；**forced-.maxnreg 分配器在任何 cap 下都到不了零 spill**（cap 174 地板 40/60 B）——"自然 ≤128 ⇒ 零 spill"在本工具链为假）；K32 链式分裂位级一致（spill 类 88/84/120→64/64/104 B，1.00×——spill 不是杠杆的第四数据点）。R24 **W-park 决策级 NO-GO**：数值可容（f32 重结合 ~10⁻⁹；bf16 部分泊车 ≤9.4×10⁻⁵ dk = 65–1025× 裕量内）而性能死（池 2,560 B 头寸 vs ≥16,384 B 最小泊车；全局泊车净 +49..147 KB/chunk = 0.83–0.98× 回归；FREE 天花板 1.02× 低于一切发运门槛）。R25 决议 D2 采纳：**双穷尽证明**——(i) 值恒等类于 R22 穷尽（分配器审计 + K32 第四数据点 + VTF/DHP/ks2/F1EP 族负结果）；(ii) 新数值类于 R24 穷尽（W-park 决策级定价）——剩余差距的唯一未测余地是形状域变更。R26 相机就绪清点后，**用户裁定推翻 D2 的冻结**：开启形状域变更评测（B/T 阶梯，B4+ / 其它 T / 其它 H 的外推战役）——双穷尽证明在原始三形状内保持有效，作为本文的"小形状章节"陈述；阶梯战役作为进行中的开放战线延伸边界。剩余差距在原三形状的实测排序：dqkwg（dvp_bh 需 ≤4-warp mma 规划的 split-bf16）> wy（串行 solve 基）> wyb > dhs（树扫描负经济学已证：更多并行必须对实测串行地板 ~0.3 ms 清偿自身开销——CPU 验证 2–3 ulp 但复合成本 +3 launch 负经济学未出厂）。
+
+### 5.6 数值正确性总账
+
+本节的存在意义：全部性能主张的成立前提是数值契约不破——本节把三层（语义、stage、全算子）账目一次对齐。语义闭合（G1）：JAX 规约 44/44；MLIR L1 ⇄ JAX 前向 ~6×10⁻⁷ / 六梯度 ≤6.4×10⁻⁶；三角闭合 MLIR⇄JAX⇄fla naive（1.2×10⁻⁷/2.3×10⁻⁶ fp32）。stage 级（G4）：20/20 配置过 fla 衍生契约（bf16-io 5×10⁻³ / fp32-io 10⁻³），最大 9.77×10⁻⁴ **恰等于**纯 bf16 输出量化的 numpy 仿真预测（measured==predicted）；seed-7 置换复跑 20/20（非单置换过拟合）；mma 路径修复后 2080/2080 精确覆盖。全算子（G5–R25）：前向 4/4（现行记录位级：staged T2048 o 6.486×10⁻⁴ / ht 7.493×10⁻⁴；T8192 fp64 门 7× 裕量、分段分裂 S=1/4/8 位级一致）；反向 6/6 双形状全程记录位数（R19 终稿：T2048 dq 1.824×10⁻⁴ / dk 1.284×10⁻³ / dv 1.088×10⁻⁵ / dβ 8.527×10⁻⁴ / dg 3.274×10⁻⁴ / dh0 2.169×10⁻⁷）。误差复合律（方法学发现）：tf32 逐位点干净边界**不复合**（经携带态跨 32 反向块传播）；重建混沌位点须单构建 bisect 之外的多构建鉴定——保标量。
+
+## 6 讨论与局限
+
+**反向差距的定性。** 0.479×（现行共载口径；正式 G5 判定为 0.126×）不是方法论失败而是工程轮次差距：fla 反向是成熟 Triton 工程多轮调优的产物；本方编译栈证明了约 27× 的可压缩性、全部瓶颈归属与两类想法空间的量化穷尽。编译期调度方法论在该方向的可交付结论是可解释性与完备性论证，而非本形状的胜利。
+
+**共享 GPU 与窗口口径。** 全部绝对数为受扰下界；交错协议为共载设计。干净窗口终判钩子在档（co-job 退出后相机启动）；既有干净/空闲窗口证据链（10-09 干净窗口判、10-10 空闲窗全量重测、R25 正式 n=30）已足支撑本文主张。
+
+**单卡单架构。** 全部结果在单卡消费级 Blackwell（RTX 5090 Laptop，sm_120a）上取得；无 H100/B200 对照；数据中心 Blackwell 的 tcgen05 词汇未纳入旋钮格——L3 层向新 mma 族的扩展是已界定的未来工作。
+
+**形状覆盖窄。** 三个正式判定形状加 T512 验证级；GVA/varlen/非零 h0 在 L0 语义有定义但未硬件验证；其它 head-dim 无正式判定——新形状的调度决策由离线求解器外推（回环设计），依赖 §5.3 的排序稳健性证据。
+
+**无模型级端到端。** 本工作的交付与主张均为 kernel 级；kernel 加速向端到端的折算受 Amdahl 约束（线性注意力层占全模型的比重未测），由未来工作承接。
+
+**成本模型盲区与求解器毛刺。** `.ca` p0 串行化幅值等效应未建模；Spearman 0.8962 度量排序一致性而非绝对时延精度（±2× 常数承动下 ρ∈[0.882, 0.902]）；Z3 在 o K64V64 子空间存在 rlimit 下 partial-model 毛刺，两个主空间字节级复现，毛刺公开记录而非隐藏。
+
+**基线公平性。** fla autotune 计为其设计内成本（首调、按进程按形状键）；约 50× 为冷启动口径，fla 自带磁盘缓存摊销后 7.7×–67×（§5.3 表 3 已并列）。FlashQLA 反向参照为单窗口 spot（口径限定见 §2.2）。
+
+**LLVM 版本耦合。** 全部拼写与"在树"结论对 2026 年 10 月主干负责；transform API 漂移与工具链缺口的修复上游化是开源计划的一部分（§4.3 账本即上游 issue 草稿）。
+
+## 7 结论
+
+本文提出并实证了"调度即 IR"：把 GDN 前向/反向 kernel 的全部调度自由度放进原生 MLIR 旋钮，由编译期确定性 SMT 在零逐配置拟合的标定解析成本模型上决策，以 PTX 覆盖矩阵与同窗交错终判双轨验证。数字回顾：前向现行正式记录 2.1250×@B1T2048（30/30 对，p=9.3×10⁻¹⁰）、1.2211×@B4T2048、1.3493×@B1T8192（三代记录迁移全程可溯）；调度排序 Spearman 0.8962，搜索成本 0.8 s 离线 CPU 对 39.8 s 在设备冷启动（≈50×；摊销 7.7×–67× 口径并列）；覆盖 feature 层 8/6/2、33 族总账 8/19/6、逃生舱 1/≤5；反向 0.479× 现行共载口径（正式 0.126×）+ 约 27× 自提速轨迹 + 双穷尽证明，如实呈现。开放战线：反向形状域变更评测（B/T 阶梯，进行中）、async 零投递悬案、tcgen05 词汇扩展、干净窗口终判补跑。工件承诺：证据树（evidence/G0–G7）与一键复现（`make repro-g0`…`repro-g6`）随文发布。
+
+---
+
+## 附录 A：关键源码片段（真实摘录，注明路径）
+
+**A.1 Z3 旋钮空间：旋钮耦合、结构合法性与资源容量**（`tools/gdn_solver.py`，KnobSpace 构造，节选）
+
+```python
+# -- knob coupling ------------------------------------------------
+s.add(z3.Implies(dtype == 0, prec == 0))
+s.add(z3.Implies(dtype == 1, prec == 1))
+s.add(z3.Implies(z3.Not(mma), prec == dtype))
+
+# -- structural legality (mirrors gdn_l2_gen.validate) -------------
+s.add(z3.Implies(mma, bt % 16 == 0))
+s.add(z3.Implies(z3.And(mma, dtype == 0), bk % 16 == 0))   # bf16: K%16
+s.add(z3.Implies(z3.And(mma, dtype == 1), bk % 4 == 0))    # tf32: K%4
+s.add(z3.Implies(mma, bv % (8 * warps) == 0))
+s.add(z3.Implies(z3.And(mma, pipe > 0), K >= bk * pipe))   # depth <= trips
+ws_ok = z3.And(stage == "kkt", dtype == 0, mma)
+s.add(z3.Implies(ws, ws_ok))          # warpspec => kkt ∧ bf16 ∧ mma
+s.add(z3.Implies(tma, ws))            # tma => warpspec
+
+# -- resource capacities -------------------------------------------
+esz = z3.If(dtype == 0, 2, 4)
+threads = 32 * (warps + z3.If(ws, 1, 0))
+# regs: <=255/thread is a ptxas given; SM budget threads*255 <= 65536
+s.add(threads * 255 <= 65536)
+pair = (bt * bk + bk * bv) * esz
+smem_mma = z3.If(ws,
+                 pair + z3.If(tma, 64 * 64 * esz, 0) + 8,
+                 pair * z3.If(pipe > 0, pipe, 1) * self.n_gemm)
+smem_nomma = (bt * K + K * bv + bt * bv) * esz
+smem = z3.If(mma, smem_mma, smem_nomma)
+s.add(smem <= cap)
+```
+
+**A.2 逃生舱 #1：tf32 m16n8k8 与 early-clobber 约束**（`dialect/lib/GdnHatch.cpp`，MmaTf32K8Lowering，节选；注释为原文摘录）
+
+```cpp
+// Why not nvvm.inline_ptx (the BasicPtxBuilder path): its output
+// constraints are plain "=f".  SASS-verified on the RTX 5090 Laptop:
+// with "=f", ptxas' inline-asm register allocation is free to map the
+// D quad ONTO THE A QUAD OF THE SAME mma (HMMA R12, R12, R10, R16) --
+// ... a K=16 two-atom chain failed 118/128 cells).  "=&f" forbids
+// output/input overlap.
+static const char *kPtx =
+    "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32 "
+    "{$0, $1, $2, $3}, {$4, $5, $6, $7}, {$8, $9}, "
+    "{$10, $11, $12, $13};";
+static const char *kConstraints =
+    "=&f,=&f,=&f,=&f,f,f,f,f,f,f,f,f,f,f";
+```
+
+**A.3 workgroup 分配的 PTX 级静态共享内存重写**（`tools/gdn_smem_fix.py`，修复惯用式，文档原文摘录）
+
+```
+Repair: pure PTX rewrite replicating what MLIR itself emits for static
+shared (the ws-config mbarrier lowering already uses this idiom):
+
+  * delete each malloc callseq,
+  * replace `cvta.to.shared.u64 %rdY, %rdX` (where %rdX is a malloc result)
+    with `mov.u64 %rdY, __gdn_smemN;`,
+  * declare `.shared .align 16 .b8 __gdn_smemN[<malloc size>];`
+```
+
+**A.4 交错终判的符号检验与可判定规则**（`tools/gdn_final_adjudicate.py`，节选）
+
+```python
+def sign_test_p(ratios, ref=1.0):
+    """Exact two-sided sign-test p ... p = 2 * P(Bin(n, .5) <= min(w,
+    n-w)), capped at 1."""
+    wins = sum(1 for r in ratios if r > ref)
+    losses = sum(1 for r in ratios if r < ref)
+    n = wins + losses
+    k = min(wins, losses)
+    p_lt = sum(math.comb(n, i) for i in range(k + 1)) / 2.0 ** n
+    return round(min(1.0, 2.0 * p_lt), 6)
+
+def pair_stats(ratios):
+    """... The decidability rule: the window's co-load noise cannot
+    explain an effect (median - 1) larger than 3x the relative spread
+    IQR/median."""
+    med = statistics.median(ratios)
+    q1, _, q3 = statistics.quantiles(ratios, n=4, method="inclusive")
+    iqr = q3 - q1
+    iqr_rel = (iqr / med) if med else float("inf")
+    effect = med - 1.0
+    decidable = bool(effect > 0 and (iqr_rel == 0 or
+                                     effect > 3.0 * iqr_rel))
+```
+
+**A.5 解析成本模型的 nomma 项（SASS 导出常数）**（`tools/gdn_costmodel.py`，predict() 节选）
+
+```python
+if feats["mma"]:
+    peak = (calib.m["mma_bf16_peak_flops"] if esz == 2
+            else calib.mma_tf32_peak)
+    terms["T_mma"] = feats["mma_flops_per_cta"] / (
+        peak / calib.sm_count)
+    terms["T_ffma"] = 0.0
+else:
+    terms["T_mma"] = 0.0
+    # scalar-loop model (see NOMMA_CYC_PER_MAC): the linalg->loops
+    # body is issue/latency bound per MAC, not CUDA-core-roofline bound
+    macs = feats["ffma_flops_per_cta"] / 2.0
+    terms["T_ffma"] = macs * NOMMA_CYC_PER_MAC / calib.m["clock_hz"]
+```
+
+（`NOMMA_CYC_PER_MAC = 10.0`，读自反汇编的 39 指令内环，从未对实测调参。）
+
+## 附录 B：符号表
+
+| 符号/术语 | 定义 |
+|---|---|
+| GDN | Gated DeltaNet，门控线性注意力算子 |
+| chunk / C | 块长；本文 C=64 |
+| WY 表示 | 块内 WY 形表示：$M$、$T=(I+M)^{-1}$、$w$、$u$ |
+| decay 门 g | 对数域衰减门；kernel 内经 $\log_2 e$ 以 exp2 求值 |
+| cd | 块内累积 decay（含尾 cumsum） |
+| S_n / h_t | 差分状态（块末）/ 逐步递推状态 |
+| dA | 对块内注意力矩阵的梯度；双侧掩蔽精确公式见 §2.1 |
+| 仿射携带形 | 余切链 $X_{n-1}=A_nX_n+B_n$ 的精确改写（§2.1） |
+| 旋钮 | 以 IR 属性/transform 脚本参数存在的调度自由度 |
+| 旋钮晶格 L0–L4 | 语义→算法结构→调度→流水/向量化→目标的五层旋钮分层 |
+| 覆盖矩阵 T1/T2 | 指令族覆盖 / 结构匹配（两极点） |
+| 逃生舱（预算） | 绕过原生 MLIR 的自定义 NVVM 操作；本文 ≤5 用 1 |
+| 交错终判 | 同窗交替成对计时的判定协议（§5.1） |
+| 可判定规则 v1/v2 | (median−1)>3·IQR/median；v2 为内 80% 截尾侧统计 |
+| 共载 | 共享 GPU 上常驻的其它计算任务 |
+| 配对 A/B | 同窗交错的双臂对照计时 |
+| 值恒等 | 位级相同的重排/重构类（值恒等类杠杆） |
+| 携带态 | 跨块传播的状态（h、dH、X） |
+| nomma | 未分布标量循环路径（非 mma）；10 cyc/MAC |
+| LDSM | ldmatrix（共享内存矩阵片段装载指令） |
+| carveout | L1/共享内存切分；近 99 KB 上限时每 KB 有占用代价 |
+| 超收缩 | 门算子谱半径 $\rho(A_n)\le 2.3\times10^{-18}$ 的结构性收缩 |
+| staging | 全局→共享内存的数据预置 |
+| 分段分裂 | 扫描的段并行重写（--f2-segments） |
+| 双穷尽证明 | 值恒等类（R22）与新数值类（R24）两重穷尽的完备性论证 |
+| W32P | f2 的无冲突按行 warp 重排（GDN_W32P） |
+| 形状域变更 | B/T 阶梯（B4+、其它 T/H）的形状外推评测 |
+
+## 附录 C：复现指南
+
+一键入口（`Makefile`）：`make repro-g0`（基建 + 参考 PTX 采集，纯 CPU 约 2–2.5 h 冷 + 1 GPU 分钟）；`make repro-g1`（语义：JAX 规约 44/44 + MLIR L1，纯 CPU 约 15 min）；`make repro-g2`（旋钮矩阵：20 配置生成 + 编译 + PTX 覆盖分析，纯 CPU 约 25 min）；`make repro-g3`（调度：标定 + 20 配置计时 + Spearman 门，约 45 min）；`make repro-g4`（GPU 正确性 20/20 双 seed，约 1 h）；`make repro-g5`（全算子：前向/反向验证 + 基准 + 交错终判，约 1–1.5 h）；`make repro-g6`（搜索成本：Z3 计时 + fla autotune 成本，约 10 min）；`make repro-all`（依序全跑，首败即停）。干净窗口标定刷新：`scripts/run_calib.sh`（幂等覆写）。正式终判复算：`python tools/gdn_final_adjudicate.py --stats --pairs 30 --warps 4 --bv 32 --gen-root scratch/r25f/genrec`。求解器：`python tools/gdn_solver.py --solve --stage kkt --K 128 --B 4 --T 8192 --H 16 --mode strict --form v2`。证据索引：`EVIDENCE_INDEX.md`（gate → 报告 → 产物 → 复现目标一行索引）。
+
+---
+
+**证据索引（主论断 → 源文件）**：前向三代记录与 R7–R25 战役：`evidence/G5/fwd_report.md`（round 1–25）、`evidence/G5/final_adjudicate_r25f_w32p.json`、`evidence/G5/decidability_v2_r25f.json`；G5 收官代：`evidence/G5/GATE_REPORT_FINAL.md`、`final_adjudicate_g5k_run{1,2}.json`；反向长卷：`evidence/G5/bwd_report.md`（round 1–22）、`evidence/G5/bwd_wpark_decision_memo.md`、`wpark_twin_T{2048,8192}.json`；决策：`evidence/G5/DECISIONS_R25.md`（含 2026-10-10 D2 推翻记录）；覆盖与逃生舱：`evidence/G6/coverage_hatch_summary.md`、`evidence/G2/coverage_matrix.md`、`evidence/G2/hatch_report.md`；调度：`evidence/G3/solver_report.md`、`evidence/G3/calib_report.md`、`evidence/G3/validation.json`；搜索成本：`evidence/G6/search_cost.md`、`evidence/G6/fla_autotune_cost.json`、`evidence/G6/fla_amortize_r26.json`；消融与失败长卷：`evidence/G6/knob_ablation.md`、`evidence/G6/failure_longscroll.md`；语义：`evidence/G1/GATE_REPORT.md`、`evidence/G0/GATE_REPORT.md`；数值：`evidence/G4/GATE_REPORT.md`、`evidence/G5/fwd_verify_r25f.json`；FlashQLA 反向更正：`evidence/G7/flashqla_bwd_probe.json`、`paper/camera_ready_resolution.md`；判分协议：`evidence/G5/adjudication_methodology.md`。

@@ -1,0 +1,6 @@
+ptxas-blackwell info    : 11 bytes gmem
+ptxas-blackwell info    : Compiling entry function 'prepare_wy_repr_bwd_kernel' for 'sm_120a'
+ptxas-blackwell info    : Function properties for prepare_wy_repr_bwd_kernel
+    1232 bytes stack frame, 1556 bytes spill stores, 2092 bytes spill loads
+ptxas-blackwell info    : Used 255 registers, used 1 barriers, 1232 bytes cumulative stack size
+ptxas-blackwell info    : Compile time = 659.096 ms

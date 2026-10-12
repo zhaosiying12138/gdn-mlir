@@ -1,0 +1,153 @@
+{
+  "what": "G5 final adjudication: interleaved fla-vs-ours fwd, 5 pairs/shape, CUDA events, shared-recipe inputs",
+  "probe": {
+    "FLA_FLASH_QLA": "0",
+    "flash_qla_importable": false,
+    "flash_qla_backend_can_use": false,
+    "torch": "2.14.1+cu130"
+  },
+  "gpu_start": {
+    "util_pct": 17,
+    "mem_used_mib": 18152,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 2767
+  },
+  "results": {
+    "B1T2048": {
+      "shape": {
+        "name": "B1T2048",
+        "B": 1,
+        "T": 2048,
+        "H": 16,
+        "K": 128,
+        "V": 128
+      },
+      "ours_samples_ms": [
+        0.285824,
+        0.2848,
+        0.283232,
+        0.28464,
+        0.287232
+      ],
+      "fla_samples_ms": [
+        1.298368,
+        0.705696,
+        0.517408,
+        0.396032,
+        0.335808
+      ],
+      "ours_median_ms": 0.2848,
+      "fla_median_ms": 0.517408,
+      "speedup_ratio_of_medians": 1.8167,
+      "speedup_median_of_ratios": 1.8268,
+      "ours_min_ms": 0.283232,
+      "fla_min_ms": 0.335808,
+      "window_pre": {
+        "util_pct": 18,
+        "mem_used_mib": 18454,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2730
+      },
+      "window_post": {
+        "util_pct": 18,
+        "mem_used_mib": 18454,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2730
+      },
+      "window_clean": true
+    },
+    "B1T8192": {
+      "shape": {
+        "name": "B1T8192",
+        "B": 1,
+        "T": 8192,
+        "H": 16,
+        "K": 128,
+        "V": 128
+      },
+      "ours_samples_ms": [
+        1.12544,
+        1.12416,
+        1.120352,
+        1.121184,
+        1.121408
+      ],
+      "fla_samples_ms": [
+        1.22288,
+        1.090272,
+        1.8728,
+        1.161472,
+        0.940192
+      ],
+      "ours_median_ms": 1.121408,
+      "fla_median_ms": 1.161472,
+      "speedup_ratio_of_medians": 1.0357,
+      "speedup_median_of_ratios": 1.0359,
+      "ours_min_ms": 1.120352,
+      "fla_min_ms": 0.940192,
+      "window_pre": {
+        "util_pct": 25,
+        "mem_used_mib": 19358,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2760
+      },
+      "window_post": {
+        "util_pct": 25,
+        "mem_used_mib": 19358,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2760
+      },
+      "window_clean": true
+    },
+    "B4T2048": {
+      "shape": {
+        "name": "B4T2048",
+        "B": 4,
+        "T": 2048,
+        "H": 16,
+        "K": 128,
+        "V": 128
+      },
+      "ours_samples_ms": [
+        0.985344,
+        0.981056,
+        1.1296,
+        0.985248,
+        0.987424
+      ],
+      "fla_samples_ms": [
+        4.594272,
+        1.941376,
+        1.337184,
+        1.159168,
+        1.32656
+      ],
+      "ours_median_ms": 0.985344,
+      "fla_median_ms": 1.337184,
+      "speedup_ratio_of_medians": 1.3571,
+      "speedup_median_of_ratios": 1.3435,
+      "ours_min_ms": 0.981056,
+      "fla_min_ms": 1.159168,
+      "window_pre": {
+        "util_pct": 25,
+        "mem_used_mib": 19954,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2670
+      },
+      "window_post": {
+        "util_pct": 25,
+        "mem_used_mib": 19954,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2670
+      },
+      "window_clean": true
+    }
+  },
+  "gpu_end": {
+    "util_pct": 25,
+    "mem_used_mib": 19954,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 2670
+  },
+  "note": "second window sample of the SAME w4/bv32 kernels: this run passed --warps 8 --bv 64 but rt.build served the cached w4/bv32 cubins from the gen dirs (build-skip); both adjudication files measure the shipped w4/bv32 config"
+}

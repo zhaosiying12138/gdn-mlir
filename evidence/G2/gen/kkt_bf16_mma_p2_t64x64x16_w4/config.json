@@ -1,0 +1,18 @@
+{
+  "name": "kkt_bf16_mma_p2_t64x64x16_w4",
+  "stage": "kkt",
+  "dtype": "bf16",
+  "dims": {
+    "K": 128,
+    "V": 64
+  },
+  "tile": {
+    "M": 64,
+    "N": 64,
+    "K": 16
+  },
+  "warps": 4,
+  "mma": true,
+  "pipeline": 2,
+  "prec": "bf16"
+}

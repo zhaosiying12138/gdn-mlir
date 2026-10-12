@@ -1,0 +1,1358 @@
+{
+  "meta": {
+    "what": "fla chunk_gated_delta_rule baselines (G5-A)",
+    "gpu": "NVIDIA GeForce RTX 5090 Laptop GPU, 24, 17899, 24463, 2730",
+    "shared_gpu_note": "opportunistic window; co-job pid 3411456 ~17.9GB resident -- absolute times noisy by design",
+    "timestamp": "2026-10-09 06:37:30",
+    "warmup": 10,
+    "reps": 50,
+    "shapes": "B1T2048,B1T8192,B4T2048",
+    "modes": "triton,default"
+  },
+  "fla": {
+    "triton": {
+      "B1T2048": {
+        "shape": {
+          "name": "B1T2048",
+          "B": 1,
+          "T": 2048,
+          "H": 16,
+          "HV": 16,
+          "K": 128,
+          "V": 128
+        },
+        "dtype": "bfloat16 (q/k/v/do; beta/g/h0/dht fp32, per test_chunk)",
+        "scale": 0.08838834764831845,
+        "backend_probe": {
+          "mode": "triton",
+          "FLA_FLASH_QLA": "0",
+          "flash_qla_importable": false,
+          "flash_qla_backend_enabled": false,
+          "flash_qla_backend_can_use": false
+        },
+        "torch": "2.14.1+cu130",
+        "triton": "3.8.0",
+        "fla": "0.6.0",
+        "fwd": {
+          "median_ms": 0.3157919943332672,
+          "mean_ms": 0.31967423915863036,
+          "min_ms": 0.1807360053062439,
+          "max_ms": 0.8239359855651855,
+          "p25_ms": 0.18529599905014038,
+          "p75_ms": 0.37032798677682877,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 0.343,
+          "peak_alloc_mb": 121.6
+        },
+        "fwdbwd": {
+          "median_ms": 1.346288025379181,
+          "mean_ms": 1.4678208017349244,
+          "min_ms": 0.9042559862136841,
+          "max_ms": 2.8854401111602783,
+          "p25_ms": 1.2351920008659363,
+          "p75_ms": 1.4717919826507568,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 0.103,
+          "peak_alloc_mb": 196.0
+        },
+        "kernels_fwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 167.4,
+          "top": [
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 71.4,
+              "self_us_per_call": 71.4,
+              "pct": 42.65
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 41.7,
+              "self_us_per_call": 41.7,
+              "pct": 24.92
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 26.8,
+              "self_us_per_call": 26.8,
+              "pct": 16.02
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 22.2,
+              "self_us_per_call": 22.2,
+              "pct": 13.28
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<c10::BFloa",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 2.4,
+              "self_us_per_call": 2.4,
+              "pct": 1.44
+            },
+            {
+              "kernel": "chunk_local_cumsum_scalar_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 1.7,
+              "self_us_per_call": 1.7,
+              "pct": 1.02
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<float>, std::array",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 1.1,
+              "self_us_per_call": 1.1,
+              "pct": 0.66
+            }
+          ]
+        },
+        "kernels_fwdbwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 781.2,
+          "top": [
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 147.6,
+              "self_us_per_call": 73.8,
+              "pct": 18.89
+            },
+            {
+              "kernel": "chunk_bwd_kernel_dqkwg",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 137.6,
+              "self_us_per_call": 137.6,
+              "pct": 17.62
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 132.5,
+              "self_us_per_call": 132.5,
+              "pct": 16.96
+            },
+            {
+              "kernel": "prepare_wy_repr_bwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 96.3,
+              "self_us_per_call": 96.3,
+              "pct": 12.32
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 57.6,
+              "self_us_per_call": 28.8,
+              "pct": 7.37
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<ch",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 56.7,
+              "self_us_per_call": 56.7,
+              "pct": 7.25
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 41.9,
+              "self_us_per_call": 41.9,
+              "pct": 5.36
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 26.2,
+              "self_us_per_call": 26.2,
+              "pct": 3.35
+            },
+            {
+              "kernel": "chunk_bwd_kernel_dv_local",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 25.6,
+              "self_us_per_call": 25.6,
+              "pct": 3.28
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 12.2,
+              "self_us_per_call": 12.2,
+              "pct": 1.56
+            }
+          ]
+        },
+        "kernels_bwd_attribution": [
+          {
+            "kernel": "chunk_bwd_kernel_dqkwg",
+            "bwd_self_us_per_iter": 137.6,
+            "pct_of_fwdbwd": 17.62
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+            "bwd_self_us_per_iter": 132.5,
+            "pct_of_fwdbwd": 16.96
+          },
+          {
+            "kernel": "prepare_wy_repr_bwd_kernel",
+            "bwd_self_us_per_iter": 96.3,
+            "pct_of_fwdbwd": 12.32
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+            "bwd_self_us_per_iter": 76.2,
+            "pct_of_fwdbwd": 18.89
+          },
+          {
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<ch",
+            "bwd_self_us_per_iter": 56.7,
+            "pct_of_fwdbwd": 7.25
+          },
+          {
+            "kernel": "recompute_w_u_fwd_kernel",
+            "bwd_self_us_per_iter": 30.8,
+            "pct_of_fwdbwd": 7.37
+          },
+          {
+            "kernel": "chunk_bwd_kernel_dv_local",
+            "bwd_self_us_per_iter": 25.6,
+            "pct_of_fwdbwd": 3.28
+          },
+          {
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor",
+            "bwd_self_us_per_iter": 12.2,
+            "pct_of_fwdbwd": 1.56
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+            "bwd_self_us_per_iter": 4.0,
+            "pct_of_fwdbwd": 3.35
+          },
+          {
+            "kernel": "chunk_fwd_kernel_o",
+            "bwd_self_us_per_iter": 0.2,
+            "pct_of_fwdbwd": 5.36
+          }
+        ]
+      },
+      "B1T8192": {
+        "shape": {
+          "name": "B1T8192",
+          "B": 1,
+          "T": 8192,
+          "H": 16,
+          "HV": 16,
+          "K": 128,
+          "V": 128
+        },
+        "dtype": "bfloat16 (q/k/v/do; beta/g/h0/dht fp32, per test_chunk)",
+        "scale": 0.08838834764831845,
+        "backend_probe": {
+          "mode": "triton",
+          "FLA_FLASH_QLA": "0",
+          "flash_qla_importable": false,
+          "flash_qla_backend_enabled": false,
+          "flash_qla_backend_can_use": false
+        },
+        "torch": "2.14.1+cu130",
+        "triton": "3.8.0",
+        "fla": "0.6.0",
+        "fwd": {
+          "median_ms": 0.8730719983577728,
+          "mean_ms": 0.9527935922145844,
+          "min_ms": 0.8220800161361694,
+          "max_ms": 1.557695984840393,
+          "p25_ms": 0.8356479853391647,
+          "p75_ms": 1.013215959072113,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 0.228,
+          "peak_alloc_mb": 471.5
+        },
+        "fwdbwd": {
+          "median_ms": 4.036367893218994,
+          "mean_ms": 4.017411832809448,
+          "min_ms": 3.52457594871521,
+          "max_ms": 4.387936115264893,
+          "p25_ms": 3.910319983959198,
+          "p75_ms": 4.127279877662659,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 0.105,
+          "peak_alloc_mb": 763.0
+        },
+        "kernels_fwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 894.5,
+          "top": [
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 385.8,
+              "self_us_per_call": 385.8,
+              "pct": 43.13
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 234.8,
+              "self_us_per_call": 234.8,
+              "pct": 26.25
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 162.9,
+              "self_us_per_call": 162.9,
+              "pct": 18.21
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 97.0,
+              "self_us_per_call": 97.0,
+              "pct": 10.84
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<c10::BFloa",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 8.8,
+              "self_us_per_call": 8.8,
+              "pct": 0.98
+            },
+            {
+              "kernel": "chunk_local_cumsum_scalar_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 4.1,
+              "self_us_per_call": 4.1,
+              "pct": 0.46
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<float>, std::array",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 1.1,
+              "self_us_per_call": 1.1,
+              "pct": 0.12
+            }
+          ]
+        },
+        "kernels_fwdbwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 3761.0,
+          "top": [
+            {
+              "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 775.5,
+              "self_us_per_call": 775.5,
+              "pct": 20.62
+            },
+            {
+              "kernel": "chunk_bwd_kernel_dqkwg",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 711.4,
+              "self_us_per_call": 711.4,
+              "pct": 18.91
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 679.9,
+              "self_us_per_call": 340.0,
+              "pct": 18.08
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 382.1,
+              "self_us_per_call": 382.1,
+              "pct": 10.16
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 341.9,
+              "self_us_per_call": 170.9,
+              "pct": 9.09
+            },
+            {
+              "kernel": "prepare_wy_repr_bwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 328.0,
+              "self_us_per_call": 328.0,
+              "pct": 8.72
+            },
+            {
+              "kernel": "chunk_bwd_kernel_dv_local",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 143.7,
+              "self_us_per_call": 143.7,
+              "pct": 3.82
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 95.2,
+              "self_us_per_call": 95.2,
+              "pct": 2.53
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>, false>(int, at::native::CUDAFunctor_add<c1",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 87.9,
+              "self_us_per_call": 87.9,
+              "pct": 2.34
+            },
+            {
+              "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 86.4,
+              "self_us_per_call": 86.4,
+              "pct": 2.3
+            }
+          ]
+        },
+        "kernels_bwd_attribution": [
+          {
+            "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+            "bwd_self_us_per_iter": 775.5,
+            "pct_of_fwdbwd": 20.62
+          },
+          {
+            "kernel": "chunk_bwd_kernel_dqkwg",
+            "bwd_self_us_per_iter": 711.4,
+            "pct_of_fwdbwd": 18.91
+          },
+          {
+            "kernel": "prepare_wy_repr_bwd_kernel",
+            "bwd_self_us_per_iter": 328.0,
+            "pct_of_fwdbwd": 8.72
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+            "bwd_self_us_per_iter": 294.1,
+            "pct_of_fwdbwd": 18.08
+          },
+          {
+            "kernel": "recompute_w_u_fwd_kernel",
+            "bwd_self_us_per_iter": 179.0,
+            "pct_of_fwdbwd": 9.09
+          },
+          {
+            "kernel": "chunk_fwd_kernel_o",
+            "bwd_self_us_per_iter": 147.3,
+            "pct_of_fwdbwd": 10.16
+          },
+          {
+            "kernel": "chunk_bwd_kernel_dv_local",
+            "bwd_self_us_per_iter": 143.7,
+            "pct_of_fwdbwd": 3.82
+          },
+          {
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>, false>(int, at::native::CUDAFunctor_add<c1",
+            "bwd_self_us_per_iter": 87.9,
+            "pct_of_fwdbwd": 2.34
+          },
+          {
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native",
+            "bwd_self_us_per_iter": 86.4,
+            "pct_of_fwdbwd": 2.3
+          }
+        ]
+      },
+      "B4T2048": {
+        "shape": {
+          "name": "B4T2048",
+          "B": 4,
+          "T": 2048,
+          "H": 16,
+          "HV": 16,
+          "K": 128,
+          "V": 128
+        },
+        "dtype": "bfloat16 (q/k/v/do; beta/g/h0/dht fp32, per test_chunk)",
+        "scale": 0.08838834764831845,
+        "backend_probe": {
+          "mode": "triton",
+          "FLA_FLASH_QLA": "0",
+          "flash_qla_importable": false,
+          "flash_qla_backend_enabled": false,
+          "flash_qla_backend_can_use": false
+        },
+        "torch": "2.14.1+cu130",
+        "triton": "3.8.0",
+        "fla": "0.6.0",
+        "fwd": {
+          "median_ms": 0.8441919982433319,
+          "mean_ms": 0.9747622382640838,
+          "min_ms": 0.8093439936637878,
+          "max_ms": 3.0248959064483643,
+          "p25_ms": 0.8184640109539032,
+          "p75_ms": 1.0086959898471832,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 0.761,
+          "peak_alloc_mb": 530.5
+        },
+        "fwdbwd": {
+          "median_ms": 3.873215913772583,
+          "mean_ms": 3.895495042800903,
+          "min_ms": 3.433216094970703,
+          "max_ms": 5.175648212432861,
+          "p25_ms": 3.6905360221862793,
+          "p75_ms": 4.0478562116622925,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 1.297,
+          "peak_alloc_mb": 1008.5
+        },
+        "kernels_fwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 962.9,
+          "top": [
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 274.4,
+              "self_us_per_call": 274.4,
+              "pct": 28.5
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 256.0,
+              "self_us_per_call": 256.0,
+              "pct": 26.58
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 252.3,
+              "self_us_per_call": 252.3,
+              "pct": 26.21
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 165.1,
+              "self_us_per_call": 165.1,
+              "pct": 17.15
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<c10::BFloa",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 8.3,
+              "self_us_per_call": 8.3,
+              "pct": 0.87
+            },
+            {
+              "kernel": "chunk_local_cumsum_scalar_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 3.8,
+              "self_us_per_call": 3.8,
+              "pct": 0.4
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<float>, std::array",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 2.8,
+              "self_us_per_call": 2.8,
+              "pct": 0.29
+            }
+          ]
+        },
+        "kernels_fwdbwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 3602.9,
+          "top": [
+            {
+              "kernel": "chunk_bwd_kernel_dqkwg",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 784.9,
+              "self_us_per_call": 784.9,
+              "pct": 21.79
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 744.7,
+              "self_us_per_call": 372.4,
+              "pct": 20.67
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 578.5,
+              "self_us_per_call": 578.5,
+              "pct": 16.06
+            },
+            {
+              "kernel": "prepare_wy_repr_bwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 344.6,
+              "self_us_per_call": 344.6,
+              "pct": 9.56
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 335.7,
+              "self_us_per_call": 167.8,
+              "pct": 9.32
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 249.0,
+              "self_us_per_call": 249.0,
+              "pct": 6.91
+            },
+            {
+              "kernel": "chunk_bwd_kernel_dv_local",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 151.0,
+              "self_us_per_call": 151.0,
+              "pct": 4.19
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 96.4,
+              "self_us_per_call": 96.4,
+              "pct": 2.68
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>, false>(int, at::native::CUDAFunctor_add<c1",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 87.5,
+              "self_us_per_call": 87.5,
+              "pct": 2.43
+            },
+            {
+              "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 86.9,
+              "self_us_per_call": 86.9,
+              "pct": 2.41
+            }
+          ]
+        },
+        "kernels_bwd_attribution": [
+          {
+            "kernel": "chunk_bwd_kernel_dqkwg",
+            "bwd_self_us_per_iter": 784.9,
+            "pct_of_fwdbwd": 21.79
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+            "bwd_self_us_per_iter": 578.5,
+            "pct_of_fwdbwd": 16.06
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+            "bwd_self_us_per_iter": 470.3,
+            "pct_of_fwdbwd": 20.67
+          },
+          {
+            "kernel": "prepare_wy_repr_bwd_kernel",
+            "bwd_self_us_per_iter": 344.6,
+            "pct_of_fwdbwd": 9.56
+          },
+          {
+            "kernel": "chunk_bwd_kernel_dv_local",
+            "bwd_self_us_per_iter": 151.0,
+            "pct_of_fwdbwd": 4.19
+          },
+          {
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>, false>(int, at::native::CUDAFunctor_add<c1",
+            "bwd_self_us_per_iter": 87.5,
+            "pct_of_fwdbwd": 2.43
+          },
+          {
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native",
+            "bwd_self_us_per_iter": 86.9,
+            "pct_of_fwdbwd": 2.41
+          },
+          {
+            "kernel": "recompute_w_u_fwd_kernel",
+            "bwd_self_us_per_iter": 83.4,
+            "pct_of_fwdbwd": 9.32
+          }
+        ]
+      }
+    },
+    "default": {
+      "B1T2048": {
+        "shape": {
+          "name": "B1T2048",
+          "B": 1,
+          "T": 2048,
+          "H": 16,
+          "HV": 16,
+          "K": 128,
+          "V": 128
+        },
+        "dtype": "bfloat16 (q/k/v/do; beta/g/h0/dht fp32, per test_chunk)",
+        "scale": 0.08838834764831845,
+        "backend_probe": {
+          "mode": "default",
+          "FLA_FLASH_QLA": "<unset>",
+          "flash_qla_importable": false,
+          "flash_qla_backend_enabled": true,
+          "flash_qla_backend_can_use": false
+        },
+        "torch": "2.14.1+cu130",
+        "triton": "3.8.0",
+        "fla": "0.6.0",
+        "fwd": {
+          "median_ms": 0.34651200473308563,
+          "mean_ms": 0.4096403214335442,
+          "min_ms": 0.1828799992799759,
+          "max_ms": 2.386496067047119,
+          "p25_ms": 0.29578398913145065,
+          "p75_ms": 0.37460000067949295,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 0.24,
+          "peak_alloc_mb": 121.6
+        },
+        "fwdbwd": {
+          "median_ms": 1.5974880456924438,
+          "mean_ms": 1.9154220771789552,
+          "min_ms": 1.0554879903793335,
+          "max_ms": 4.073184013366699,
+          "p25_ms": 1.3594480454921722,
+          "p75_ms": 2.502504050731659,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 0.098,
+          "peak_alloc_mb": 196.0
+        },
+        "kernels_fwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 167.6,
+          "top": [
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 74.7,
+              "self_us_per_call": 74.7,
+              "pct": 44.59
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 42.0,
+              "self_us_per_call": 42.0,
+              "pct": 25.06
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 22.7,
+              "self_us_per_call": 22.7,
+              "pct": 13.57
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 22.6,
+              "self_us_per_call": 22.6,
+              "pct": 13.48
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<c10::BFloa",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 2.5,
+              "self_us_per_call": 2.5,
+              "pct": 1.5
+            },
+            {
+              "kernel": "chunk_local_cumsum_scalar_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 1.9,
+              "self_us_per_call": 1.9,
+              "pct": 1.12
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<float>, std::array",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 1.1,
+              "self_us_per_call": 1.1,
+              "pct": 0.68
+            }
+          ]
+        },
+        "kernels_fwdbwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 705.2,
+          "top": [
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 148.1,
+              "self_us_per_call": 74.0,
+              "pct": 21.0
+            },
+            {
+              "kernel": "chunk_bwd_kernel_dqkwg",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 137.2,
+              "self_us_per_call": 137.2,
+              "pct": 19.45
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 117.6,
+              "self_us_per_call": 117.6,
+              "pct": 16.67
+            },
+            {
+              "kernel": "prepare_wy_repr_bwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 95.3,
+              "self_us_per_call": 95.3,
+              "pct": 13.51
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 56.4,
+              "self_us_per_call": 28.2,
+              "pct": 8.0
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 41.5,
+              "self_us_per_call": 41.5,
+              "pct": 5.88
+            },
+            {
+              "kernel": "chunk_bwd_kernel_dv_local",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 24.8,
+              "self_us_per_call": 24.8,
+              "pct": 3.52
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 23.0,
+              "self_us_per_call": 23.0,
+              "pct": 3.27
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 12.1,
+              "self_us_per_call": 12.1,
+              "pct": 1.72
+            },
+            {
+              "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 10.2,
+              "self_us_per_call": 10.2,
+              "pct": 1.44
+            }
+          ]
+        },
+        "kernels_bwd_attribution": [
+          {
+            "kernel": "chunk_bwd_kernel_dqkwg",
+            "bwd_self_us_per_iter": 137.2,
+            "pct_of_fwdbwd": 19.45
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+            "bwd_self_us_per_iter": 117.6,
+            "pct_of_fwdbwd": 16.67
+          },
+          {
+            "kernel": "prepare_wy_repr_bwd_kernel",
+            "bwd_self_us_per_iter": 95.3,
+            "pct_of_fwdbwd": 13.51
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+            "bwd_self_us_per_iter": 73.4,
+            "pct_of_fwdbwd": 21.0
+          },
+          {
+            "kernel": "recompute_w_u_fwd_kernel",
+            "bwd_self_us_per_iter": 33.7,
+            "pct_of_fwdbwd": 8.0
+          },
+          {
+            "kernel": "chunk_bwd_kernel_dv_local",
+            "bwd_self_us_per_iter": 24.8,
+            "pct_of_fwdbwd": 3.52
+          },
+          {
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native::binary_internal::MulFunctor",
+            "bwd_self_us_per_iter": 12.1,
+            "pct_of_fwdbwd": 1.72
+          },
+          {
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native",
+            "bwd_self_us_per_iter": 10.2,
+            "pct_of_fwdbwd": 1.44
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+            "bwd_self_us_per_iter": 0.4,
+            "pct_of_fwdbwd": 3.27
+          }
+        ]
+      },
+      "B1T8192": {
+        "shape": {
+          "name": "B1T8192",
+          "B": 1,
+          "T": 8192,
+          "H": 16,
+          "HV": 16,
+          "K": 128,
+          "V": 128
+        },
+        "dtype": "bfloat16 (q/k/v/do; beta/g/h0/dht fp32, per test_chunk)",
+        "scale": 0.08838834764831845,
+        "backend_probe": {
+          "mode": "default",
+          "FLA_FLASH_QLA": "<unset>",
+          "flash_qla_importable": false,
+          "flash_qla_backend_enabled": true,
+          "flash_qla_backend_can_use": false
+        },
+        "torch": "2.14.1+cu130",
+        "triton": "3.8.0",
+        "fla": "0.6.0",
+        "fwd": {
+          "median_ms": 0.9967520236968994,
+          "mean_ms": 1.0179955244064331,
+          "min_ms": 0.8187519907951355,
+          "max_ms": 1.5932480096817017,
+          "p25_ms": 0.8614480197429657,
+          "p75_ms": 1.1186400055885315,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 0.23,
+          "peak_alloc_mb": 471.5
+        },
+        "fwdbwd": {
+          "median_ms": 4.091663837432861,
+          "mean_ms": 4.1066930913925175,
+          "min_ms": 3.663935899734497,
+          "max_ms": 5.138432025909424,
+          "p25_ms": 3.8759920597076416,
+          "p75_ms": 4.243727803230286,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 0.103,
+          "peak_alloc_mb": 763.0
+        },
+        "kernels_fwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 960.7,
+          "top": [
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 305.6,
+              "self_us_per_call": 305.6,
+              "pct": 31.81
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 242.4,
+              "self_us_per_call": 242.4,
+              "pct": 25.24
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 231.9,
+              "self_us_per_call": 231.9,
+              "pct": 24.14
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 167.7,
+              "self_us_per_call": 167.7,
+              "pct": 17.46
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<c10::BFloa",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 8.1,
+              "self_us_per_call": 8.1,
+              "pct": 0.84
+            },
+            {
+              "kernel": "chunk_local_cumsum_scalar_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 3.9,
+              "self_us_per_call": 3.9,
+              "pct": 0.41
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<float>, std::array",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 1.0,
+              "self_us_per_call": 1.0,
+              "pct": 0.11
+            }
+          ]
+        },
+        "kernels_fwdbwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 3403.5,
+          "top": [
+            {
+              "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 719.9,
+              "self_us_per_call": 719.9,
+              "pct": 21.15
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 691.8,
+              "self_us_per_call": 345.9,
+              "pct": 20.33
+            },
+            {
+              "kernel": "chunk_bwd_kernel_dqkwg",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 553.4,
+              "self_us_per_call": 553.4,
+              "pct": 16.26
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 342.5,
+              "self_us_per_call": 171.2,
+              "pct": 10.06
+            },
+            {
+              "kernel": "prepare_wy_repr_bwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 327.4,
+              "self_us_per_call": 327.4,
+              "pct": 9.62
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 229.9,
+              "self_us_per_call": 229.9,
+              "pct": 6.75
+            },
+            {
+              "kernel": "chunk_bwd_kernel_dv_local",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 143.5,
+              "self_us_per_call": 143.5,
+              "pct": 4.22
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 93.1,
+              "self_us_per_call": 93.1,
+              "pct": 2.73
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>, false>(int, at::native::CUDAFunctor_add<c1",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 87.7,
+              "self_us_per_call": 87.7,
+              "pct": 2.58
+            },
+            {
+              "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 87.2,
+              "self_us_per_call": 87.2,
+              "pct": 2.56
+            }
+          ]
+        },
+        "kernels_bwd_attribution": [
+          {
+            "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+            "bwd_self_us_per_iter": 719.9,
+            "pct_of_fwdbwd": 21.15
+          },
+          {
+            "kernel": "chunk_bwd_kernel_dqkwg",
+            "bwd_self_us_per_iter": 553.4,
+            "pct_of_fwdbwd": 16.26
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+            "bwd_self_us_per_iter": 386.2,
+            "pct_of_fwdbwd": 20.33
+          },
+          {
+            "kernel": "prepare_wy_repr_bwd_kernel",
+            "bwd_self_us_per_iter": 327.4,
+            "pct_of_fwdbwd": 9.62
+          },
+          {
+            "kernel": "recompute_w_u_fwd_kernel",
+            "bwd_self_us_per_iter": 174.8,
+            "pct_of_fwdbwd": 10.06
+          },
+          {
+            "kernel": "chunk_bwd_kernel_dv_local",
+            "bwd_self_us_per_iter": 143.5,
+            "pct_of_fwdbwd": 4.22
+          },
+          {
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>, false>(int, at::native::CUDAFunctor_add<c1",
+            "bwd_self_us_per_iter": 87.7,
+            "pct_of_fwdbwd": 2.58
+          },
+          {
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native",
+            "bwd_self_us_per_iter": 87.2,
+            "pct_of_fwdbwd": 2.56
+          }
+        ]
+      },
+      "B4T2048": {
+        "shape": {
+          "name": "B4T2048",
+          "B": 4,
+          "T": 2048,
+          "H": 16,
+          "HV": 16,
+          "K": 128,
+          "V": 128
+        },
+        "dtype": "bfloat16 (q/k/v/do; beta/g/h0/dht fp32, per test_chunk)",
+        "scale": 0.08838834764831845,
+        "backend_probe": {
+          "mode": "default",
+          "FLA_FLASH_QLA": "<unset>",
+          "flash_qla_importable": false,
+          "flash_qla_backend_enabled": true,
+          "flash_qla_backend_can_use": false
+        },
+        "torch": "2.14.1+cu130",
+        "triton": "3.8.0",
+        "fla": "0.6.0",
+        "fwd": {
+          "median_ms": 1.022383987903595,
+          "mean_ms": 1.0514867222309112,
+          "min_ms": 0.8176320195198059,
+          "max_ms": 1.882912039756775,
+          "p25_ms": 0.9711199998855591,
+          "p75_ms": 1.1217040419578552,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 0.251,
+          "peak_alloc_mb": 486.5
+        },
+        "fwdbwd": {
+          "median_ms": 3.8601759672164917,
+          "mean_ms": 3.8586092710494997,
+          "min_ms": 3.378432035446167,
+          "max_ms": 4.933375835418701,
+          "p25_ms": 3.692263960838318,
+          "p75_ms": 3.969047963619232,
+          "reps": 50,
+          "warmup": 10,
+          "first_call_s": 0.106,
+          "peak_alloc_mb": 784.0
+        },
+        "kernels_fwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 807.9,
+          "top": [
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 277.4,
+              "self_us_per_call": 277.4,
+              "pct": 34.34
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 251.4,
+              "self_us_per_call": 251.4,
+              "pct": 31.12
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 159.0,
+              "self_us_per_call": 159.0,
+              "pct": 19.68
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 103.6,
+              "self_us_per_call": 103.6,
+              "pct": 12.82
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<c10::BFloa",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 9.3,
+              "self_us_per_call": 9.3,
+              "pct": 1.16
+            },
+            {
+              "kernel": "chunk_local_cumsum_scalar_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 4.2,
+              "self_us_per_call": 4.2,
+              "pct": 0.52
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul>, false>(int, at::native::FillFunctor<float>, std::array",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 3.0,
+              "self_us_per_call": 3.0,
+              "pct": 0.37
+            }
+          ]
+        },
+        "kernels_fwdbwd": {
+          "iters": 3,
+          "total_self_us_per_iter": 3867.5,
+          "top": [
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 757.7,
+              "self_us_per_call": 378.8,
+              "pct": 19.59
+            },
+            {
+              "kernel": "prepare_wy_repr_bwd_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 623.9,
+              "self_us_per_call": 623.9,
+              "pct": 16.13
+            },
+            {
+              "kernel": "recompute_w_u_fwd_kernel",
+              "count_per_iter": 2.0,
+              "self_us_per_iter": 605.4,
+              "self_us_per_call": 302.7,
+              "pct": 15.65
+            },
+            {
+              "kernel": "chunk_bwd_kernel_dqkwg",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 601.5,
+              "self_us_per_call": 601.5,
+              "pct": 15.55
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 460.5,
+              "self_us_per_call": 460.5,
+              "pct": 11.91
+            },
+            {
+              "kernel": "chunk_fwd_kernel_o",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 249.7,
+              "self_us_per_call": 249.7,
+              "pct": 6.46
+            },
+            {
+              "kernel": "chunk_bwd_kernel_dv_local",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 148.3,
+              "self_us_per_call": 148.3,
+              "pct": 3.83
+            },
+            {
+              "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 99.5,
+              "self_us_per_call": 99.5,
+              "pct": 2.57
+            },
+            {
+              "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>, false>(int, at::native::CUDAFunctor_add<c1",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 90.4,
+              "self_us_per_call": 90.4,
+              "pct": 2.34
+            },
+            {
+              "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native",
+              "count_per_iter": 1.0,
+              "self_us_per_iter": 87.1,
+              "self_us_per_call": 87.1,
+              "pct": 2.25
+            }
+          ]
+        },
+        "kernels_bwd_attribution": [
+          {
+            "kernel": "prepare_wy_repr_bwd_kernel",
+            "bwd_self_us_per_iter": 623.9,
+            "pct_of_fwdbwd": 16.13
+          },
+          {
+            "kernel": "chunk_bwd_kernel_dqkwg",
+            "bwd_self_us_per_iter": 601.5,
+            "pct_of_fwdbwd": 15.55
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+            "bwd_self_us_per_iter": 480.3,
+            "pct_of_fwdbwd": 19.59
+          },
+          {
+            "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+            "bwd_self_us_per_iter": 460.5,
+            "pct_of_fwdbwd": 11.91
+          },
+          {
+            "kernel": "recompute_w_u_fwd_kernel",
+            "bwd_self_us_per_iter": 446.4,
+            "pct_of_fwdbwd": 15.65
+          },
+          {
+            "kernel": "chunk_bwd_kernel_dv_local",
+            "bwd_self_us_per_iter": 148.3,
+            "pct_of_fwdbwd": 3.83
+          },
+          {
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul>, false>(int, at::native::CUDAFunctor_add<c1",
+            "bwd_self_us_per_iter": 90.4,
+            "pct_of_fwdbwd": 2.34
+          },
+          {
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::BFloat16, at::native",
+            "bwd_self_us_per_iter": 87.1,
+            "pct_of_fwdbwd": 2.25
+          }
+        ]
+      }
+    }
+  }
+}

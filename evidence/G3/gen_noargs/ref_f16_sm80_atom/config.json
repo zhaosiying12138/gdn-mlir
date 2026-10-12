@@ -1,0 +1,18 @@
+{
+  "name": "ref_f16_sm80_atom",
+  "stage": "ref",
+  "dtype": "f16",
+  "dims": {
+    "K": 16,
+    "V": 8
+  },
+  "tile": {
+    "M": 16,
+    "N": 8,
+    "K": 16
+  },
+  "warps": 1,
+  "mma": true,
+  "pipeline": 0,
+  "driver": "noargs"
+}

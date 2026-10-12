@@ -1,0 +1,18 @@
+{
+  "what": "G5-I T8192 forward spot-check: vs JAX fp64 ref (tools/g5i_t8192_ref.py, bar 5e-3), S-invariance (bit-identical), fla bf16-scale agreement (bar 1e-2)",
+  "tolerance": {
+    "vs_ref": 0.005,
+    "vs_fla": 0.01
+  },
+  "lines": [
+    "S=1: o_vs_ref 6.846e-04 ht_vs_ref 7.902e-04  |o|max 0.07",
+    "S=4: o_vs_ref 6.846e-04 ht_vs_ref 7.902e-04  |o|max 0.07",
+    "S=8: o_vs_ref 6.846e-04 ht_vs_ref 7.902e-04  |o|max 0.07",
+    "S=1 vs S=4: o 0.000e+00  ht 0.000e+00",
+    "S=1 vs S=8: o 0.000e+00  ht 0.000e+00",
+    "S=4 vs S=8: o 0.000e+00  ht 0.000e+00",
+    "S=1 vs fla: o 9.766e-04  ht 1.071e-03",
+    "S=4 vs fla: o 9.766e-04  ht 1.071e-03",
+    "S=8 vs fla: o 9.766e-04  ht 1.071e-03"
+  ]
+}

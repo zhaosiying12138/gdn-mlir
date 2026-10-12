@@ -1,0 +1,94 @@
+	.target	sm_120a
+
+	.elftype	@"ET_EXEC"
+
+
+//--------------------- .text.gdn_ref_kernel_kernel --------------------------
+	.section	.text.gdn_ref_kernel_kernel,"ax",@progbits
+	.align	128
+        .global         gdn_ref_kernel_kernel
+        .type           gdn_ref_kernel_kernel,@function
+        .size           gdn_ref_kernel_kernel,(.L_x_1 - gdn_ref_kernel_kernel)
+        .other          gdn_ref_kernel_kernel,@"STO_CUDA_ENTRY STV_DEFAULT"
+gdn_ref_kernel_kernel:
+.text.gdn_ref_kernel_kernel:
+        /*0000*/                   LDC R1, c[0x0][0x37c] ;
+        /*0010*/                   S2R R7, SR_TID.X ;
+        /*0020*/                   LDCU.64 UR6, c[0x0][0x388] ;
+        /*0030*/                   LDC.64 R8, c[0x0][0x3f8] ;
+        /*0040*/                   LDCU.64 UR10, c[0x0][0x3f8] ;
+        /*0050*/                   LDCU.64 UR8, c[0x0][0x3c0] ;
+        /*0060*/                   LDCU.64 UR4, c[0x0][0x358] ;
+        /*0070*/                   SHF.R.U64 R15, R7.reuse, 0x2, RZ ;
+        /*0080*/                   IMAD.WIDE.U32 R8, R7, 0x4, R8 ;
+        /*0090*/                   SHF.L.U64.HI R3, R15.reuse, 0x3, RZ ;
+        /*00a0*/                   IMAD.SHL.U32 R2, R15.reuse, 0x8, RZ ;
+        /*00b0*/                   LEA R10, P1, R15.reuse, UR6, 0x5 ;
+        /*00c0*/                   LDG.E.U16 R23, desc[UR4][R8.64+0x2] ;
+        /*00d0*/                   LEA R12, P0, R15, UR10, 0x4 ;
+        /*00e0*/                   IMAD.WIDE.U32 R2, R7, 0x2, -R2 ;
+        /*00f0*/                   LEA.HI.X R11, R15.reuse, UR7, RZ, 0x5, P1 ;
+        /*0100*/                   LEA.HI.X R13, R15, UR11, RZ, 0x4, P0 ;
+        /*0110*/                   IMAD.SHL.U32 R4, R2.reuse, 0x2, RZ ;
+        /*0120*/                   LEA R6, P1, R2, UR8, 0x4 ;
+        /*0130*/                   SHF.L.U64.HI R5, R2.reuse, 0x1, R3.reuse ;
+        /*0140*/                   LEA.HI.X R0, R2, UR9, R3, 0x4, P1 ;
+        /*0150*/                   LEA R6, P0, R15, R6, 0x1 ;
+        /*0160*/                   IADD.64 R2, R4.reuse, R10 ;
+        /*0170*/                   IADD.64 R4, R4, R12 ;
+        /*0180*/                   LDG.E.U16 R12, desc[UR4][R8.64] ;
+        /*0190*/                   LEA.HI.X R7, R15, R0, RZ, 0x1, P0 ;
+        /*01a0*/                   LDG.E.U16 R14, desc[UR4][R2.64+0x10] ;
+        /*01b0*/                   LDG.E.U16 R15, desc[UR4][R2.64+0x12] ;
+        /*01c0*/                   LDG.E.U16 R18, desc[UR4][R6.64] ;
+        /*01d0*/                   LDG.E.U16 R19, desc[UR4][R6.64+0x10] ;
+        /*01e0*/                   LDG.E.U16 R0, desc[UR4][R2.64] ;
+        /*01f0*/                   LDG.E.U16 R11, desc[UR4][R2.64+0x2] ;
+        /*0200*/                   LDG.E.U16 R13, desc[UR4][R2.64+0x100] ;
+        /*0210*/                   LDG.E.U16 R25, desc[UR4][R4.64+0x80] ;
+        /*0220*/                   LDG.E.U16 R22, desc[UR4][R4.64+0x82] ;
+        /*0230*/                   LDG.E.U16 R10, desc[UR4][R2.64+0x102] ;
+        /*0240*/                   LDG.E.U16 R16, desc[UR4][R2.64+0x110] ;
+        /*0250*/                   LDG.E.U16 R17, desc[UR4][R2.64+0x112] ;
+        /*0260*/                   LDG.E.U16 R20, desc[UR4][R6.64+0x80] ;
+        /*0270*/                   LDG.E.U16 R21, desc[UR4][R6.64+0x90] ;
+        /*0280*/                   IMAD R24, R23, 0x10000, R12 ;
+        /*0290*/                   IMAD R14, R15, 0x10000, R14 ;
+        /*02a0*/                   PRMT R18, R18, 0x5410, R19 ;
+        /*02b0*/                   IMAD R12, R11, 0x10000, R0 ;
+        /*02c0*/                   IMAD R25, R22, 0x10000, R25 ;
+        /*02d0*/                   IMAD R13, R10, 0x10000, R13 ;
+        /*02e0*/                   IMAD R15, R17, 0x10000, R16 ;
+        /*02f0*/                   PRMT R19, R20, 0x5410, R21 ;
+        /*0300*/                   HMMA.16816.F16 R12, R12, R18, R24 ;
+        /*0310*/                   @!UPT UIADD3 URZ, UPT, UPT, URZ, URZ, URZ ;
+        /*0320*/                   @!UPT UIADD3 URZ, UPT, UPT, URZ, URZ, URZ ;
+        /*0330*/                   SHF.R.U32.HI R3, RZ, 0x10, R12 ;
+        /*0340*/                   SHF.R.U32.HI R7, RZ, 0x10, R13 ;
+        /*0350*/                   STG.E.U16 desc[UR4][R8.64], R12 ;
+        /*0360*/                   STG.E.U16 desc[UR4][R8.64+0x2], R3 ;
+        /*0370*/                   STG.E.U16 desc[UR4][R4.64+0x82], R7 ;
+        /*0380*/                   STG.E.U16 desc[UR4][R4.64+0x80], R13 ;
+        /*0390*/                   EXIT ;
+.L_x_0:
+        /*03a0*/                   BRA `(.L_x_0);
+        /*03b0*/                   NOP;
+        /*03c0*/                   NOP;
+        /*03d0*/                   NOP;
+        /*03e0*/                   NOP;
+        /*03f0*/                   NOP;
+        /*0400*/                   NOP;
+        /*0410*/                   NOP;
+        /*0420*/                   NOP;
+        /*0430*/                   NOP;
+        /*0440*/                   NOP;
+        /*0450*/                   NOP;
+        /*0460*/                   NOP;
+        /*0470*/                   NOP;
+.L_x_1:
+
+
+//--------------------- SYMBOLS --------------------------
+
+	.type		.nv.reservedSmem.offset0,@object
+	.size		.nv.reservedSmem.offset0,0x4

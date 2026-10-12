@@ -1,0 +1,19 @@
+{
+  "name": "ref_ldmatrix",
+  "stage": "ref_ldmatrix",
+  "dtype": "f16",
+  "dims": {
+    "K": 16,
+    "V": 8
+  },
+  "tile": {
+    "M": 16,
+    "N": 8,
+    "K": 16
+  },
+  "warps": 1,
+  "mma": true,
+  "pipeline": 0,
+  "warpspec": "off",
+  "tma": "off"
+}

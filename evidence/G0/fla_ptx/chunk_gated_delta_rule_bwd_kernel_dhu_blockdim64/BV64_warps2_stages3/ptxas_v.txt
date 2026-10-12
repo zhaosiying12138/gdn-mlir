@@ -1,0 +1,6 @@
+ptxas-blackwell info    : 11 bytes gmem
+ptxas-blackwell info    : Compiling entry function 'chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64' for 'sm_120a'
+ptxas-blackwell info    : Function properties for chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64
+    2496 bytes stack frame, 3236 bytes spill stores, 3788 bytes spill loads
+ptxas-blackwell info    : Used 255 registers, used 1 barriers, 2496 bytes cumulative stack size
+ptxas-blackwell info    : Compile time = 1173.631 ms

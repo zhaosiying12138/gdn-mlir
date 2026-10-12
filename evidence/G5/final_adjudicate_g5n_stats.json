@@ -1,0 +1,190 @@
+{
+  "what": "G5 final adjudication: interleaved fla-vs-ours fwd, 5 pairs/shape, CUDA events, shared-recipe inputs",
+  "probe": {
+    "FLA_FLASH_QLA": "0",
+    "flash_qla_importable": false,
+    "flash_qla_backend_can_use": false,
+    "torch": "2.14.1+cu130"
+  },
+  "knobs": {
+    "warps": 8,
+    "bv": 64,
+    "f2_segments": 1
+  },
+  "gpu_start": {
+    "util_pct": 25,
+    "mem_used_mib": 18152,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 2640
+  },
+  "results": {
+    "B1T2048": {
+      "shape": {
+        "name": "B1T2048",
+        "B": 1,
+        "T": 2048,
+        "H": 16,
+        "K": 128,
+        "V": 128
+      },
+      "ours_samples_ms": [
+        0.483136,
+        0.504768,
+        0.286208,
+        0.286656,
+        0.289216
+      ],
+      "fla_samples_ms": [
+        2.001408,
+        0.76656,
+        0.49936,
+        0.528352,
+        0.669952
+      ],
+      "ours_median_ms": 0.289216,
+      "fla_median_ms": 0.669952,
+      "speedup_ratio_of_medians": 2.3164,
+      "speedup_median_of_ratios": 1.8432,
+      "ours_min_ms": 0.286208,
+      "fla_min_ms": 0.49936,
+      "window_pre": {
+        "util_pct": 19,
+        "mem_used_mib": 18454,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2737
+      },
+      "window_post": {
+        "util_pct": 19,
+        "mem_used_mib": 18454,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2737
+      },
+      "stats": {
+        "n_pairs": 5,
+        "median_ratio": 1.8432,
+        "iqr": 0.5717,
+        "iqr_over_median": 0.3102,
+        "min_ratio": 1.5186,
+        "max_ratio": 4.1425,
+        "sign_test_p_vs_1": 0.0625,
+        "decidable_rule": "(median-1) > 3*IQR/median",
+        "decidable": false
+      },
+      "window_clean": false
+    },
+    "B1T8192": {
+      "shape": {
+        "name": "B1T8192",
+        "B": 1,
+        "T": 8192,
+        "H": 16,
+        "K": 128,
+        "V": 128
+      },
+      "ours_samples_ms": [
+        1.281184,
+        0.938112,
+        0.939872,
+        0.932672,
+        0.938496
+      ],
+      "fla_samples_ms": [
+        1.687552,
+        0.996064,
+        0.960448,
+        0.958944,
+        0.9
+      ],
+      "ours_median_ms": 0.938496,
+      "fla_median_ms": 0.960448,
+      "speedup_ratio_of_medians": 1.0234,
+      "speedup_median_of_ratios": 1.0282,
+      "ours_min_ms": 0.932672,
+      "fla_min_ms": 0.9,
+      "window_pre": {
+        "util_pct": 15,
+        "mem_used_mib": 19358,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2745
+      },
+      "window_post": {
+        "util_pct": 27,
+        "mem_used_mib": 19358,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2745
+      },
+      "stats": {
+        "n_pairs": 5,
+        "median_ratio": 1.0282,
+        "iqr": 0.0399,
+        "iqr_over_median": 0.0388,
+        "min_ratio": 0.959,
+        "max_ratio": 1.3172,
+        "sign_test_p_vs_1": 0.375,
+        "decidable_rule": "(median-1) > 3*IQR/median",
+        "decidable": false
+      },
+      "window_clean": true
+    },
+    "B4T2048": {
+      "shape": {
+        "name": "B4T2048",
+        "B": 4,
+        "T": 2048,
+        "H": 16,
+        "K": 128,
+        "V": 128
+      },
+      "ours_samples_ms": [
+        1.134624,
+        1.199264,
+        0.997024,
+        0.98288,
+        1.263552
+      ],
+      "fla_samples_ms": [
+        1.901376,
+        1.698464,
+        0.992288,
+        1.00448,
+        1.002432
+      ],
+      "ours_median_ms": 1.134624,
+      "fla_median_ms": 1.00448,
+      "speedup_ratio_of_medians": 0.8853,
+      "speedup_median_of_ratios": 1.022,
+      "ours_min_ms": 0.98288,
+      "fla_min_ms": 0.992288,
+      "window_pre": {
+        "util_pct": 18,
+        "mem_used_mib": 19954,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2760
+      },
+      "window_post": {
+        "util_pct": 18,
+        "mem_used_mib": 19954,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2760
+      },
+      "stats": {
+        "n_pairs": 5,
+        "median_ratio": 1.022,
+        "iqr": 0.421,
+        "iqr_over_median": 0.412,
+        "min_ratio": 0.7933,
+        "max_ratio": 1.6758,
+        "sign_test_p_vs_1": 1.0,
+        "decidable_rule": "(median-1) > 3*IQR/median",
+        "decidable": false
+      },
+      "window_clean": true
+    }
+  },
+  "gpu_end": {
+    "util_pct": 18,
+    "mem_used_mib": 19954,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 2760
+  }
+}

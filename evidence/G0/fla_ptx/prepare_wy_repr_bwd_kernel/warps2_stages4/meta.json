@@ -1,0 +1,40 @@
+{
+ "kernel": "prepare_wy_repr_bwd_kernel",
+ "config": {
+  "warps": 2,
+  "stages": 4
+ },
+ "shared_dynamic": 17408,
+ "num_warps": 2,
+ "ptxas": {
+  "registers": 255,
+  "smem_static": null,
+  "spill_stores": 4808,
+  "spill_loads": 5348,
+  "stack_frame": 2632
+ },
+ "ptx_features": {
+  "mma.sync": 576,
+  "cp.async": 0,
+  "tma.bulk": 0,
+  "mbarrier": 0,
+  "exp.approx": 0,
+  "ld.global": 450,
+  "st.global": 194,
+  "ld.shared": 59,
+  "st.shared": 353,
+  "bar.sync": 160,
+  "barrier": 0,
+  "shfl.sync": 104,
+  "redux": 0,
+  "setmaxnreg": 0,
+  "movmatrix": 0,
+  "ldmatrix": 232,
+  "stmatrix": 40,
+  "wmma": 0,
+  "wgmma": 0,
+  "tcgen05": 0,
+  "fma.f32": 96,
+  "mma.sync.other": 0
+ }
+}

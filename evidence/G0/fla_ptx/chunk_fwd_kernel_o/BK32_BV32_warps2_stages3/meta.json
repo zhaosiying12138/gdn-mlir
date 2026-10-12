@@ -1,0 +1,42 @@
+{
+ "kernel": "chunk_fwd_kernel_o",
+ "config": {
+  "BK": 32,
+  "BV": 32,
+  "warps": 2,
+  "stages": 3
+ },
+ "shared_dynamic": 10240,
+ "num_warps": 2,
+ "ptxas": {
+  "registers": 255,
+  "smem_static": null,
+  "spill_stores": 824,
+  "spill_loads": 748,
+  "stack_frame": 552
+ },
+ "ptx_features": {
+  "mma.sync": 80,
+  "cp.async": 0,
+  "tma.bulk": 0,
+  "mbarrier": 0,
+  "exp.approx": 0,
+  "ld.global": 113,
+  "st.global": 32,
+  "ld.shared": 14,
+  "st.shared": 122,
+  "bar.sync": 10,
+  "barrier": 0,
+  "shfl.sync": 0,
+  "redux": 0,
+  "setmaxnreg": 0,
+  "movmatrix": 0,
+  "ldmatrix": 24,
+  "stmatrix": 0,
+  "wmma": 0,
+  "wgmma": 0,
+  "tcgen05": 0,
+  "fma.f32": 32,
+  "mma.sync.other": 0
+ }
+}

@@ -1,0 +1,34 @@
+{
+ "kernel": "kkt_solve",
+ "ptxas": {
+  "registers": 88,
+  "smem_static": 1024,
+  "spill_stores": 0,
+  "spill_loads": 0,
+  "stack_frame": 0
+ },
+ "ptx_features": {
+  "mma.sync": 64,
+  "cp.async": 10,
+  "tma.bulk": 0,
+  "mbarrier": 0,
+  "exp.approx": 0,
+  "ld.global": 10,
+  "st.global": 16,
+  "ld.shared": 230,
+  "st.shared": 58,
+  "bar.sync": 24,
+  "barrier": 0,
+  "shfl.sync": 0,
+  "redux": 0,
+  "setmaxnreg": 0,
+  "movmatrix": 0,
+  "ldmatrix": 32,
+  "stmatrix": 0,
+  "wmma": 0,
+  "wgmma": 0,
+  "tcgen05": 0,
+  "fma.f32": 32,
+  "mma.sync.other": 0
+ }
+}

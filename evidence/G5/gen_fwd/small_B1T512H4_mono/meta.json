@@ -1,0 +1,188 @@
+{
+  "kernel": "gdn_fwd_mono",
+  "path": "mono",
+  "shape": {
+    "B": 1,
+    "T": 512,
+    "H": 4,
+    "K": 128,
+    "V": 128,
+    "C": 64,
+    "NC": 8,
+    "Tp": 512
+  },
+  "knobs": {
+    "warps": 8,
+    "bv": 64,
+    "bk": 32,
+    "mb": 2,
+    "depth": 2
+  },
+  "params": [
+    {
+      "name": "k",
+      "dtype": "bf16",
+      "elems": 262144
+    },
+    {
+      "name": "v",
+      "dtype": "bf16",
+      "elems": 262144
+    },
+    {
+      "name": "beta",
+      "dtype": "f32",
+      "elems": 2048
+    },
+    {
+      "name": "g",
+      "dtype": "f32",
+      "elems": 2048
+    },
+    {
+      "name": "u",
+      "dtype": "bf16",
+      "elems": 262144
+    },
+    {
+      "name": "w",
+      "dtype": "bf16",
+      "elems": 262144
+    },
+    {
+      "name": "gc",
+      "dtype": "f32",
+      "elems": 2048
+    },
+    {
+      "name": "h0",
+      "dtype": "f32",
+      "elems": 65536
+    },
+    {
+      "name": "h_all",
+      "dtype": "bf16",
+      "elems": 524288
+    },
+    {
+      "name": "v_new",
+      "dtype": "bf16",
+      "elems": 262144
+    },
+    {
+      "name": "ht",
+      "dtype": "f32",
+      "elems": 65536
+    },
+    {
+      "name": "q",
+      "dtype": "bf16",
+      "elems": 262144
+    },
+    {
+      "name": "o",
+      "dtype": "bf16",
+      "elems": 262144
+    }
+  ],
+  "kernels": [
+    {
+      "name": "gdn_fwd_f1",
+      "grid": [
+        8,
+        4,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "gdn_fwd_f2",
+      "grid": [
+        8,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "gdn_fwd_f3",
+      "grid": [
+        32,
+        1,
+        1
+      ],
+      "block": [
+        256,
+        1,
+        1
+      ]
+    }
+  ],
+  "metrics": {
+    "registers": 128,
+    "smem_static": null,
+    "spill_stores": 0,
+    "spill_loads": 0,
+    "stack_frame": 0,
+    "smem_dynamic": 0
+  },
+  "ptx_features": {
+    "mma.sync": 128,
+    "cp.async": 24,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 2,
+    "st.global": 65,
+    "ld.shared": 105,
+    "st.shared": 282,
+    "bar.sync": 28,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 136,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "mma.sync.other": 0,
+    "ex2.approx": 41
+  },
+  "sass_ops": {
+    "HMMA": 128,
+    "LDGSTS": 12,
+    "LDS": 313,
+    "STS": 282,
+    "LDL": 0,
+    "STL": 0,
+    "BAR.SYNC": 28,
+    "LDSM": 136,
+    "EX2": 41
+  },
+  "ptx_size_bytes": 99599,
+  "sass_size_bytes": 234817,
+  "sass_line_count": 3916,
+  "mma_signatures": [
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32"
+  ],
+  "ex2_variants": [
+    "ex2.approx.f32"
+  ],
+  "ldmatrix": 136,
+  "ptx_version": "8.7",
+  "tools": {
+    "ptxas": "Build cuda_13.3.r13.3/compiler.38244171_0"
+  },
+  "extraction_method": "gpu-lower-to-nvvm-pipeline cubin-format=assembly -> gpu.binary #gpu.object assembly attr -> python unescape"
+}

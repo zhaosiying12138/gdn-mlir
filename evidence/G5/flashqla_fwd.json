@@ -1,0 +1,194 @@
+{
+  "meta": {
+    "what": "FlashQLA (TileLang) chunk_gated_delta_rule fwd baselines (G5-A)",
+    "gpu": "NVIDIA GeForce RTX 5090 Laptop GPU, 21, 17899, 24463, 2640",
+    "gpu_capability": "sm_120",
+    "torch": "2.14.1+cu130",
+    "tilelang": "0.1.15",
+    "flash_qla": "/home/zhaosiying/codebase/FlashQLA",
+    "limits": "SM120: fwd bf16 only (no backward) -- fwd-only benchmark",
+    "sm120_aggregate_shim": true,
+    "sm120_chunk_size": 32,
+    "call_kwargs": "auto_cp=True (FlashQLA default, same as fla's dispatcher passes), use_qk_l2norm_in_kernel=False (q/k pre-normalized, test_chunk recipe)",
+    "shared_gpu_note": "opportunistic window; co-job ~17.9GB resident -- absolute times noisy by design",
+    "timestamp": "2026-10-09 06:46:07",
+    "warmup": 10,
+    "reps": 50
+  },
+  "flashqla_fwd": {
+    "B1T2048": {
+      "shape": {
+        "name": "B1T2048",
+        "B": 1,
+        "T": 2048,
+        "H": 16,
+        "HV": 16,
+        "K": 128,
+        "V": 128
+      },
+      "dtype": "bfloat16 fwd (q/k/v), beta/g fp32",
+      "scale": 0.08838834764831845,
+      "initial_state_mode": "fp32",
+      "auto_cp": true,
+      "fwd_block_dv": 64,
+      "block_dv_note": "shipped block_DV=128 fwd kernel needs 112,640B dynamic smem > 101,376B sm120 opt-in under tilelang 0.1.15 (upstream 5090 results used tilelang 0.1.13); timed with the kernel's own block_DV parameter forced to 64 (~77KB). Outputs cross-checked vs fla Triton fwd (see refs/)",
+      "fwd_output_finite": true,
+      "first_call_s": 0.001,
+      "fwd": {
+        "median_ms": 0.1390400007367134,
+        "mean_ms": 0.24436736196279527,
+        "min_ms": 0.13142399489879608,
+        "max_ms": 1.7040640115737915,
+        "p25_ms": 0.1345280036330223,
+        "p75_ms": 0.2980800122022629,
+        "reps": 50,
+        "warmup": 10,
+        "peak_alloc_mb": 62.4
+      },
+      "kernels_fwd": [
+        {
+          "kernel": "tilelang_fused_chunk_gdr_fwd_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 77.5,
+          "pct": 65.74
+        },
+        {
+          "kernel": "tilelang_kkt_solve_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 14.3,
+          "pct": 12.17
+        },
+        {
+          "kernel": "tilelang_prepare_h_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 13.9,
+          "pct": 11.82
+        },
+        {
+          "kernel": "tilelang_correct_h0_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 8.5,
+          "pct": 7.25
+        },
+        {
+          "kernel": "tilelang_chunk_local_cumsum_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 2.1,
+          "pct": 1.75
+        }
+      ]
+    },
+    "B1T8192": {
+      "shape": {
+        "name": "B1T8192",
+        "B": 1,
+        "T": 8192,
+        "H": 16,
+        "HV": 16,
+        "K": 128,
+        "V": 128
+      },
+      "dtype": "bfloat16 fwd (q/k/v), beta/g fp32",
+      "scale": 0.08838834764831845,
+      "initial_state_mode": "fp32",
+      "auto_cp": true,
+      "fwd_block_dv": 64,
+      "block_dv_note": "shipped block_DV=128 fwd kernel needs 112,640B dynamic smem > 101,376B sm120 opt-in under tilelang 0.1.15 (upstream 5090 results used tilelang 0.1.13); timed with the kernel's own block_DV parameter forced to 64 (~77KB). Outputs cross-checked vs fla Triton fwd (see refs/)",
+      "fwd_output_finite": true,
+      "first_call_s": 0.001,
+      "fwd": {
+        "median_ms": 0.4042240083217621,
+        "mean_ms": 0.4637356799840927,
+        "min_ms": 0.3892799913883209,
+        "max_ms": 1.4419200420379639,
+        "p25_ms": 0.3928240016102791,
+        "p75_ms": 0.4081280082464218,
+        "reps": 50,
+        "warmup": 10,
+        "peak_alloc_mb": 221.5
+      },
+      "kernels_fwd": [
+        {
+          "kernel": "tilelang_fused_chunk_gdr_fwd_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 279.4,
+          "pct": 73.25
+        },
+        {
+          "kernel": "tilelang_kkt_solve_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 56.3,
+          "pct": 14.76
+        },
+        {
+          "kernel": "tilelang_prepare_h_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 24.8,
+          "pct": 6.5
+        },
+        {
+          "kernel": "tilelang_correct_h0_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 16.2,
+          "pct": 4.24
+        },
+        {
+          "kernel": "tilelang_chunk_local_cumsum_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 2.8,
+          "pct": 0.75
+        }
+      ]
+    },
+    "B4T2048": {
+      "shape": {
+        "name": "B4T2048",
+        "B": 4,
+        "T": 2048,
+        "H": 16,
+        "HV": 16,
+        "K": 128,
+        "V": 128
+      },
+      "dtype": "bfloat16 fwd (q/k/v), beta/g fp32",
+      "scale": 0.08838834764831845,
+      "initial_state_mode": "fp32",
+      "auto_cp": true,
+      "fwd_block_dv": 64,
+      "block_dv_note": "shipped block_DV=128 fwd kernel needs 112,640B dynamic smem > 101,376B sm120 opt-in under tilelang 0.1.15 (upstream 5090 results used tilelang 0.1.13); timed with the kernel's own block_DV parameter forced to 64 (~77KB). Outputs cross-checked vs fla Triton fwd (see refs/)",
+      "fwd_output_finite": true,
+      "first_call_s": 0.001,
+      "fwd": {
+        "median_ms": 0.3548479974269867,
+        "mean_ms": 0.40136192202568055,
+        "min_ms": 0.35049599409103394,
+        "max_ms": 0.9039360284805298,
+        "p25_ms": 0.35278400778770447,
+        "p75_ms": 0.3569760024547577,
+        "reps": 50,
+        "warmup": 10,
+        "peak_alloc_mb": 217.5
+      },
+      "kernels_fwd": [
+        {
+          "kernel": "tilelang_fused_chunk_gdr_fwd_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 291.4,
+          "pct": 83.73
+        },
+        {
+          "kernel": "tilelang_kkt_solve_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 54.2,
+          "pct": 15.56
+        },
+        {
+          "kernel": "tilelang_chunk_local_cumsum_kernel_kernel",
+          "count_per_iter": 1.0,
+          "self_us_per_iter": 2.5,
+          "pct": 0.71
+        }
+      ]
+    }
+  }
+}

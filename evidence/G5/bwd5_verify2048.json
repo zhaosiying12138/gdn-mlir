@@ -1,0 +1,57 @@
+{
+  "shape": "1,2048,16,128,128",
+  "chunk": 64,
+  "seed": 0,
+  "tolerances": {
+    "dq": 0.008,
+    "dk": 0.008,
+    "dv": 0.008,
+    "dbeta": 0.02,
+    "dg": 0.02,
+    "dh0": 0.008
+  },
+  "stage_times_ms": {
+    "wy": 0.2029,
+    "fwdscan": 0.2804,
+    "caryA": 0.1335,
+    "caryM": 0.126,
+    "bpre": 0.1171,
+    "dhs": 0.1088,
+    "dkb": 0.3037,
+    "dqkwg": 0.2862,
+    "wyb": 0.1309
+  },
+  "grads": {
+    "dq": {
+      "max_abs_diff": 0.0010723301089717863,
+      "tol": 0.008,
+      "verdict": "PASS"
+    },
+    "dk": {
+      "max_abs_diff": 0.0017905413268572146,
+      "tol": 0.008,
+      "verdict": "PASS"
+    },
+    "dv": {
+      "max_abs_diff": 9.591977993936296e-05,
+      "tol": 0.008,
+      "verdict": "PASS"
+    },
+    "dbeta": {
+      "max_abs_diff": 0.001413086237179506,
+      "tol": 0.02,
+      "verdict": "PASS"
+    },
+    "dg": {
+      "max_abs_diff": 0.0004183903369785469,
+      "tol": 0.02,
+      "verdict": "PASS"
+    },
+    "dh0": {
+      "max_abs_diff": 1.7562926229097373e-06,
+      "tol": 0.008,
+      "verdict": "PASS"
+    }
+  },
+  "overall": "PASS"
+}

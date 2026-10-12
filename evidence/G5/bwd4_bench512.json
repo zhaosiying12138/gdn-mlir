@@ -1,0 +1,15 @@
+{
+  "shape": "1,512,4,128,128",
+  "iters": 30,
+  "ours_bwd_ms_median": 1.2744,
+  "ours_bwd_ms_min": 1.2632,
+  "ours_stage_ms_median": {
+    "wy": 0.1994,
+    "fwdscan": 0.2036,
+    "dhu": 0.4407,
+    "dkb": 0.131,
+    "dqkwg": 0.2031,
+    "wyb": 0.1149
+  },
+  "shared_gpu": true
+}

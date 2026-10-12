@@ -1,0 +1,8 @@
+== small_B1T512H4  bf16-emulation=False  STRESS g=-0.02|N(0,1)|
+   serial : o 3.414e-02  ht 2.431e-01
+   S=2   : o 3.414e-02  ht 2.431e-01  o-vs-serial 0.000e+00  ||Mseg||inf 6.950e-02  | naive(matmul-free) o 3.414e-02  naiveEdelta 0.000e+00
+   S=4   : o 3.414e-02  ht 2.431e-01  o-vs-serial 4.857e-17  ||Mseg||inf 4.485e-01  | naive(matmul-free) o 3.414e-02  naiveEdelta 3.129e-02
+== small_B1T512H4  bf16-emulation=True  STRESS g=-0.02|N(0,1)|
+   serial : o 3.419e-02  ht 2.433e-01
+   S=2   : o 3.419e-02  ht 2.433e-01  o-vs-serial 0.000e+00  ||Mseg||inf 6.950e-02  | naive(matmul-free) o 3.414e-02  naiveEdelta 0.000e+00
+   S=4   : o 3.419e-02  ht 2.433e-01  o-vs-serial 3.711e-04  ||Mseg||inf 4.485e-01  | naive(matmul-free) o 3.415e-02  naiveEdelta 3.125e-02

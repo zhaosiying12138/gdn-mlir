@@ -1,0 +1,6 @@
+[run_l2] o_bf16_nomma_p2_t64x64x32_w4_K64V64
+[run_l2] linalg survivor -> -convert-linalg-to-loops
+extracted 296237 bytes of PTX -> kernel.ptx
+[run_l2] meta.json: regs=255 smem=None mma=0 cp.async=1028
+[run_l2] done: kernel.ptx kernel.cubin ptxas_v.txt sass.txt meta.json
+[smem_fix] o_bf16_nomma_p2_t64x64x32_w4_K64V64: malloc_callseqs=3 cvta_patched=3 shared_decls=[('__gdn_smem0', 8192), ('__gdn_smem1', 8192), ('__gdn_smem2', 8192)] const_params_substituted=130 dynamic_params_kept=0 -> kernel_smemfix.cubin

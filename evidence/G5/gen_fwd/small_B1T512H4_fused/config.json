@@ -1,0 +1,71 @@
+{
+  "kernel": "gdn_fwd_fused",
+  "path": "fused",
+  "shape": {
+    "B": 1,
+    "T": 512,
+    "H": 4,
+    "K": 128,
+    "V": 128,
+    "C": 64,
+    "NC": 8,
+    "Tp": 512
+  },
+  "knobs": {
+    "warps": 8,
+    "bv": 64,
+    "copies": "async"
+  },
+  "params": [
+    {
+      "name": "q",
+      "dtype": "bf16",
+      "elems": 262144
+    },
+    {
+      "name": "k",
+      "dtype": "bf16",
+      "elems": 262144
+    },
+    {
+      "name": "v",
+      "dtype": "bf16",
+      "elems": 262144
+    },
+    {
+      "name": "beta",
+      "dtype": "f32",
+      "elems": 2048
+    },
+    {
+      "name": "g",
+      "dtype": "f32",
+      "elems": 2048
+    },
+    {
+      "name": "h0",
+      "dtype": "f32",
+      "elems": 65536
+    },
+    {
+      "name": "o",
+      "dtype": "bf16",
+      "elems": 262144
+    },
+    {
+      "name": "ht",
+      "dtype": "f32",
+      "elems": 65536
+    }
+  ],
+  "grid": [
+    8,
+    1,
+    1
+  ],
+  "block": [
+    256,
+    1,
+    1
+  ]
+}

@@ -1,0 +1,6 @@
+ptxas-blackwell info    : 0 bytes gmem
+ptxas-blackwell info    : Compiling entry function 'gdn_kkt_kernel_kernel' for 'sm_120a'
+ptxas-blackwell info    : Function properties for gdn_kkt_kernel_kernel
+    4080 bytes stack frame, 7752 bytes spill stores, 10304 bytes spill loads
+ptxas-blackwell info    : Used 255 registers, used 1 barriers, 4080 bytes cumulative stack size
+ptxas-blackwell info    : Compile time = 964.455 ms

@@ -1,0 +1,25 @@
+== pool
+ship pool                 47616 B
+2-CTA bar                 50176 B   headroom 2560 B
+smem park dw-only f32     32768 B  -> pool 80384  (DEAD vs 2-CTA bar)
+smem park dw-only bf16    16384 B -> pool 64000  (DEAD vs 2-CTA bar)
+smem park dw+dq1 f32      65536 B -> DEAD
+accCK single-window reuse 8192 B alone > headroom 2560 B -> cannot host even ONE park set
+
+== staging sweeps (per CTA per chunk)
+vs-only sweep global reads 12288 B (akb 4096 + dvp 8192)
+vs-only sweep smem writes  12288 B
+P11R=2 sweeps 8  P11R=4 sweeps 4
+saved by the full kill    49152 B global reads, 49152 B smem writes
+
+== global park traffic (park-resume, per CTA per chunk)
+f32 park   +196608 B   net vs saved +147456 B
+bf16 park  +98304 B   net vs saved +49152 B
+
+== time pricing (per shape)
+T2048: f32 park net traffic +75.5 MB -> +35us (L2) / +92us (DRAM) on dqkwg 514us = 0.936x/0.849x
+     bf16 park net +25.2 MB -> +12us (L2) / +31us (DRAM) = 0.978x/0.944x
+     FREE-park ceiling: P11R 2->4 ~= half the r16 1->2 gain = -10us -> dqkwg 504us (1.021x), e2e 2.16->2.15ms (0.9952x)
+T8192: f32 park net traffic +302.0 MB -> +141us (L2) / +366us (DRAM) on dqkwg 1729us = 0.925x/0.825x
+     bf16 park net +100.7 MB -> +47us (L2) / +122us (DRAM) = 0.974x/0.934x
+     FREE-park ceiling: P11R 2->4 ~= half the r16 1->2 gain = -34us -> dqkwg 1695us (1.020x), e2e 7.68->7.65ms (0.9956x)

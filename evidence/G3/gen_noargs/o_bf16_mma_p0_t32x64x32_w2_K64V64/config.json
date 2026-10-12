@@ -1,0 +1,21 @@
+{
+  "name": "o_bf16_mma_p0_t32x64x32_w2_K64V64",
+  "stage": "o",
+  "dtype": "bf16",
+  "dims": {
+    "K": 64,
+    "V": 64
+  },
+  "tile": {
+    "M": 32,
+    "N": 64,
+    "K": 32
+  },
+  "warps": 2,
+  "mma": true,
+  "pipeline": 0,
+  "prec": "bf16",
+  "warpspec": "off",
+  "tma": "off",
+  "driver": "noargs"
+}

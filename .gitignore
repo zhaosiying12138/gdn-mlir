@@ -1,0 +1,7 @@
+*.npz
+*.ptx
+*.cubin
+*.sass
+evidence/**/scratch/
+build/
+__pycache__/

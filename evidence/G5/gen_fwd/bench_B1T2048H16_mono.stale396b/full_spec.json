@@ -1,0 +1,131 @@
+{
+  "kernel": "gdn_fwd_mono",
+  "path": "mono",
+  "shape": {
+    "B": 1,
+    "T": 2048,
+    "H": 16,
+    "K": 128,
+    "V": 128,
+    "C": 64,
+    "NC": 32,
+    "Tp": 2048
+  },
+  "knobs": {
+    "warps": 4,
+    "bv": 32,
+    "bk": 32,
+    "mb": 2,
+    "depth": 2,
+    "f2": "pp",
+    "f2_segments": 1
+  },
+  "params": [
+    {
+      "name": "k",
+      "dtype": "bf16",
+      "elems": 4194304
+    },
+    {
+      "name": "v",
+      "dtype": "bf16",
+      "elems": 4194304
+    },
+    {
+      "name": "beta",
+      "dtype": "f32",
+      "elems": 32768
+    },
+    {
+      "name": "g",
+      "dtype": "f32",
+      "elems": 32768
+    },
+    {
+      "name": "u",
+      "dtype": "bf16",
+      "elems": 4194304
+    },
+    {
+      "name": "w",
+      "dtype": "bf16",
+      "elems": 4194304
+    },
+    {
+      "name": "gc",
+      "dtype": "f32",
+      "elems": 32768
+    },
+    {
+      "name": "h0",
+      "dtype": "f32",
+      "elems": 262144
+    },
+    {
+      "name": "h_all",
+      "dtype": "bf16",
+      "elems": 8388608
+    },
+    {
+      "name": "v_new",
+      "dtype": "bf16",
+      "elems": 4194304
+    },
+    {
+      "name": "ht",
+      "dtype": "f32",
+      "elems": 262144
+    },
+    {
+      "name": "q",
+      "dtype": "bf16",
+      "elems": 4194304
+    },
+    {
+      "name": "o",
+      "dtype": "bf16",
+      "elems": 4194304
+    }
+  ],
+  "kernels": [
+    {
+      "name": "gdn_fwd_f1",
+      "grid": [
+        32,
+        16,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "gdn_fwd_f2",
+      "grid": [
+        64,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "gdn_fwd_f3",
+      "grid": [
+        512,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+ "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+ "config": {
+  "BV": 64,
+  "warps": 2,
+  "stages": 3
+ },
+ "shared_dynamic": 33288,
+ "num_warps": 2,
+ "ptxas": {
+  "registers": 255,
+  "smem_static": null,
+  "spill_stores": 3236,
+  "spill_loads": 3788,
+  "stack_frame": 2496
+ },
+ "ptx_features": {
+  "mma.sync": 512,
+  "cp.async": 14,
+  "tma.bulk": 0,
+  "mbarrier": 0,
+  "exp.approx": 0,
+  "ld.global": 640,
+  "st.global": 320,
+  "ld.shared": 235,
+  "st.shared": 393,
+  "bar.sync": 52,
+  "barrier": 0,
+  "shfl.sync": 0,
+  "redux": 0,
+  "setmaxnreg": 0,
+  "movmatrix": 0,
+  "ldmatrix": 105,
+  "stmatrix": 80,
+  "wmma": 0,
+  "wgmma": 0,
+  "tcgen05": 0,
+  "fma.f32": 128,
+  "mma.sync.other": 0
+ }
+}

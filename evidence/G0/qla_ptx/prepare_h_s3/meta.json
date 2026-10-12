@@ -1,0 +1,34 @@
+{
+ "kernel": "prepare_h_s3",
+ "ptxas": {
+  "registers": 128,
+  "smem_static": 2048,
+  "spill_stores": 8,
+  "spill_loads": 8,
+  "stack_frame": 8
+ },
+ "ptx_features": {
+  "mma.sync": 224,
+  "cp.async": 24,
+  "tma.bulk": 0,
+  "mbarrier": 65,
+  "exp.approx": 0,
+  "ld.global": 154,
+  "st.global": 128,
+  "ld.shared": 43,
+  "st.shared": 174,
+  "bar.sync": 15,
+  "barrier": 0,
+  "shfl.sync": 0,
+  "redux": 0,
+  "setmaxnreg": 4,
+  "movmatrix": 0,
+  "ldmatrix": 68,
+  "stmatrix": 32,
+  "wmma": 0,
+  "wgmma": 0,
+  "tcgen05": 0,
+  "fma.f32": 0,
+  "mma.sync.other": 0
+ }
+}

@@ -1,0 +1,78 @@
+{
+  "config": "kkt_bf16_mma_tma_ws",
+  "dtype": "bfloat16",
+  "cuda_tensor_map_dtype": "CU_TENSOR_MAP_DATA_TYPE_BFLOAT16",
+  "swizzle": "CU_TENSOR_MAP_SWIZZLE_NONE",
+  "interleave": "CU_TENSOR_MAP_INTERLEAVE_NONE",
+  "l2_promotion": "CU_TENSOR_MAP_L2_PROMOTION_NONE",
+  "oob_fill": "CU_TENSOR_MAP_FLOAT_OOB_FILL_NONE",
+  "descriptors": {
+    "descA": {
+      "rank": 4,
+      "source": "input k, row-major [64 x K] bf16",
+      "global_dim": [
+        128,
+        64,
+        1,
+        1
+      ],
+      "global_strides_bytes": [
+        256,
+        16384,
+        16384
+      ],
+      "box_dim": [
+        64,
+        64,
+        1,
+        1
+      ],
+      "kernel_coords": "[%k0, 0, 0, 0] (CUDA order: K offset first)",
+      "smem_tile": "[64 x 64] K-contiguous (k-rows A tile)"
+    },
+    "descB": {
+      "rank": 5,
+      "source": "input k, row-major [64 x K] bf16 (viewed as k^T)",
+      "global_dim": [
+        128,
+        64,
+        1,
+        1,
+        1
+      ],
+      "global_strides_bytes": [
+        256,
+        16384,
+        16384,
+        16384
+      ],
+      "box_dim": [
+        64,
+        64,
+        1,
+        1,
+        1
+      ],
+      "kernel_coords": "[%k0, 0, 0, 0, 0] (CUDA order)",
+      "smem_tile": "[64 x 64] K-contiguous (k-rows B tile, transposed b_frag reads)"
+    },
+    "descS": {
+      "rank": 2,
+      "source": "output c, row-major [64 x 64] bf16",
+      "global_dim": [
+        64,
+        64
+      ],
+      "global_strides_bytes": [
+        128
+      ],
+      "box_dim": [
+        64,
+        64
+      ],
+      "kernel_coords": "[0, 0]",
+      "smem_tile": "[64 x 64] N-contiguous"
+    }
+  },
+  "kernel_params": "three .u64 .ptr params (descA, descB, descS), each holding a DEVICE pointer to a 64-byte-aligned 128-byte CUtensorMap"
+}

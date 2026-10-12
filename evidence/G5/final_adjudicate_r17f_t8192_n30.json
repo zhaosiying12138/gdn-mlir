@@ -1,0 +1,132 @@
+{
+  "what": "G5 final adjudication: interleaved fla-vs-ours fwd, 5 pairs/shape, CUDA events, shared-recipe inputs",
+  "probe": {
+    "FLA_FLASH_QLA": "0",
+    "flash_qla_importable": false,
+    "flash_qla_backend_can_use": false,
+    "torch": "2.14.1+cu130"
+  },
+  "knobs": {
+    "warps": 4,
+    "bv": 32,
+    "f2_segments": 1
+  },
+  "gpu_start": {
+    "util_pct": 3,
+    "mem_used_mib": 2407,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 180
+  },
+  "results": {
+    "B1T8192": {
+      "shape": {
+        "name": "B1T8192",
+        "B": 1,
+        "T": 8192,
+        "H": 16,
+        "K": 128,
+        "V": 128
+      },
+      "ours_samples_ms": [
+        0.855808,
+        0.822784,
+        0.82256,
+        0.822528,
+        0.825216,
+        0.820288,
+        0.82224,
+        0.854272,
+        0.861568,
+        0.82,
+        0.827136,
+        0.826464,
+        0.82736,
+        0.823488,
+        0.825504,
+        0.827616,
+        0.83024,
+        0.829632,
+        0.825216,
+        0.836736,
+        0.825792,
+        0.825696,
+        0.825312,
+        0.827424,
+        0.8768,
+        0.8776,
+        0.872384,
+        0.876768,
+        0.882464,
+        0.878848
+      ],
+      "fla_samples_ms": [
+        1.244416,
+        0.9544,
+        0.942784,
+        0.9416,
+        0.939584,
+        0.9312,
+        0.926624,
+        1.070752,
+        1.013312,
+        0.949088,
+        0.99904,
+        1.059936,
+        0.928928,
+        0.931456,
+        0.939232,
+        0.967264,
+        1.287488,
+        0.961888,
+        0.970304,
+        0.956896,
+        0.938432,
+        0.946912,
+        0.968992,
+        0.979392,
+        0.980928,
+        0.988384,
+        0.9864,
+        0.988864,
+        1.05856,
+        1.05072
+      ],
+      "ours_median_ms": 0.827248,
+      "fla_median_ms": 0.968128,
+      "speedup_ratio_of_medians": 1.1703,
+      "speedup_median_of_ratios": 1.1521,
+      "ours_min_ms": 0.82,
+      "fla_min_ms": 0.926624,
+      "window_pre": {
+        "util_pct": 1,
+        "mem_used_mib": 3385,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 1612
+      },
+      "window_post": {
+        "util_pct": 17,
+        "mem_used_mib": 3385,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 1612
+      },
+      "stats": {
+        "n_pairs": 30,
+        "median_ratio": 1.1521,
+        "iqr": 0.0463,
+        "iqr_over_median": 0.0402,
+        "min_ratio": 1.1188,
+        "max_ratio": 1.5507,
+        "sign_test_p_vs_1": 0.0,
+        "decidable_rule": "(median-1) > 3*IQR/median",
+        "decidable": true
+      },
+      "window_clean": true
+    }
+  },
+  "gpu_end": {
+    "util_pct": 17,
+    "mem_used_mib": 3385,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 1612
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "what": "g5m full-remeasure: ours bwd e2e (9-kernel chain, HEAD a7a5603 fresh rebuild) vs fla bwd, 30 reps CUDA events, clean window",
+  "window": "clean (0 compute apps at start; gdn-mlir full-remeasure row)",
+  "shapes": {
+    "B1T2048": {
+      "shape": "1,2048,16,128,128",
+      "iters": 30,
+      "ours_bwd_ms_median": 2.6889,
+      "ours_bwd_ms_min": 2.6754,
+      "ours_stage_ms_median": {
+        "wy": 0.2246,
+        "fwdscan": 0.3754,
+        "caryA": 0.0523,
+        "caryM": 0.0796,
+        "bpre": 0.0511,
+        "dhs": 0.3121,
+        "dkb": 0.2409,
+        "dqkwg": 0.937,
+        "wyb": 0.3386
+      },
+      "shared_gpu": true,
+      "fla": {
+        "fla_bwd_ms_median": 1.2994270073249936,
+        "fla_bwd_ms_min": 1.0917210020124912
+      },
+      "bwd_speedup_vs_fla": 0.483,
+      "chain_note": "flagship r13 chain"
+    },
+    "B4T2048": {
+      "shape": "4,2048,16,128,128",
+      "iters": 30,
+      "ours_bwd_ms_median": 9.7585,
+      "ours_bwd_ms_min": 9.739,
+      "ours_stage_ms_median": {
+        "wy": 0.7936,
+        "fwdscan": 1.4541,
+        "caryA": 0.3139,
+        "caryM": 0.3849,
+        "bpre": 0.3066,
+        "dhs": 1.1803,
+        "dkb": 0.8598,
+        "dqkwg": 3.4335,
+        "wyb": 1.1305
+      },
+      "shared_gpu": true,
+      "fla": {
+        "fla_bwd_ms_median": 3.211849951185286,
+        "fla_bwd_ms_min": 3.1247929437085986
+      },
+      "bwd_speedup_vs_fla": 0.329,
+      "chain_note": "flagship r13 chain"
+    },
+    "B1T8192_v2": {
+      "shape": "1,8192,16,128,128",
+      "iters": 30,
+      "ours_bwd_ms_median": 11.4216,
+      "ours_bwd_ms_min": 11.4007,
+      "ours_stage_ms_median": {
+        "wy": 0.7928,
+        "fwdscan": 3.1147,
+        "caryA": 0.3168,
+        "caryM": 0.3821,
+        "bpre": 0.31,
+        "dhs": 1.1686,
+        "dkb": 0.8599,
+        "dqkwg": 3.4313,
+        "wyb": 1.172
+      },
+      "shared_gpu": true,
+      "fla": {
+        "fla_bwd_ms_median": 3.4907839726656675,
+        "fla_bwd_ms_min": 3.451320924796164
+      },
+      "bwd_speedup_vs_fla": 0.306,
+      "chain_note": "AUXILIARY: GDN_SCAN_PP=0 v2-fwdscan fallback (flagship v3 fwdscan exceeds 101376B static smem at NC=128: 123136B)"
+    }
+  }
+}

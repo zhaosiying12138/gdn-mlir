@@ -1,0 +1,12 @@
+
+case         shape                             dq          dk          dv       dbeta          dg         dh0  finite  verdict
+base         B1 T128 H2 K16 V16 C64       3.2e-06     6.0e-06     4.9e-06     5.0e-06     1.6e-06     5.8e-08  True    PASS
+chunk32      B1 T128 H2 K16 V16 C32       2.3e-06     5.0e-06     2.1e-06     2.4e-06     6.6e-06     4.9e-07  True    PASS
+tail_t96     B1 T96 H2 K16 V16 C64        4.9e-06     4.8e-06     9.5e-07     3.6e-05     7.7e-07     3.7e-07  True    PASS
+tail_b2      B2 T100 H2 K16 V16 C64       3.2e-06     8.1e-06     4.9e-06     4.4e-06     3.0e-06     4.9e-07  True    PASS
+jax_C64_h0   B2 T128 H2 K16 V16 C64   4.5e-06/4e-06 5.8e-06/6e-06 5.0e-06/5e-06 6.4e-06/7e-06 6.0e-06/6e-06 4.5e-07/5e-07  True    PASS
+jax_C64      B2 T128 H2 K16 V16 C64   4.5e-06/4e-06 5.8e-06/6e-06 5.0e-06/5e-06 6.4e-06/7e-06 6.0e-06/6e-06 4.5e-07/5e-07  True    PASS
+jax_C32      B2 T128 H2 K16 V16 C32   4.5e-06/4e-06 5.6e-06/6e-06 5.0e-06/5e-06 5.5e-06/5e-06 4.3e-06/4e-06 4.5e-07/5e-07  True    PASS
+
+gate: max abs diff < 2e-04 vs fp32 refs (or < 3e-04 vs *_fp64); no NaN/Inf
+ALL PASS

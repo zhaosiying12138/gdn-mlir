@@ -1,0 +1,6336 @@
+{
+ "generated_utc": "2026-10-08 19:13:51 UTC",
+ "counts": {
+  "fla_configs": 22,
+  "qla_kernels": 5
+ },
+ "families": {
+  "ld.param": {
+   "fla_count": 167,
+   "qla_count": 481,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 22,
+   "qla_configs": 5,
+   "variants": [
+    "ld.param.b32",
+    "ld.param.b64",
+    "ld.param.s32"
+   ],
+   "tier": "baseline"
+  },
+  "mov": {
+   "fla_count": 11775,
+   "qla_count": 6227,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 22,
+   "qla_configs": 5,
+   "variants": [
+    "mov.b16",
+    "mov.b32",
+    "mov.b64",
+    "mov.s32",
+    "mov.u16",
+    "mov.u32"
+   ],
+   "tier": "baseline"
+  },
+  "cvt.int": {
+   "fla_count": 802,
+   "qla_count": 2541,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 22,
+   "qla_configs": 5,
+   "variants": [
+    "cvt.s64.s32",
+    "cvt.u16.u32",
+    "cvt.u32.u16",
+    "cvt.u32.u64",
+    "cvt.u64.u32"
+   ],
+   "tier": "baseline"
+  },
+  "logic.shift": {
+   "fla_count": 7534,
+   "qla_count": 7441,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 22,
+   "qla_configs": 5,
+   "variants": [
+    "and.b16",
+    "and.b32",
+    "and.b64",
+    "and.pred",
+    "not.b32",
+    "not.pred",
+    "or.b16",
+    "or.b32",
+    "or.b64",
+    "or.pred",
+    "shl.b16",
+    "shl.b32",
+    "shl.b64",
+    "shr.s32",
+    "shr.u16",
+    "shr.u32",
+    "shr.u64",
+    "xor.b16",
+    "xor.b32"
+   ],
+   "tier": "baseline"
+  },
+  "math.int": {
+   "fla_count": 12785,
+   "qla_count": 3738,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 22,
+   "qla_configs": 5,
+   "variants": [
+    "add.s32",
+    "add.s64",
+    "bfe.s32",
+    "bfe.u32",
+    "bfe.u64",
+    "div.s32",
+    "div.u32",
+    "mad.lo.s32",
+    "mad.lo.s64",
+    "mad.wide.s32",
+    "mad.wide.u32",
+    "max.s32",
+    "min.s32",
+    "min.s64",
+    "min.u64",
+    "mul.hi.u32",
+    "mul.lo.s32",
+    "mul.lo.s64",
+    "mul.wide.s32",
+    "mul.wide.u16",
+    "mul.wide.u32",
+    "neg.s32",
+    "neg.s64",
+    "sub.s32",
+    "sub.s64"
+   ],
+   "tier": "baseline"
+  },
+  "setp": {
+   "fla_count": 1917,
+   "qla_count": 1794,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 22,
+   "qla_configs": 5,
+   "variants": [
+    "setp.eq.b32",
+    "setp.eq.b64",
+    "setp.ge.s32",
+    "setp.ge.u32",
+    "setp.gt.s32",
+    "setp.gt.s64",
+    "setp.gt.u32",
+    "setp.gt.u64",
+    "setp.le.s32",
+    "setp.le.u32",
+    "setp.le.u64",
+    "setp.lt.s32",
+    "setp.lt.s64",
+    "setp.lt.u32",
+    "setp.lt.u64",
+    "setp.ne.b32",
+    "setp.ne.b64"
+   ],
+   "tier": "baseline"
+  },
+  "selp": {
+   "fla_count": 2529,
+   "qla_count": 187,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "kkt_solve",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 21,
+   "qla_configs": 3,
+   "variants": [
+    "selp.b16",
+    "selp.b32",
+    "selp.b64",
+    "selp.f32"
+   ],
+   "tier": "baseline"
+  },
+  "mov.pred": {
+   "fla_count": 79,
+   "qla_count": 0,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel"
+   ],
+   "qla_kernels": [],
+   "fla_configs": 17,
+   "qla_configs": 0,
+   "variants": [
+    "mov.pred"
+   ],
+   "tier": "baseline"
+  },
+  "ld.global": {
+   "fla_count": 4237,
+   "qla_count": 581,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 22,
+   "qla_configs": 5,
+   "variants": [
+    "ld.global.b16",
+    "ld.global.b32",
+    "ld.global.nc.b16",
+    "ld.global.nc.b32",
+    "ld.global.nc.v2.b32",
+    "ld.global.nc.v4.b32",
+    "ld.global.v4.b32"
+   ],
+   "tier": "baseline"
+  },
+  "bar.sync": {
+   "fla_count": 697,
+   "qla_count": 203,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 21,
+   "qla_configs": 5,
+   "variants": [
+    "bar.sync"
+   ],
+   "tier": "feature"
+  },
+  "st.shared": {
+   "fla_count": 3754,
+   "qla_count": 1018,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 21,
+   "qla_configs": 5,
+   "variants": [
+    "st.shared.b16",
+    "st.shared.b32",
+    "st.shared.b64",
+    "st.shared.v2.b16",
+    "st.shared.v2.b32",
+    "st.shared.v4.b32",
+    "st.shared::cta.b16",
+    "st.shared::cta.b32",
+    "st.shared::cta.v2.b16",
+    "st.shared::cta.v2.b32",
+    "st.shared::cta.v4.b16",
+    "st.shared::cta.v4.b32"
+   ],
+   "tier": "baseline"
+  },
+  "ld.shared": {
+   "fla_count": 1624,
+   "qla_count": 992,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 21,
+   "qla_configs": 5,
+   "variants": [
+    "ld.shared.b16",
+    "ld.shared.b32",
+    "ld.shared.b64",
+    "ld.shared.v2.b16",
+    "ld.shared.v2.b32",
+    "ld.shared.v2.b64",
+    "ld.shared.v4.b16",
+    "ld.shared.v4.b32"
+   ],
+   "tier": "baseline"
+  },
+  "cvt.bf16f32": {
+   "fla_count": 4088,
+   "qla_count": 2276,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 22,
+   "qla_configs": 5,
+   "variants": [
+    "add.bf16",
+    "add.bf16x2",
+    "add.rn.f32.bf16",
+    "cvt.f32.bf16",
+    "cvt.rn.bf16.f32",
+    "cvt.rn.bf16x2.f32",
+    "fma.rn.bf16x2",
+    "mul.bf16",
+    "mul.bf16x2",
+    "sub.rn.f32.bf16"
+   ],
+   "tier": "baseline"
+  },
+  "shfl.sync": {
+   "fla_count": 966,
+   "qla_count": 80,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd"
+   ],
+   "fla_configs": 11,
+   "qla_configs": 1,
+   "variants": [
+    "shfl.sync.bfly.b32",
+    "shfl.sync.idx.b32"
+   ],
+   "tier": "feature"
+  },
+  "ldmatrix": {
+   "fla_count": 1182,
+   "qla_count": 1016,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 20,
+   "qla_configs": 5,
+   "variants": [
+    "ldmatrix.sync.aligned.m8n8.x1.shared.b16",
+    "ldmatrix.sync.aligned.m8n8.x4.shared.b16",
+    "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16",
+    "ldmatrix.sync.aligned.x4.m8n8.shared.b16",
+    "ldmatrix.sync.aligned.x4.trans.m8n8.shared.b16"
+   ],
+   "tier": "feature"
+  },
+  "mma.sync": {
+   "fla_count": 3284,
+   "qla_count": 2496,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 18,
+   "qla_configs": 5,
+   "variants": [
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32",
+    "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32"
+   ],
+   "tier": "feature"
+  },
+  "bra": {
+   "fla_count": 108,
+   "qla_count": 2273,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 22,
+   "qla_configs": 5,
+   "variants": [
+    "bra",
+    "bra.uni",
+    "ret"
+   ],
+   "tier": "baseline"
+  },
+  "st.global": {
+   "fla_count": 1898,
+   "qla_count": 505,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 22,
+   "qla_configs": 5,
+   "variants": [
+    "st.global.b16",
+    "st.global.b32",
+    "st.global.b64",
+    "st.global.v2.b32",
+    "st.global.v4.b32"
+   ],
+   "tier": "baseline"
+  },
+  "ex2.approx": {
+   "fla_count": 549,
+   "qla_count": 74,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 17,
+   "qla_configs": 4,
+   "variants": [
+    "ex2.approx.f32",
+    "ex2.approx.ftz.f32"
+   ],
+   "tier": "feature"
+  },
+  "math.f32": {
+   "fla_count": 4154,
+   "qla_count": 762,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 19,
+   "qla_configs": 5,
+   "variants": [
+    "add.f32",
+    "mul.f32",
+    "neg.f32",
+    "sub.f32"
+   ],
+   "tier": "baseline"
+  },
+  "math.f32x2": {
+   "fla_count": 1002,
+   "qla_count": 1547,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 13,
+   "qla_configs": 5,
+   "variants": [
+    "add.f32x2",
+    "add.rn.f32x2",
+    "fma.rn.f32x2",
+    "mul.f32x2",
+    "mul.rn.f32x2",
+    "sub.f32x2",
+    "sub.rn.f32x2"
+   ],
+   "tier": "baseline"
+  },
+  "fma.f32": {
+   "fla_count": 835,
+   "qla_count": 0,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "solve_tril_16x16_kernel"
+   ],
+   "qla_kernels": [],
+   "fla_configs": 13,
+   "qla_configs": 0,
+   "variants": [
+    "fma.rn.f32"
+   ],
+   "tier": "baseline"
+  },
+  "stmatrix": {
+   "fla_count": 283,
+   "qla_count": 212,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "merge_16x16_to_32x32_inverse_kernel",
+    "merge_16x16_to_64x64_inverse_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 12,
+   "qla_configs": 4,
+   "variants": [
+    "stmatrix.sync.aligned.m8n8.x2.shared.b16",
+    "stmatrix.sync.aligned.m8n8.x4.shared.b16",
+    "stmatrix.sync.aligned.m8n8.x4.trans.shared.b16",
+    "stmatrix.sync.aligned.x4.m8n8.shared.b16"
+   ],
+   "tier": "feature"
+  },
+  "cp.async.classic": {
+   "fla_count": 28,
+   "qla_count": 8,
+   "fla_kernels": [
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64"
+   ],
+   "qla_kernels": [
+    "kkt_solve"
+   ],
+   "fla_configs": 4,
+   "qla_configs": 1,
+   "variants": [
+    "cp.async.ca.shared.global",
+    "cp.async.cg.shared.global"
+   ],
+   "tier": "feature"
+  },
+  "cp.async.ctrl": {
+   "fla_count": 36,
+   "qla_count": 2,
+   "fla_kernels": [
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64"
+   ],
+   "qla_kernels": [
+    "kkt_solve"
+   ],
+   "fla_configs": 4,
+   "qla_configs": 1,
+   "variants": [
+    "cp.async.commit_group",
+    "cp.async.wait_all",
+    "cp.async.wait_group"
+   ],
+   "tier": "feature"
+  },
+  "cvta": {
+   "fla_count": 0,
+   "qla_count": 120,
+   "fla_kernels": [],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 0,
+   "qla_configs": 5,
+   "variants": [
+    "cvta.param.u64",
+    "cvta.to.global.u64"
+   ],
+   "tier": "baseline"
+  },
+  "elect.sync": {
+   "fla_count": 0,
+   "qla_count": 59,
+   "fla_kernels": [],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 0,
+   "qla_configs": 4,
+   "variants": [
+    "elect.sync"
+   ],
+   "tier": "feature"
+  },
+  "prefetch.tensormap": {
+   "fla_count": 0,
+   "qla_count": 22,
+   "fla_kernels": [],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 0,
+   "qla_configs": 4,
+   "variants": [
+    "prefetch.tensormap"
+   ],
+   "tier": "feature"
+  },
+  "mbarrier": {
+   "fla_count": 0,
+   "qla_count": 386,
+   "fla_kernels": [],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 0,
+   "qla_configs": 4,
+   "variants": [
+    "mbarrier.arrive.shared::cta.b64",
+    "mbarrier.expect_tx.shared::cta.b64",
+    "mbarrier.init.shared::cta.b64",
+    "mbarrier.try_wait.parity.shared::cta.b64"
+   ],
+   "tier": "feature"
+  },
+  "barrier": {
+   "fla_count": 0,
+   "qla_count": 39,
+   "fla_kernels": [],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 0,
+   "qla_configs": 4,
+   "variants": [
+    "fence.mbarrier_init.release.cluster",
+    "fence.proxy.async.shared::cta"
+   ],
+   "tier": "feature"
+  },
+  "setmaxnreg": {
+   "fla_count": 0,
+   "qla_count": 16,
+   "fla_kernels": [],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 0,
+   "qla_configs": 4,
+   "variants": [
+    "setmaxnreg.dec.sync.aligned.u32",
+    "setmaxnreg.inc.sync.aligned.u32"
+   ],
+   "tier": "feature"
+  },
+  "tma.bulk.tensor": {
+   "fla_count": 0,
+   "qla_count": 100,
+   "fla_kernels": [],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 0,
+   "qla_configs": 4,
+   "variants": [
+    "cp.async.bulk.tensor.4d.global.shared::cta.bulk_group",
+    "cp.async.bulk.tensor.4d.shared::cta.global.mbarrier::complete_tx::bytes.L2::cache_hint",
+    "cp.async.bulk.tensor.5d.global.shared::cta.bulk_group",
+    "cp.async.bulk.tensor.5d.shared::cta.global.mbarrier::complete_tx::bytes.L2::cache_hint"
+   ],
+   "tier": "feature"
+  },
+  "tma.bulk.ctrl": {
+   "fla_count": 0,
+   "qla_count": 50,
+   "fla_kernels": [],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "prepare_h",
+    "prepare_h_s3"
+   ],
+   "fla_configs": 0,
+   "qla_configs": 4,
+   "variants": [
+    "cp.async.bulk.commit_group",
+    "cp.async.bulk.wait_group.read"
+   ],
+   "tier": "feature"
+  }
+ },
+ "mma_signatures": {
+  "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": {
+   "fla": 2708,
+   "qla": 2496,
+   "fla_kernels": [
+    "chunk_bwd_kernel_dqkwg",
+    "chunk_bwd_kernel_dv_local",
+    "chunk_fwd_kernel_o",
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+    "chunk_scaled_dot_kkt_fwd_kernel",
+    "prepare_wy_repr_bwd_kernel",
+    "recompute_w_u_fwd_kernel"
+   ],
+   "qla_kernels": [
+    "fused_bwd",
+    "fused_fwd",
+    "kkt_solve",
+    "prepare_h",
+    "prepare_h_s3"
+   ]
+  },
+  "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32": {
+   "fla": 576,
+   "qla": 0,
+   "fla_kernels": [
+    "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel"
+   ],
+   "qla_kernels": []
+  }
+ },
+ "resource_envelopes": {
+  "fla:chunk_bwd_kernel_dqkwg": {
+   "configs": [
+    "warps4_stages2",
+    "warps4_stages3"
+   ],
+   "regs": [
+    255,
+    255
+   ],
+   "smem_bytes": [
+    32776,
+    32776
+   ],
+   "spill_max_bytes": 1544,
+   "mma_total": [
+    192,
+    192
+   ]
+  },
+  "fla:chunk_bwd_kernel_dv_local": {
+   "configs": [
+    "warps4_stages3"
+   ],
+   "regs": [
+    222,
+    222
+   ],
+   "smem_bytes": [
+    16384,
+    16384
+   ],
+   "spill_max_bytes": 0,
+   "mma_total": [
+    32,
+    32
+   ]
+  },
+  "fla:chunk_fwd_kernel_o": {
+   "configs": [
+    "BK32_BV32_warps2_stages3",
+    "BK64_BV64_warps4_stages3"
+   ],
+   "regs": [
+    255,
+    255
+   ],
+   "smem_bytes": [
+    10240,
+    24576
+   ],
+   "spill_max_bytes": 824,
+   "mma_total": [
+    80,
+    96
+   ]
+  },
+  "fla:chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64": {
+   "configs": [
+    "BV32_warps2_stages4",
+    "BV64_warps2_stages3"
+   ],
+   "regs": [
+    255,
+    255
+   ],
+   "smem_bytes": [
+    29452,
+    33288
+   ],
+   "spill_max_bytes": 3788,
+   "mma_total": [
+    256,
+    512
+   ]
+  },
+  "fla:chunk_gated_delta_rule_fwd_kernel_h_blockdim64": {
+   "configs": [
+    "BV32_warps2_stages4",
+    "BV64_warps2_stages3"
+   ],
+   "regs": [
+    255,
+    255
+   ],
+   "smem_bytes": [
+    17164,
+    25096
+   ],
+   "spill_max_bytes": 764,
+   "mma_total": [
+    128,
+    256
+   ]
+  },
+  "fla:chunk_gated_delta_rule_fwd_kkt_solve_kernel": {
+   "configs": [
+    "warps2_stages3",
+    "warps4_stages3",
+    "warps4_stages4"
+   ],
+   "regs": [
+    255,
+    255
+   ],
+   "smem_bytes": [
+    5120,
+    6144
+   ],
+   "spill_max_bytes": 212,
+   "mma_total": [
+    140,
+    140
+   ]
+  },
+  "fla:chunk_scaled_dot_kkt_fwd_kernel": {
+   "configs": [
+    "BK128_warps8_stages3",
+    "BK64_warps4_stages3"
+   ],
+   "regs": [
+    64,
+    194
+   ],
+   "smem_bytes": [
+    16384,
+    32768
+   ],
+   "spill_max_bytes": 20,
+   "mma_total": [
+    32,
+    32
+   ]
+  },
+  "fla:merge_16x16_to_32x32_inverse_kernel": {
+   "configs": [
+    "warps4_stages2"
+   ],
+   "regs": [
+    56,
+    56
+   ],
+   "smem_bytes": [
+    3072,
+    3072
+   ],
+   "spill_max_bytes": 0,
+   "mma_total": [
+    0,
+    0
+   ]
+  },
+  "fla:merge_16x16_to_64x64_inverse_kernel": {
+   "configs": [
+    "warps4_stages2"
+   ],
+   "regs": [
+    246,
+    246
+   ],
+   "smem_bytes": [
+    10240,
+    10240
+   ],
+   "spill_max_bytes": 0,
+   "mma_total": [
+    0,
+    0
+   ]
+  },
+  "fla:prepare_wy_repr_bwd_kernel": {
+   "configs": [
+    "warps2_stages4",
+    "warps4_stages3"
+   ],
+   "regs": [
+    255,
+    255
+   ],
+   "smem_bytes": [
+    17408,
+    24576
+   ],
+   "spill_max_bytes": 5348,
+   "mma_total": [
+    288,
+    576
+   ]
+  },
+  "fla:recompute_w_u_fwd_kernel": {
+   "configs": [
+    "warps2_stages3",
+    "warps4_stages2"
+   ],
+   "regs": [
+    255,
+    255
+   ],
+   "smem_bytes": [
+    16384,
+    16384
+   ],
+   "spill_max_bytes": 444,
+   "mma_total": [
+    64,
+    128
+   ]
+  },
+  "fla:solve_tril_16x16_kernel": {
+   "configs": [
+    "warps1_stages4",
+    "warps4_stages2"
+   ],
+   "regs": [
+    40,
+    66
+   ],
+   "smem_bytes": [
+    0,
+    256
+   ],
+   "spill_max_bytes": 0,
+   "mma_total": [
+    0,
+    0
+   ]
+  },
+  "qla:fused_bwd": {
+   "configs": [
+    "default"
+   ],
+   "regs": [
+    128,
+    128
+   ],
+   "smem_bytes": [
+    2048,
+    2048
+   ],
+   "spill_max_bytes": 1752,
+   "mma_total": [
+    1600,
+    1600
+   ]
+  },
+  "qla:fused_fwd": {
+   "configs": [
+    "default"
+   ],
+   "regs": [
+    128,
+    128
+   ],
+   "smem_bytes": [
+    2048,
+    2048
+   ],
+   "spill_max_bytes": 1272,
+   "mma_total": [
+    384,
+    384
+   ]
+  },
+  "qla:kkt_solve": {
+   "configs": [
+    "default"
+   ],
+   "regs": [
+    88,
+    88
+   ],
+   "smem_bytes": [
+    1024,
+    1024
+   ],
+   "spill_max_bytes": 0,
+   "mma_total": [
+    64,
+    64
+   ]
+  },
+  "qla:prepare_h": {
+   "configs": [
+    "default"
+   ],
+   "regs": [
+    128,
+    128
+   ],
+   "smem_bytes": [
+    2048,
+    2048
+   ],
+   "spill_max_bytes": 0,
+   "mma_total": [
+    224,
+    224
+   ]
+  },
+  "qla:prepare_h_s3": {
+   "configs": [
+    "default"
+   ],
+   "regs": [
+    128,
+    128
+   ],
+   "smem_bytes": [
+    2048,
+    2048
+   ],
+   "spill_max_bytes": 8,
+   "mma_total": [
+    224,
+    224
+   ]
+  }
+ },
+ "t1_family_set": [
+  "bar.sync",
+  "barrier",
+  "bra",
+  "cp.async.classic",
+  "cp.async.ctrl",
+  "cvt.bf16f32",
+  "cvt.int",
+  "cvta",
+  "elect.sync",
+  "ex2.approx",
+  "fma.f32",
+  "ld.global",
+  "ld.param",
+  "ld.shared",
+  "ldmatrix",
+  "logic.shift",
+  "math.f32",
+  "math.f32x2",
+  "math.int",
+  "mbarrier",
+  "mma.sync",
+  "mov",
+  "mov.pred",
+  "prefetch.tensormap",
+  "selp",
+  "setmaxnreg",
+  "setp",
+  "shfl.sync",
+  "st.global",
+  "st.shared",
+  "stmatrix",
+  "tma.bulk.ctrl",
+  "tma.bulk.tensor"
+ ],
+ "t1_feature_families": [
+  "bar.sync",
+  "barrier",
+  "cp.async.classic",
+  "cp.async.ctrl",
+  "elect.sync",
+  "ex2.approx",
+  "ldmatrix",
+  "mbarrier",
+  "mma.sync",
+  "prefetch.tensormap",
+  "setmaxnreg",
+  "shfl.sync",
+  "stmatrix",
+  "tma.bulk.ctrl",
+  "tma.bulk.tensor"
+ ],
+ "entries": [
+  {
+   "ref": "fla",
+   "kernel": "chunk_bwd_kernel_dqkwg",
+   "config": "warps4_stages2",
+   "path": "evidence/G0/fla_ptx/chunk_bwd_kernel_dqkwg/warps4_stages2/kernel.ptx",
+   "families": {
+    "ld.param": 14,
+    "mov": 613,
+    "cvt.int": 71,
+    "logic.shift": 515,
+    "math.int": 869,
+    "setp": 96,
+    "selp": 109,
+    "mov.pred": 4,
+    "ld.global": 243,
+    "bar.sync": 22,
+    "st.shared": 311,
+    "ld.shared": 99,
+    "cvt.bf16f32": 208,
+    "shfl.sync": 22,
+    "ldmatrix": 80,
+    "mma.sync": 192,
+    "bra": 2,
+    "st.global": 97,
+    "ex2.approx": 35,
+    "math.f32": 309,
+    "math.f32x2": 43,
+    "fma.f32": 1,
+    "stmatrix": 4
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b32": 2,
+     "ld.param.b64": 12
+    },
+    "mov": {
+     "mov.u32": 22,
+     "mov.b32": 311,
+     "mov.b64": 55,
+     "mov.b16": 1,
+     "mov.u16": 224
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 53,
+     "cvt.s64.s32": 3,
+     "cvt.u32.u16": 8,
+     "cvt.u16.u32": 7
+    },
+    "logic.shift": {
+     "shr.u64": 2,
+     "and.b64": 3,
+     "shr.s32": 2,
+     "shr.u32": 19,
+     "or.b64": 87,
+     "shl.b64": 189,
+     "and.b32": 34,
+     "shl.b32": 18,
+     "or.b32": 60,
+     "shl.b16": 15,
+     "or.b16": 15,
+     "and.b16": 7,
+     "xor.b32": 31,
+     "xor.b16": 32,
+     "and.pred": 1
+    },
+    "math.int": {
+     "add.s32": 247,
+     "mad.lo.s64": 2,
+     "mul.lo.s64": 1,
+     "add.s64": 612,
+     "bfe.s32": 2,
+     "bfe.u32": 2,
+     "mul.wide.u32": 1,
+     "mul.lo.s32": 1,
+     "min.s64": 1
+    },
+    "setp": {
+     "setp.lt.s64": 53,
+     "setp.ne.b32": 15,
+     "setp.eq.b32": 1,
+     "setp.ge.u32": 26,
+     "setp.gt.u32": 1
+    },
+    "selp": {
+     "selp.b16": 16,
+     "selp.b32": 1,
+     "selp.f32": 92
+    },
+    "mov.pred": {
+     "mov.pred": 4
+    },
+    "ld.global": {
+     "ld.global.b16": 224,
+     "ld.global.b32": 19
+    },
+    "bar.sync": {
+     "bar.sync": 22
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 225,
+     "st.shared::cta.v4.b32": 4,
+     "st.shared::cta.v2.b16": 80,
+     "st.shared::cta.b32": 1,
+     "st.shared::cta.v2.b32": 1
+    },
+    "ld.shared": {
+     "ld.shared.v4.b32": 16,
+     "ld.shared.b16": 1,
+     "ld.shared.v2.b16": 80,
+     "ld.shared.b32": 2
+    },
+    "cvt.bf16f32": {
+     "mul.bf16x2": 8,
+     "fma.rn.bf16x2": 8,
+     "add.bf16x2": 8,
+     "add.bf16": 7,
+     "add.rn.f32.bf16": 1,
+     "cvt.rn.bf16.f32": 97,
+     "cvt.f32.bf16": 64,
+     "cvt.rn.bf16x2.f32": 15
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 22
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 44,
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 36
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 192
+    },
+    "bra": {
+     "bra": 1,
+     "ret": 1
+    },
+    "st.global": {
+     "st.global.b16": 96,
+     "st.global.b32": 1
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 35
+    },
+    "math.f32": {
+     "sub.f32": 34,
+     "mul.f32": 253,
+     "add.f32": 22
+    },
+    "math.f32x2": {
+     "add.f32x2": 43
+    },
+    "fma.f32": {
+     "fma.rn.f32": 1
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x4.shared.b16": 4
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 192
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 32776,
+    "spill_stores": 1544,
+    "spill_loads": 1440,
+    "num_warps": 4
+   },
+   "bra_total": 1,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 192,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 243,
+    "st.global": 97,
+    "ld.shared": 99,
+    "st.shared": 311,
+    "bar.sync": 22,
+    "barrier": 0,
+    "shfl.sync": 22,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 80,
+    "stmatrix": 4,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 1,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 35,
+    "bra": 1
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_bwd_kernel_dqkwg",
+   "config": "warps4_stages3",
+   "path": "evidence/G0/fla_ptx/chunk_bwd_kernel_dqkwg/warps4_stages3/kernel.ptx",
+   "families": {
+    "ld.param": 14,
+    "mov": 613,
+    "cvt.int": 71,
+    "logic.shift": 515,
+    "math.int": 869,
+    "setp": 96,
+    "selp": 109,
+    "mov.pred": 4,
+    "ld.global": 243,
+    "bar.sync": 22,
+    "st.shared": 311,
+    "ld.shared": 99,
+    "cvt.bf16f32": 208,
+    "shfl.sync": 22,
+    "ldmatrix": 80,
+    "mma.sync": 192,
+    "bra": 2,
+    "st.global": 97,
+    "ex2.approx": 35,
+    "math.f32": 309,
+    "math.f32x2": 43,
+    "fma.f32": 1,
+    "stmatrix": 4
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b32": 2,
+     "ld.param.b64": 12
+    },
+    "mov": {
+     "mov.u32": 22,
+     "mov.b32": 311,
+     "mov.b64": 55,
+     "mov.b16": 1,
+     "mov.u16": 224
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 53,
+     "cvt.s64.s32": 3,
+     "cvt.u32.u16": 8,
+     "cvt.u16.u32": 7
+    },
+    "logic.shift": {
+     "shr.u64": 2,
+     "and.b64": 3,
+     "shr.s32": 2,
+     "shr.u32": 19,
+     "or.b64": 87,
+     "shl.b64": 189,
+     "and.b32": 34,
+     "shl.b32": 18,
+     "or.b32": 60,
+     "shl.b16": 15,
+     "or.b16": 15,
+     "and.b16": 7,
+     "xor.b32": 31,
+     "xor.b16": 32,
+     "and.pred": 1
+    },
+    "math.int": {
+     "add.s32": 247,
+     "mad.lo.s64": 2,
+     "mul.lo.s64": 1,
+     "add.s64": 612,
+     "bfe.s32": 2,
+     "bfe.u32": 2,
+     "mul.wide.u32": 1,
+     "mul.lo.s32": 1,
+     "min.s64": 1
+    },
+    "setp": {
+     "setp.lt.s64": 53,
+     "setp.ne.b32": 15,
+     "setp.eq.b32": 1,
+     "setp.ge.u32": 26,
+     "setp.gt.u32": 1
+    },
+    "selp": {
+     "selp.b16": 16,
+     "selp.b32": 1,
+     "selp.f32": 92
+    },
+    "mov.pred": {
+     "mov.pred": 4
+    },
+    "ld.global": {
+     "ld.global.b16": 224,
+     "ld.global.b32": 19
+    },
+    "bar.sync": {
+     "bar.sync": 22
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 225,
+     "st.shared::cta.v4.b32": 4,
+     "st.shared::cta.v2.b16": 80,
+     "st.shared::cta.b32": 1,
+     "st.shared::cta.v2.b32": 1
+    },
+    "ld.shared": {
+     "ld.shared.v4.b32": 16,
+     "ld.shared.b16": 1,
+     "ld.shared.v2.b16": 80,
+     "ld.shared.b32": 2
+    },
+    "cvt.bf16f32": {
+     "mul.bf16x2": 8,
+     "fma.rn.bf16x2": 8,
+     "add.bf16x2": 8,
+     "add.bf16": 7,
+     "add.rn.f32.bf16": 1,
+     "cvt.rn.bf16.f32": 97,
+     "cvt.f32.bf16": 64,
+     "cvt.rn.bf16x2.f32": 15
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 22
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 44,
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 36
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 192
+    },
+    "bra": {
+     "bra": 1,
+     "ret": 1
+    },
+    "st.global": {
+     "st.global.b16": 96,
+     "st.global.b32": 1
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 35
+    },
+    "math.f32": {
+     "sub.f32": 34,
+     "mul.f32": 253,
+     "add.f32": 22
+    },
+    "math.f32x2": {
+     "add.f32x2": 43
+    },
+    "fma.f32": {
+     "fma.rn.f32": 1
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x4.shared.b16": 4
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 192
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 32776,
+    "spill_stores": 1544,
+    "spill_loads": 1440,
+    "num_warps": 4
+   },
+   "bra_total": 1,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 192,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 243,
+    "st.global": 97,
+    "ld.shared": 99,
+    "st.shared": 311,
+    "bar.sync": 22,
+    "barrier": 0,
+    "shfl.sync": 22,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 80,
+    "stmatrix": 4,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 1,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 35,
+    "bra": 1
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_bwd_kernel_dv_local",
+   "config": "warps4_stages3",
+   "path": "evidence/G0/fla_ptx/chunk_bwd_kernel_dv_local/warps4_stages3/kernel.ptx",
+   "families": {
+    "mov": 103,
+    "ld.param": 4,
+    "math.int": 266,
+    "logic.shift": 249,
+    "cvt.int": 34,
+    "setp": 80,
+    "selp": 112,
+    "ld.global": 64,
+    "st.shared": 72,
+    "mov.pred": 3,
+    "bar.sync": 4,
+    "ldmatrix": 16,
+    "mma.sync": 32,
+    "cvt.bf16f32": 32,
+    "ld.shared": 8,
+    "st.global": 32,
+    "bra": 2
+   },
+   "variants": {
+    "mov": {
+     "mov.u32": 3,
+     "mov.b16": 1,
+     "mov.u16": 64,
+     "mov.b32": 33,
+     "mov.b64": 2
+    },
+    "ld.param": {
+     "ld.param.s32": 1,
+     "ld.param.b64": 3
+    },
+    "math.int": {
+     "mul.wide.u32": 2,
+     "mul.lo.s64": 1,
+     "add.s64": 163,
+     "bfe.s32": 1,
+     "bfe.u32": 1,
+     "mad.wide.u32": 1,
+     "add.s32": 96,
+     "mul.lo.s32": 1
+    },
+    "logic.shift": {
+     "and.b64": 2,
+     "or.b64": 35,
+     "shl.b64": 66,
+     "and.b32": 30,
+     "or.b32": 38,
+     "shl.b16": 15,
+     "or.b16": 15,
+     "and.b16": 7,
+     "shr.u32": 17,
+     "shl.b32": 10,
+     "xor.b32": 14
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 33,
+     "cvt.u32.u16": 1
+    },
+    "setp": {
+     "setp.lt.s64": 33,
+     "setp.ne.b32": 15,
+     "setp.le.u32": 32
+    },
+    "selp": {
+     "selp.b16": 112
+    },
+    "ld.global": {
+     "ld.global.b16": 64
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 64,
+     "st.shared::cta.v4.b16": 8
+    },
+    "mov.pred": {
+     "mov.pred": 3
+    },
+    "bar.sync": {
+     "bar.sync": 4
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 16
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 32
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 32
+    },
+    "ld.shared": {
+     "ld.shared.v4.b16": 8
+    },
+    "st.global": {
+     "st.global.b16": 32
+    },
+    "bra": {
+     "bra": 1,
+     "ret": 1
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 32
+   },
+   "resources": {
+    "regs": 222,
+    "smem_static": null,
+    "smem_dynamic": 16384,
+    "spill_stores": 0,
+    "spill_loads": 0,
+    "num_warps": 4
+   },
+   "bra_total": 1,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 32,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 64,
+    "st.global": 32,
+    "ld.shared": 8,
+    "st.shared": 72,
+    "bar.sync": 4,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 16,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 0,
+    "bra": 1
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_fwd_kernel_o",
+   "config": "BK32_BV32_warps2_stages3",
+   "path": "evidence/G0/fla_ptx/chunk_fwd_kernel_o/BK32_BV32_warps2_stages3/kernel.ptx",
+   "families": {
+    "ld.param": 8,
+    "mov": 270,
+    "cvt.int": 59,
+    "logic.shift": 399,
+    "math.int": 556,
+    "setp": 91,
+    "selp": 129,
+    "ld.global": 113,
+    "bar.sync": 10,
+    "st.shared": 122,
+    "mov.pred": 1,
+    "ldmatrix": 24,
+    "mma.sync": 80,
+    "bra": 2,
+    "ld.shared": 14,
+    "ex2.approx": 48,
+    "math.f32": 152,
+    "cvt.bf16f32": 76,
+    "fma.f32": 32,
+    "st.global": 32
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b32": 2,
+     "ld.param.b64": 6
+    },
+    "mov": {
+     "mov.u32": 4,
+     "mov.b32": 152,
+     "mov.b64": 1,
+     "mov.b16": 1,
+     "mov.u16": 112
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 56,
+     "cvt.s64.s32": 2,
+     "cvt.u32.u16": 1
+    },
+    "logic.shift": {
+     "shr.u64": 2,
+     "and.b64": 3,
+     "shr.s32": 2,
+     "shr.u32": 18,
+     "or.b64": 106,
+     "shl.b64": 106,
+     "and.b32": 35,
+     "or.b32": 58,
+     "shl.b16": 15,
+     "or.b16": 15,
+     "and.b16": 7,
+     "shl.b32": 15,
+     "xor.b32": 17
+    },
+    "math.int": {
+     "add.s32": 126,
+     "mad.lo.s64": 1,
+     "mul.lo.s64": 2,
+     "bfe.u32": 2,
+     "mul.wide.u32": 5,
+     "mad.wide.u32": 14,
+     "add.s64": 405,
+     "mad.lo.s32": 1
+    },
+    "setp": {
+     "setp.lt.s64": 53,
+     "setp.ne.b32": 15,
+     "setp.ne.b64": 1,
+     "setp.ge.u32": 20,
+     "setp.gt.u32": 1,
+     "setp.eq.b32": 1
+    },
+    "selp": {
+     "selp.b16": 128,
+     "selp.b32": 1
+    },
+    "ld.global": {
+     "ld.global.b16": 112,
+     "ld.global.b32": 1
+    },
+    "bar.sync": {
+     "bar.sync": 10
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 112,
+     "st.shared::cta.b32": 2,
+     "st.shared::cta.v4.b16": 8
+    },
+    "mov.pred": {
+     "mov.pred": 1
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 12,
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 12
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 80
+    },
+    "bra": {
+     "bra": 1,
+     "ret": 1
+    },
+    "ld.shared": {
+     "ld.shared.v4.b32": 4,
+     "ld.shared.v2.b32": 2,
+     "ld.shared.v4.b16": 8
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 48
+    },
+    "math.f32": {
+     "sub.f32": 44,
+     "mul.f32": 108
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 76
+    },
+    "fma.f32": {
+     "fma.rn.f32": 32
+    },
+    "st.global": {
+     "st.global.b16": 32
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 80
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 10240,
+    "spill_stores": 824,
+    "spill_loads": 748,
+    "num_warps": 2
+   },
+   "bra_total": 1,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 80,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 113,
+    "st.global": 32,
+    "ld.shared": 14,
+    "st.shared": 122,
+    "bar.sync": 10,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 24,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 32,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 48,
+    "bra": 1
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_fwd_kernel_o",
+   "config": "BK64_BV64_warps4_stages3",
+   "path": "evidence/G0/fla_ptx/chunk_fwd_kernel_o/BK64_BV64_warps4_stages3/kernel.ptx",
+   "families": {
+    "ld.param": 8,
+    "mov": 264,
+    "cvt.int": 56,
+    "logic.shift": 449,
+    "math.int": 466,
+    "setp": 93,
+    "selp": 105,
+    "mov.pred": 4,
+    "ld.global": 146,
+    "bar.sync": 14,
+    "st.shared": 144,
+    "ldmatrix": 52,
+    "mma.sync": 96,
+    "bra": 2,
+    "ex2.approx": 32,
+    "math.f32": 124,
+    "ld.shared": 16,
+    "cvt.bf16f32": 62,
+    "stmatrix": 4,
+    "fma.f32": 32,
+    "st.global": 32
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b32": 2,
+     "ld.param.b64": 6
+    },
+    "mov": {
+     "mov.u32": 21,
+     "mov.b32": 112,
+     "mov.b64": 2,
+     "mov.b16": 1,
+     "mov.u16": 128
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 53,
+     "cvt.s64.s32": 2,
+     "cvt.u32.u16": 1
+    },
+    "logic.shift": {
+     "shr.u64": 2,
+     "and.b64": 3,
+     "shr.s32": 2,
+     "shr.u32": 18,
+     "or.b64": 85,
+     "shl.b64": 155,
+     "and.b32": 34,
+     "or.b32": 60,
+     "shl.b16": 15,
+     "or.b16": 15,
+     "and.b16": 7,
+     "shl.b32": 20,
+     "xor.b32": 33
+    },
+    "math.int": {
+     "add.s32": 176,
+     "mad.lo.s64": 1,
+     "mul.lo.s64": 1,
+     "add.s64": 283,
+     "bfe.s32": 1,
+     "bfe.u32": 2,
+     "mul.wide.u32": 1,
+     "mul.lo.s32": 1
+    },
+    "setp": {
+     "setp.lt.s64": 50,
+     "setp.ne.b32": 15,
+     "setp.eq.b32": 1,
+     "setp.ge.u32": 26,
+     "setp.gt.u32": 1
+    },
+    "selp": {
+     "selp.b16": 104,
+     "selp.b32": 1
+    },
+    "mov.pred": {
+     "mov.pred": 4
+    },
+    "ld.global": {
+     "ld.global.b16": 128,
+     "ld.global.b32": 18
+    },
+    "bar.sync": {
+     "bar.sync": 14
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 128,
+     "st.shared::cta.v4.b32": 8,
+     "st.shared::cta.v4.b16": 8
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 28,
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 24
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 96
+    },
+    "bra": {
+     "bra": 1,
+     "ret": 1
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 32
+    },
+    "math.f32": {
+     "sub.f32": 30,
+     "mul.f32": 94
+    },
+    "ld.shared": {
+     "ld.shared.v4.b32": 8,
+     "ld.shared.v4.b16": 8
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 62
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x4.shared.b16": 4
+    },
+    "fma.f32": {
+     "fma.rn.f32": 32
+    },
+    "st.global": {
+     "st.global.b16": 32
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 96
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 24576,
+    "spill_stores": 96,
+    "spill_loads": 96,
+    "num_warps": 4
+   },
+   "bra_total": 1,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 96,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 146,
+    "st.global": 32,
+    "ld.shared": 16,
+    "st.shared": 144,
+    "bar.sync": 14,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 52,
+    "stmatrix": 4,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 32,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 32,
+    "bra": 1
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+   "config": "BV32_warps2_stages4",
+   "path": "evidence/G0/fla_ptx/chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64/BV32_warps2_stages4/kernel.ptx",
+   "families": {
+    "ld.param": 12,
+    "mov": 992,
+    "cvt.int": 67,
+    "logic.shift": 590,
+    "math.int": 1253,
+    "mov.pred": 5,
+    "ld.global": 512,
+    "math.f32": 193,
+    "st.shared": 353,
+    "bar.sync": 29,
+    "ld.shared": 211,
+    "setp": 157,
+    "selp": 64,
+    "cp.async.classic": 8,
+    "cp.async.ctrl": 10,
+    "bra": 3,
+    "cvt.bf16f32": 320,
+    "stmatrix": 44,
+    "st.global": 160,
+    "ldmatrix": 65,
+    "ex2.approx": 66,
+    "mma.sync": 256,
+    "fma.f32": 32,
+    "math.f32x2": 64
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b32": 2,
+     "ld.param.b64": 10
+    },
+    "mov": {
+     "mov.u32": 66,
+     "mov.b32": 244,
+     "mov.b64": 233,
+     "mov.b16": 1,
+     "mov.u16": 448
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 56,
+     "cvt.s64.s32": 6,
+     "cvt.u32.u64": 2,
+     "cvt.u32.u16": 3
+    },
+    "logic.shift": {
+     "shr.u64": 33,
+     "shr.s32": 2,
+     "shr.u32": 18,
+     "shl.b64": 165,
+     "or.b64": 6,
+     "and.b64": 32,
+     "and.b32": 36,
+     "or.b32": 48,
+     "shl.b32": 48,
+     "xor.b32": 91,
+     "shl.b16": 45,
+     "or.b16": 45,
+     "and.b16": 21
+    },
+    "math.int": {
+     "bfe.u64": 1,
+     "mul.lo.s64": 2,
+     "add.s32": 286,
+     "add.s64": 915,
+     "mul.wide.u32": 17,
+     "bfe.s32": 2,
+     "bfe.u32": 1,
+     "mad.wide.u32": 17,
+     "mul.wide.s32": 3,
+     "min.s64": 4,
+     "mad.lo.s32": 1,
+     "neg.s32": 1,
+     "mul.lo.s32": 1,
+     "max.s32": 1,
+     "sub.s64": 1
+    },
+    "mov.pred": {
+     "mov.pred": 5
+    },
+    "ld.global": {
+     "ld.global.b32": 64,
+     "ld.global.b16": 448
+    },
+    "math.f32": {
+     "add.f32": 64,
+     "sub.f32": 1,
+     "mul.f32": 128
+    },
+    "st.shared": {
+     "st.shared::cta.v4.b32": 32,
+     "st.shared::cta.v4.b16": 32,
+     "st.shared::cta.b16": 288,
+     "st.shared::cta.b32": 1
+    },
+    "bar.sync": {
+     "bar.sync": 29
+    },
+    "ld.shared": {
+     "ld.shared.v4.b32": 48,
+     "ld.shared.v4.b16": 32,
+     "ld.shared.b32": 129,
+     "ld.shared.v2.b32": 2
+    },
+    "setp": {
+     "setp.lt.s32": 1,
+     "setp.gt.s32": 5,
+     "setp.lt.s64": 101,
+     "setp.eq.b32": 3,
+     "setp.ne.b32": 15,
+     "setp.ne.b64": 32
+    },
+    "selp": {
+     "selp.b32": 16,
+     "selp.b16": 48
+    },
+    "cp.async.classic": {
+     "cp.async.ca.shared.global": 8
+    },
+    "cp.async.ctrl": {
+     "cp.async.commit_group": 8,
+     "cp.async.wait_group": 2
+    },
+    "bra": {
+     "bra": 2,
+     "ret": 1
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 96,
+     "cvt.f32.bf16": 224
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x4.shared.b16": 44
+    },
+    "st.global": {
+     "st.global.b16": 96,
+     "st.global.b32": 64
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x1.shared.b16": 1,
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 48,
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 16
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 66
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 128,
+     "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32": 128
+    },
+    "fma.f32": {
+     "fma.rn.f32": 32
+    },
+    "math.f32x2": {
+     "fma.rn.f32x2": 64
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 128,
+    "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32": 128
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 29452,
+    "spill_stores": 2156,
+    "spill_loads": 2400,
+    "num_warps": 2
+   },
+   "bra_total": 2,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 256,
+    "cp.async": 18,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 512,
+    "st.global": 160,
+    "ld.shared": 211,
+    "st.shared": 353,
+    "bar.sync": 29,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 65,
+    "stmatrix": 44,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 96,
+    "cp.async.ctrl": 10,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 66,
+    "bra": 2
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+   "config": "BV64_warps2_stages3",
+   "path": "evidence/G0/fla_ptx/chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64/BV64_warps2_stages3/kernel.ptx",
+   "families": {
+    "mov": 1614,
+    "cvt.int": 11,
+    "logic.shift": 303,
+    "ld.param": 12,
+    "math.int": 1559,
+    "mov.pred": 4,
+    "ld.global": 640,
+    "math.f32": 321,
+    "st.shared": 393,
+    "bar.sync": 52,
+    "ld.shared": 235,
+    "setp": 76,
+    "selp": 12,
+    "cp.async.classic": 6,
+    "cp.async.ctrl": 8,
+    "bra": 3,
+    "cvt.bf16f32": 416,
+    "stmatrix": 80,
+    "st.global": 320,
+    "ldmatrix": 105,
+    "ex2.approx": 66,
+    "mma.sync": 512,
+    "math.f32x2": 160
+   },
+   "variants": {
+    "mov": {
+     "mov.u32": 130,
+     "mov.b32": 548,
+     "mov.b64": 423,
+     "mov.b16": 1,
+     "mov.u16": 512
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 4,
+     "cvt.s64.s32": 5,
+     "cvt.u32.u64": 2
+    },
+    "logic.shift": {
+     "shr.u64": 2,
+     "shr.s32": 2,
+     "shr.u32": 3,
+     "shl.b64": 82,
+     "or.b64": 5,
+     "and.b64": 1,
+     "and.b32": 19,
+     "shl.b32": 23,
+     "or.b32": 14,
+     "xor.b32": 152
+    },
+    "ld.param": {
+     "ld.param.b64": 10,
+     "ld.param.b32": 2
+    },
+    "math.int": {
+     "bfe.u64": 1,
+     "mul.lo.s64": 2,
+     "add.s32": 426,
+     "add.s64": 1118,
+     "mul.wide.u32": 2,
+     "bfe.s32": 1,
+     "mul.wide.s32": 2,
+     "min.s64": 3,
+     "neg.s32": 1,
+     "mul.lo.s32": 1,
+     "max.s32": 1,
+     "sub.s64": 1
+    },
+    "mov.pred": {
+     "mov.pred": 4
+    },
+    "ld.global": {
+     "ld.global.b32": 128,
+     "ld.global.b16": 512
+    },
+    "math.f32": {
+     "add.f32": 128,
+     "sub.f32": 1,
+     "mul.f32": 192
+    },
+    "st.shared": {
+     "st.shared::cta.v4.b32": 72,
+     "st.shared::cta.b16": 320,
+     "st.shared::cta.b32": 1
+    },
+    "bar.sync": {
+     "bar.sync": 52
+    },
+    "ld.shared": {
+     "ld.shared.v4.b32": 104,
+     "ld.shared.b32": 129,
+     "ld.shared.v2.b32": 2
+    },
+    "setp": {
+     "setp.lt.s32": 1,
+     "setp.gt.s32": 4,
+     "setp.lt.s64": 68,
+     "setp.eq.b32": 2,
+     "setp.ne.b64": 1
+    },
+    "selp": {
+     "selp.b32": 12
+    },
+    "cp.async.classic": {
+     "cp.async.ca.shared.global": 6
+    },
+    "cp.async.ctrl": {
+     "cp.async.commit_group": 6,
+     "cp.async.wait_group": 2
+    },
+    "bra": {
+     "bra": 2,
+     "ret": 1
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16x2.f32": 96,
+     "cvt.f32.bf16": 320
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x4.shared.b16": 56,
+     "stmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 24
+    },
+    "st.global": {
+     "st.global.b16": 192,
+     "st.global.b32": 128
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x1.shared.b16": 1,
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 88,
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 16
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 66
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 256,
+     "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32": 256
+    },
+    "math.f32x2": {
+     "add.f32x2": 32,
+     "fma.rn.f32x2": 128
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 256,
+    "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32": 256
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 33288,
+    "spill_stores": 3236,
+    "spill_loads": 3788,
+    "num_warps": 2
+   },
+   "bra_total": 2,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 512,
+    "cp.async": 14,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 640,
+    "st.global": 320,
+    "ld.shared": 235,
+    "st.shared": 393,
+    "bar.sync": 52,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 105,
+    "stmatrix": 80,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 128,
+    "cp.async.ctrl": 8,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 66,
+    "bra": 2
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+   "config": "BV32_warps2_stages4",
+   "path": "evidence/G0/fla_ptx/chunk_gated_delta_rule_fwd_kernel_h_blockdim64/BV32_warps2_stages4/kernel.ptx",
+   "families": {
+    "ld.param": 9,
+    "mov": 462,
+    "cvt.int": 46,
+    "logic.shift": 481,
+    "math.int": 944,
+    "mov.pred": 5,
+    "ld.global": 352,
+    "math.f32": 161,
+    "st.shared": 321,
+    "bar.sync": 27,
+    "ld.shared": 67,
+    "setp": 157,
+    "selp": 63,
+    "cp.async.classic": 8,
+    "cp.async.ctrl": 10,
+    "bra": 3,
+    "cvt.bf16f32": 144,
+    "stmatrix": 12,
+    "st.global": 160,
+    "ldmatrix": 57,
+    "mma.sync": 128,
+    "ex2.approx": 2
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b32": 1,
+     "ld.param.b64": 8
+    },
+    "mov": {
+     "mov.u32": 66,
+     "mov.b32": 68,
+     "mov.b64": 39,
+     "mov.b16": 1,
+     "mov.u16": 288
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 39,
+     "cvt.s64.s32": 2,
+     "cvt.u32.u64": 2,
+     "cvt.u32.u16": 3
+    },
+    "logic.shift": {
+     "shr.u64": 33,
+     "shl.b64": 145,
+     "or.b64": 5,
+     "and.b64": 32,
+     "and.b32": 33,
+     "shl.b32": 33,
+     "or.b32": 46,
+     "xor.b32": 25,
+     "shr.u32": 18,
+     "shl.b16": 45,
+     "or.b16": 45,
+     "and.b16": 21
+    },
+    "math.int": {
+     "bfe.u64": 1,
+     "add.s32": 170,
+     "mul.lo.s64": 2,
+     "add.s64": 723,
+     "mul.wide.u32": 32,
+     "bfe.s32": 2,
+     "mad.wide.u32": 3,
+     "min.s32": 4,
+     "mad.wide.s32": 4,
+     "bfe.u32": 1,
+     "mad.lo.s32": 1,
+     "mul.lo.s32": 1
+    },
+    "mov.pred": {
+     "mov.pred": 5
+    },
+    "ld.global": {
+     "ld.global.b32": 64,
+     "ld.global.b16": 288
+    },
+    "math.f32": {
+     "add.f32": 64,
+     "sub.f32": 1,
+     "mul.f32": 96
+    },
+    "st.shared": {
+     "st.shared::cta.v4.b32": 32,
+     "st.shared::cta.v4.b16": 32,
+     "st.shared::cta.b16": 256,
+     "st.shared::cta.b32": 1
+    },
+    "bar.sync": {
+     "bar.sync": 27
+    },
+    "ld.shared": {
+     "ld.shared.v4.b32": 32,
+     "ld.shared.v4.b16": 32,
+     "ld.shared.b32": 1,
+     "ld.shared.v2.b32": 2
+    },
+    "setp": {
+     "setp.lt.s32": 2,
+     "setp.gt.s32": 5,
+     "setp.eq.b32": 3,
+     "setp.lt.s64": 100,
+     "setp.ne.b32": 15,
+     "setp.ne.b64": 32
+    },
+    "selp": {
+     "selp.b32": 15,
+     "selp.b16": 48
+    },
+    "cp.async.classic": {
+     "cp.async.ca.shared.global": 8
+    },
+    "cp.async.ctrl": {
+     "cp.async.commit_group": 8,
+     "cp.async.wait_group": 2
+    },
+    "bra": {
+     "bra": 2,
+     "ret": 1
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 96,
+     "sub.rn.f32.bf16": 32,
+     "cvt.rn.bf16x2.f32": 16
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x4.shared.b16": 12
+    },
+    "st.global": {
+     "st.global.b16": 96,
+     "st.global.b32": 64
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 16,
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 40,
+     "ldmatrix.sync.aligned.m8n8.x1.shared.b16": 1
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 128
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 2
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 128
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 17164,
+    "spill_stores": 380,
+    "spill_loads": 384,
+    "num_warps": 2
+   },
+   "bra_total": 2,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 128,
+    "cp.async": 18,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 352,
+    "st.global": 160,
+    "ld.shared": 67,
+    "st.shared": 321,
+    "bar.sync": 27,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 57,
+    "stmatrix": 12,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "cp.async.ctrl": 10,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 2,
+    "bra": 2
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+   "config": "BV64_warps2_stages3",
+   "path": "evidence/G0/fla_ptx/chunk_gated_delta_rule_fwd_kernel_h_blockdim64/BV64_warps2_stages3/kernel.ptx",
+   "families": {
+    "ld.param": 9,
+    "mov": 780,
+    "cvt.int": 7,
+    "logic.shift": 162,
+    "math.int": 1189,
+    "mov.pred": 4,
+    "ld.global": 448,
+    "math.f32": 321,
+    "st.shared": 329,
+    "bar.sync": 50,
+    "ld.shared": 91,
+    "setp": 76,
+    "selp": 11,
+    "cp.async.classic": 6,
+    "cp.async.ctrl": 8,
+    "bra": 3,
+    "cvt.bf16f32": 192,
+    "stmatrix": 48,
+    "st.global": 320,
+    "ldmatrix": 89,
+    "mma.sync": 256,
+    "math.f32x2": 32,
+    "ex2.approx": 2
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b32": 1,
+     "ld.param.b64": 8
+    },
+    "mov": {
+     "mov.u32": 130,
+     "mov.b32": 228,
+     "mov.b64": 101,
+     "mov.b16": 1,
+     "mov.u16": 320
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 3,
+     "cvt.s64.s32": 2,
+     "cvt.u32.u64": 2
+    },
+    "logic.shift": {
+     "shr.u64": 2,
+     "shl.b64": 79,
+     "or.b64": 4,
+     "and.b64": 1,
+     "and.b32": 15,
+     "shl.b32": 24,
+     "or.b32": 12,
+     "xor.b32": 22,
+     "shr.u32": 3
+    },
+    "math.int": {
+     "bfe.u64": 1,
+     "add.s32": 262,
+     "mul.lo.s64": 2,
+     "add.s64": 913,
+     "mul.wide.u32": 1,
+     "bfe.s32": 1,
+     "min.s32": 3,
+     "mad.wide.s32": 3,
+     "mad.wide.u32": 2,
+     "mul.lo.s32": 1
+    },
+    "mov.pred": {
+     "mov.pred": 4
+    },
+    "ld.global": {
+     "ld.global.b32": 128,
+     "ld.global.b16": 320
+    },
+    "math.f32": {
+     "add.f32": 128,
+     "sub.f32": 1,
+     "mul.f32": 192
+    },
+    "st.shared": {
+     "st.shared::cta.v4.b32": 72,
+     "st.shared::cta.b16": 256,
+     "st.shared::cta.b32": 1
+    },
+    "bar.sync": {
+     "bar.sync": 50
+    },
+    "ld.shared": {
+     "ld.shared.v4.b32": 88,
+     "ld.shared.b32": 1,
+     "ld.shared.v2.b32": 2
+    },
+    "setp": {
+     "setp.lt.s32": 2,
+     "setp.gt.s32": 4,
+     "setp.eq.b32": 2,
+     "setp.lt.s64": 67,
+     "setp.ne.b64": 1
+    },
+    "selp": {
+     "selp.b32": 11
+    },
+    "cp.async.classic": {
+     "cp.async.ca.shared.global": 6
+    },
+    "cp.async.ctrl": {
+     "cp.async.commit_group": 6,
+     "cp.async.wait_group": 2
+    },
+    "bra": {
+     "bra": 2,
+     "ret": 1
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16x2.f32": 128,
+     "cvt.f32.bf16": 64
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x4.shared.b16": 24,
+     "stmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 24
+    },
+    "st.global": {
+     "st.global.b16": 192,
+     "st.global.b32": 128
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 16,
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 72,
+     "ldmatrix.sync.aligned.m8n8.x1.shared.b16": 1
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 256
+    },
+    "math.f32x2": {
+     "sub.f32x2": 32
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 2
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 256
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 25096,
+    "spill_stores": 716,
+    "spill_loads": 764,
+    "num_warps": 2
+   },
+   "bra_total": 2,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 256,
+    "cp.async": 14,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 448,
+    "st.global": 320,
+    "ld.shared": 91,
+    "st.shared": 329,
+    "bar.sync": 50,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 89,
+    "stmatrix": 48,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "cp.async.ctrl": 8,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 2,
+    "bra": 2
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+   "config": "warps2_stages3",
+   "path": "evidence/G0/fla_ptx/chunk_gated_delta_rule_fwd_kkt_solve_kernel/warps2_stages3/kernel.ptx",
+   "families": {
+    "mov": 480,
+    "ld.param": 5,
+    "math.int": 330,
+    "setp": 157,
+    "bra": 17,
+    "cvt.int": 29,
+    "logic.shift": 399,
+    "ld.global": 98,
+    "mov.pred": 6,
+    "bar.sync": 42,
+    "st.shared": 116,
+    "ldmatrix": 46,
+    "mma.sync": 140,
+    "cvt.bf16f32": 84,
+    "math.f32": 286,
+    "ex2.approx": 70,
+    "selp": 525,
+    "math.f32x2": 49,
+    "shfl.sync": 232,
+    "ld.shared": 37,
+    "fma.f32": 14,
+    "st.global": 40
+   },
+   "variants": {
+    "mov": {
+     "mov.u32": 29,
+     "mov.b64": 161,
+     "mov.b16": 3,
+     "mov.u16": 72,
+     "mov.b32": 215
+    },
+    "ld.param": {
+     "ld.param.s32": 1,
+     "ld.param.b64": 4
+    },
+    "math.int": {
+     "mul.wide.u32": 2,
+     "mul.lo.s64": 1,
+     "add.s64": 226,
+     "bfe.u32": 6,
+     "add.s32": 83,
+     "mul.lo.s32": 1,
+     "sub.s64": 4,
+     "min.u64": 4,
+     "bfe.s32": 2,
+     "neg.s32": 1
+    },
+    "setp": {
+     "setp.gt.s64": 2,
+     "setp.lt.u64": 102,
+     "setp.le.u64": 3,
+     "setp.gt.u32": 7,
+     "setp.lt.s64": 3,
+     "setp.eq.b64": 8,
+     "setp.gt.u64": 14,
+     "setp.ne.b64": 4,
+     "setp.eq.b32": 14
+    },
+    "bra": {
+     "bra": 13,
+     "bra.uni": 3,
+     "ret": 1
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 27,
+     "cvt.u16.u32": 1,
+     "cvt.u32.u16": 1
+    },
+    "logic.shift": {
+     "and.b64": 2,
+     "or.b64": 107,
+     "shl.b64": 119,
+     "and.b32": 27,
+     "shl.b32": 23,
+     "shr.u32": 4,
+     "or.b32": 33,
+     "xor.b32": 55,
+     "and.b16": 2,
+     "shl.b16": 1,
+     "shr.u16": 1,
+     "or.b16": 1,
+     "xor.b16": 24
+    },
+    "ld.global": {
+     "ld.global.b16": 72,
+     "ld.global.b32": 26
+    },
+    "mov.pred": {
+     "mov.pred": 6
+    },
+    "bar.sync": {
+     "bar.sync": 42
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 64,
+     "st.shared::cta.v4.b32": 10,
+     "st.shared::cta.b32": 2,
+     "st.shared::cta.v2.b32": 2,
+     "st.shared::cta.v2.b16": 38
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 18,
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 28
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 76,
+     "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32": 64
+    },
+    "cvt.bf16f32": {
+     "cvt.f32.bf16": 8,
+     "cvt.rn.bf16.f32": 76
+    },
+    "math.f32": {
+     "sub.f32": 70,
+     "neg.f32": 8,
+     "add.f32": 98,
+     "mul.f32": 110
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 70
+    },
+    "selp": {
+     "selp.f32": 381,
+     "selp.b32": 144
+    },
+    "math.f32x2": {
+     "mul.f32x2": 28,
+     "add.f32x2": 21
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 84,
+     "shfl.sync.idx.b32": 148
+    },
+    "ld.shared": {
+     "ld.shared.v2.b32": 1,
+     "ld.shared.b32": 16,
+     "ld.shared.v2.b16": 20
+    },
+    "fma.f32": {
+     "fma.rn.f32": 14
+    },
+    "st.global": {
+     "st.global.b16": 40
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 76,
+    "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32": 64
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 5120,
+    "spill_stores": 212,
+    "spill_loads": 212,
+    "num_warps": 2
+   },
+   "bra_total": 16,
+   "loop_backedges": 5,
+   "g0_fams": {
+    "mma.sync": 140,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 98,
+    "st.global": 40,
+    "ld.shared": 37,
+    "st.shared": 116,
+    "bar.sync": 42,
+    "barrier": 0,
+    "shfl.sync": 232,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 46,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 14,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 70,
+    "bra": 16
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+   "config": "warps4_stages3",
+   "path": "evidence/G0/fla_ptx/chunk_gated_delta_rule_fwd_kkt_solve_kernel/warps4_stages3/kernel.ptx",
+   "families": {
+    "mov": 477,
+    "ld.param": 5,
+    "math.int": 232,
+    "setp": 107,
+    "bra": 16,
+    "cvt.int": 42,
+    "logic.shift": 350,
+    "ld.global": 54,
+    "mov.pred": 3,
+    "bar.sync": 52,
+    "st.shared": 103,
+    "ld.shared": 143,
+    "ldmatrix": 28,
+    "mma.sync": 140,
+    "cvt.bf16f32": 84,
+    "math.f32": 238,
+    "ex2.approx": 22,
+    "selp": 425,
+    "math.f32x2": 49,
+    "shfl.sync": 232,
+    "fma.f32": 14,
+    "st.global": 20
+   },
+   "variants": {
+    "mov": {
+     "mov.u32": 17,
+     "mov.b64": 147,
+     "mov.b16": 3,
+     "mov.u16": 40,
+     "mov.b32": 270
+    },
+    "ld.param": {
+     "ld.param.s32": 1,
+     "ld.param.b64": 4
+    },
+    "math.int": {
+     "mul.wide.u32": 1,
+     "mul.lo.s64": 1,
+     "add.s64": 122,
+     "bfe.s32": 4,
+     "bfe.u32": 4,
+     "add.s32": 91,
+     "mul.lo.s32": 1,
+     "sub.s64": 4,
+     "min.u64": 4
+    },
+    "setp": {
+     "setp.gt.s64": 1,
+     "setp.lt.u64": 54,
+     "setp.le.u64": 3,
+     "setp.gt.u32": 6,
+     "setp.lt.s64": 4,
+     "setp.gt.u64": 14,
+     "setp.eq.b64": 8,
+     "setp.ne.b64": 4,
+     "setp.eq.b32": 13
+    },
+    "bra": {
+     "bra": 13,
+     "bra.uni": 2,
+     "ret": 1
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 37,
+     "cvt.u32.u64": 3,
+     "cvt.u16.u32": 1,
+     "cvt.u32.u16": 1
+    },
+    "logic.shift": {
+     "and.b64": 2,
+     "or.b64": 59,
+     "shl.b64": 68,
+     "and.b32": 34,
+     "or.b32": 49,
+     "shl.b32": 25,
+     "shr.u32": 7,
+     "xor.b32": 77,
+     "and.b16": 2,
+     "shl.b16": 1,
+     "shr.u16": 1,
+     "or.b16": 1,
+     "xor.b16": 24
+    },
+    "ld.global": {
+     "ld.global.b16": 40,
+     "ld.global.b32": 14
+    },
+    "mov.pred": {
+     "mov.pred": 3
+    },
+    "bar.sync": {
+     "bar.sync": 52
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 32,
+     "st.shared::cta.v2.b16": 58,
+     "st.shared::cta.v2.b32": 11,
+     "st.shared::cta.b32": 2
+    },
+    "ld.shared": {
+     "ld.shared.b32": 32,
+     "ld.shared.b16": 16,
+     "ld.shared.v2.b16": 58,
+     "ld.shared.b64": 12,
+     "ld.shared.v2.b32": 25
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 28
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 76,
+     "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32": 64
+    },
+    "cvt.bf16f32": {
+     "cvt.f32.bf16": 8,
+     "cvt.rn.bf16.f32": 76
+    },
+    "math.f32": {
+     "sub.f32": 22,
+     "neg.f32": 8,
+     "add.f32": 98,
+     "mul.f32": 110
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 22
+    },
+    "selp": {
+     "selp.f32": 237,
+     "selp.b32": 188
+    },
+    "math.f32x2": {
+     "mul.f32x2": 28,
+     "add.f32x2": 21
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 84,
+     "shfl.sync.idx.b32": 148
+    },
+    "fma.f32": {
+     "fma.rn.f32": 14
+    },
+    "st.global": {
+     "st.global.b16": 20
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 76,
+    "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32": 64
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 6144,
+    "spill_stores": 40,
+    "spill_loads": 40,
+    "num_warps": 4
+   },
+   "bra_total": 15,
+   "loop_backedges": 5,
+   "g0_fams": {
+    "mma.sync": 140,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 54,
+    "st.global": 20,
+    "ld.shared": 143,
+    "st.shared": 103,
+    "bar.sync": 52,
+    "barrier": 0,
+    "shfl.sync": 232,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 28,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 14,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 22,
+    "bra": 15
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+   "config": "warps4_stages4",
+   "path": "evidence/G0/fla_ptx/chunk_gated_delta_rule_fwd_kkt_solve_kernel/warps4_stages4/kernel.ptx",
+   "families": {
+    "mov": 477,
+    "ld.param": 5,
+    "math.int": 232,
+    "setp": 107,
+    "bra": 16,
+    "cvt.int": 42,
+    "logic.shift": 350,
+    "ld.global": 54,
+    "mov.pred": 3,
+    "bar.sync": 52,
+    "st.shared": 103,
+    "ld.shared": 143,
+    "ldmatrix": 28,
+    "mma.sync": 140,
+    "cvt.bf16f32": 84,
+    "math.f32": 238,
+    "ex2.approx": 22,
+    "selp": 425,
+    "math.f32x2": 49,
+    "shfl.sync": 232,
+    "fma.f32": 14,
+    "st.global": 20
+   },
+   "variants": {
+    "mov": {
+     "mov.u32": 17,
+     "mov.b64": 147,
+     "mov.b16": 3,
+     "mov.u16": 40,
+     "mov.b32": 270
+    },
+    "ld.param": {
+     "ld.param.s32": 1,
+     "ld.param.b64": 4
+    },
+    "math.int": {
+     "mul.wide.u32": 1,
+     "mul.lo.s64": 1,
+     "add.s64": 122,
+     "bfe.s32": 4,
+     "bfe.u32": 4,
+     "add.s32": 91,
+     "mul.lo.s32": 1,
+     "sub.s64": 4,
+     "min.u64": 4
+    },
+    "setp": {
+     "setp.gt.s64": 1,
+     "setp.lt.u64": 54,
+     "setp.le.u64": 3,
+     "setp.gt.u32": 6,
+     "setp.lt.s64": 4,
+     "setp.gt.u64": 14,
+     "setp.eq.b64": 8,
+     "setp.ne.b64": 4,
+     "setp.eq.b32": 13
+    },
+    "bra": {
+     "bra": 13,
+     "bra.uni": 2,
+     "ret": 1
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 37,
+     "cvt.u32.u64": 3,
+     "cvt.u16.u32": 1,
+     "cvt.u32.u16": 1
+    },
+    "logic.shift": {
+     "and.b64": 2,
+     "or.b64": 59,
+     "shl.b64": 68,
+     "and.b32": 34,
+     "or.b32": 49,
+     "shl.b32": 25,
+     "shr.u32": 7,
+     "xor.b32": 77,
+     "and.b16": 2,
+     "shl.b16": 1,
+     "shr.u16": 1,
+     "or.b16": 1,
+     "xor.b16": 24
+    },
+    "ld.global": {
+     "ld.global.b16": 40,
+     "ld.global.b32": 14
+    },
+    "mov.pred": {
+     "mov.pred": 3
+    },
+    "bar.sync": {
+     "bar.sync": 52
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 32,
+     "st.shared::cta.v2.b16": 58,
+     "st.shared::cta.v2.b32": 11,
+     "st.shared::cta.b32": 2
+    },
+    "ld.shared": {
+     "ld.shared.b32": 32,
+     "ld.shared.b16": 16,
+     "ld.shared.v2.b16": 58,
+     "ld.shared.b64": 12,
+     "ld.shared.v2.b32": 25
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 28
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 76,
+     "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32": 64
+    },
+    "cvt.bf16f32": {
+     "cvt.f32.bf16": 8,
+     "cvt.rn.bf16.f32": 76
+    },
+    "math.f32": {
+     "sub.f32": 22,
+     "neg.f32": 8,
+     "add.f32": 98,
+     "mul.f32": 110
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 22
+    },
+    "selp": {
+     "selp.f32": 237,
+     "selp.b32": 188
+    },
+    "math.f32x2": {
+     "mul.f32x2": 28,
+     "add.f32x2": 21
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 84,
+     "shfl.sync.idx.b32": 148
+    },
+    "fma.f32": {
+     "fma.rn.f32": 14
+    },
+    "st.global": {
+     "st.global.b16": 20
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 76,
+    "mma.sync.aligned.m16n8k8.row.col.f32.tf32.tf32.f32": 64
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 6144,
+    "spill_stores": 40,
+    "spill_loads": 40,
+    "num_warps": 4
+   },
+   "bra_total": 15,
+   "loop_backedges": 5,
+   "g0_fams": {
+    "mma.sync": 140,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 54,
+    "st.global": 20,
+    "ld.shared": 143,
+    "st.shared": 103,
+    "bar.sync": 52,
+    "barrier": 0,
+    "shfl.sync": 232,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 28,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 14,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 22,
+    "bra": 15
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_scaled_dot_kkt_fwd_kernel",
+   "config": "BK128_warps8_stages3",
+   "path": "evidence/G0/fla_ptx/chunk_scaled_dot_kkt_fwd_kernel/BK128_warps8_stages3/kernel.ptx",
+   "families": {
+    "ld.param": 5,
+    "mov": 98,
+    "cvt.int": 58,
+    "logic.shift": 309,
+    "math.int": 192,
+    "setp": 78,
+    "selp": 48,
+    "ld.global": 44,
+    "st.shared": 52,
+    "bar.sync": 3,
+    "ld.shared": 36,
+    "ldmatrix": 16,
+    "mma.sync": 32,
+    "math.f32": 36,
+    "ex2.approx": 12,
+    "cvt.bf16f32": 4,
+    "st.global": 16,
+    "bra": 1
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b64": 4,
+     "ld.param.s32": 1
+    },
+    "mov": {
+     "mov.u32": 11,
+     "mov.b16": 1,
+     "mov.u16": 36,
+     "mov.b32": 50
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 57,
+     "cvt.u32.u16": 1
+    },
+    "logic.shift": {
+     "and.b64": 2,
+     "and.b32": 33,
+     "shl.b32": 13,
+     "shr.u32": 18,
+     "or.b32": 65,
+     "or.b64": 57,
+     "shl.b16": 15,
+     "or.b16": 15,
+     "and.b16": 7,
+     "shl.b64": 63,
+     "xor.b32": 21
+    },
+    "math.int": {
+     "mul.wide.u32": 3,
+     "bfe.s32": 3,
+     "bfe.u32": 3,
+     "mul.lo.s64": 1,
+     "add.s64": 112,
+     "add.s32": 70
+    },
+    "setp": {
+     "setp.lt.s64": 56,
+     "setp.ne.b32": 15,
+     "setp.gt.u32": 7
+    },
+    "selp": {
+     "selp.b16": 16,
+     "selp.b32": 32
+    },
+    "ld.global": {
+     "ld.global.b16": 36,
+     "ld.global.b32": 8
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 32,
+     "st.shared::cta.v2.b16": 16,
+     "st.shared::cta.v4.b32": 4
+    },
+    "bar.sync": {
+     "bar.sync": 3
+    },
+    "ld.shared": {
+     "ld.shared.v2.b16": 32,
+     "ld.shared.v4.b32": 4
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 16
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 32
+    },
+    "math.f32": {
+     "sub.f32": 12,
+     "mul.f32": 24
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 12
+    },
+    "cvt.bf16f32": {
+     "cvt.f32.bf16": 4
+    },
+    "st.global": {
+     "st.global.b32": 16
+    },
+    "bra": {
+     "ret": 1
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 32
+   },
+   "resources": {
+    "regs": 64,
+    "smem_static": null,
+    "smem_dynamic": 32768,
+    "spill_stores": 20,
+    "spill_loads": 20,
+    "num_warps": 8
+   },
+   "bra_total": 0,
+   "loop_backedges": 0,
+   "g0_fams": {
+    "mma.sync": 32,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 44,
+    "st.global": 16,
+    "ld.shared": 36,
+    "st.shared": 52,
+    "bar.sync": 3,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 16,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 12,
+    "bra": 0
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "chunk_scaled_dot_kkt_fwd_kernel",
+   "config": "BK64_warps4_stages3",
+   "path": "evidence/G0/fla_ptx/chunk_scaled_dot_kkt_fwd_kernel/BK64_warps4_stages3/kernel.ptx",
+   "families": {
+    "ld.param": 5,
+    "mov": 120,
+    "cvt.int": 48,
+    "logic.shift": 275,
+    "math.int": 216,
+    "setp": 75,
+    "selp": 81,
+    "ld.global": 48,
+    "mov.pred": 3,
+    "bar.sync": 4,
+    "st.shared": 48,
+    "ld.shared": 24,
+    "ldmatrix": 8,
+    "mma.sync": 32,
+    "bra": 2,
+    "math.f32": 72,
+    "ex2.approx": 24,
+    "cvt.bf16f32": 4,
+    "st.global": 32
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b32": 1,
+     "ld.param.b64": 4
+    },
+    "mov": {
+     "mov.u32": 15,
+     "mov.b16": 1,
+     "mov.u16": 36,
+     "mov.b32": 66,
+     "mov.b64": 2
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 46,
+     "cvt.s64.s32": 1,
+     "cvt.u32.u16": 1
+    },
+    "logic.shift": {
+     "and.b64": 2,
+     "shr.u32": 16,
+     "and.b32": 34,
+     "or.b32": 54,
+     "or.b64": 46,
+     "shl.b16": 15,
+     "or.b16": 15,
+     "and.b16": 7,
+     "shl.b64": 57,
+     "shl.b32": 14,
+     "xor.b32": 15
+    },
+    "math.int": {
+     "mul.wide.u32": 1,
+     "bfe.s32": 2,
+     "bfe.u32": 1,
+     "mul.lo.s64": 1,
+     "add.s64": 148,
+     "add.s32": 63
+    },
+    "setp": {
+     "setp.lt.s64": 44,
+     "setp.ne.b32": 15,
+     "setp.eq.b32": 1,
+     "setp.gt.u32": 15
+    },
+    "selp": {
+     "selp.b16": 16,
+     "selp.b32": 65
+    },
+    "ld.global": {
+     "ld.global.b16": 36,
+     "ld.global.b32": 12
+    },
+    "mov.pred": {
+     "mov.pred": 3
+    },
+    "bar.sync": {
+     "bar.sync": 4
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 32,
+     "st.shared::cta.v4.b16": 8,
+     "st.shared::cta.v4.b32": 8
+    },
+    "ld.shared": {
+     "ld.shared.v4.b16": 16,
+     "ld.shared.v4.b32": 8
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 8
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 32
+    },
+    "bra": {
+     "bra": 1,
+     "ret": 1
+    },
+    "math.f32": {
+     "sub.f32": 24,
+     "mul.f32": 48
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 24
+    },
+    "cvt.bf16f32": {
+     "cvt.f32.bf16": 4
+    },
+    "st.global": {
+     "st.global.b32": 32
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 32
+   },
+   "resources": {
+    "regs": 194,
+    "smem_static": null,
+    "smem_dynamic": 16384,
+    "spill_stores": 0,
+    "spill_loads": 0,
+    "num_warps": 4
+   },
+   "bra_total": 1,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 32,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 48,
+    "st.global": 32,
+    "ld.shared": 24,
+    "st.shared": 48,
+    "bar.sync": 4,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 8,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 24,
+    "bra": 1
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "merge_16x16_to_32x32_inverse_kernel",
+   "config": "warps4_stages2",
+   "path": "evidence/G0/fla_ptx/merge_16x16_to_32x32_inverse_kernel/warps4_stages2/kernel.ptx",
+   "families": {
+    "ld.param": 3,
+    "mov": 20,
+    "logic.shift": 70,
+    "math.int": 63,
+    "setp": 16,
+    "cvt.int": 7,
+    "ld.global": 12,
+    "cvt.bf16f32": 18,
+    "math.f32": 20,
+    "selp": 10,
+    "bra": 5,
+    "bar.sync": 12,
+    "fma.f32": 66,
+    "shfl.sync": 6,
+    "st.shared": 4,
+    "ld.shared": 20,
+    "stmatrix": 4,
+    "ldmatrix": 8,
+    "st.global": 6
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b64": 2,
+     "ld.param.s32": 1
+    },
+    "mov": {
+     "mov.u32": 3,
+     "mov.b16": 1,
+     "mov.u16": 12,
+     "mov.b32": 1,
+     "mov.b64": 3
+    },
+    "logic.shift": {
+     "and.b32": 16,
+     "or.b32": 6,
+     "and.b64": 2,
+     "or.b64": 8,
+     "shl.b64": 17,
+     "shl.b32": 10,
+     "shr.u32": 4,
+     "xor.b32": 2,
+     "shr.u64": 1,
+     "xor.b16": 4
+    },
+    "math.int": {
+     "bfe.u32": 1,
+     "mul.wide.u32": 4,
+     "mul.lo.s64": 2,
+     "add.s64": 37,
+     "sub.s64": 4,
+     "bfe.s32": 1,
+     "add.s32": 10,
+     "neg.s32": 1,
+     "min.u64": 2,
+     "neg.s64": 1
+    },
+    "setp": {
+     "setp.gt.u32": 2,
+     "setp.lt.s64": 5,
+     "setp.eq.b64": 4,
+     "setp.ne.b64": 2,
+     "setp.lt.u64": 1,
+     "setp.eq.b32": 2
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 5,
+     "cvt.u32.u64": 2
+    },
+    "ld.global": {
+     "ld.global.b16": 12
+    },
+    "cvt.bf16f32": {
+     "cvt.f32.bf16": 12,
+     "cvt.rn.bf16.f32": 6
+    },
+    "math.f32": {
+     "neg.f32": 6,
+     "mul.f32": 2,
+     "add.f32": 10,
+     "sub.f32": 2
+    },
+    "selp": {
+     "selp.f32": 10
+    },
+    "bra": {
+     "bra": 4,
+     "ret": 1
+    },
+    "bar.sync": {
+     "bar.sync": 12
+    },
+    "fma.f32": {
+     "fma.rn.f32": 66
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 6
+    },
+    "st.shared": {
+     "st.shared::cta.b32": 4
+    },
+    "ld.shared": {
+     "ld.shared.b32": 4,
+     "ld.shared.v4.b32": 16
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x2.shared.b16": 4
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 8
+    },
+    "st.global": {
+     "st.global.b16": 6
+    }
+   },
+   "mma_signatures": {},
+   "resources": {
+    "regs": 56,
+    "smem_static": null,
+    "smem_dynamic": 3072,
+    "spill_stores": 0,
+    "spill_loads": 0,
+    "num_warps": 4
+   },
+   "bra_total": 4,
+   "loop_backedges": 2,
+   "g0_fams": {
+    "mma.sync": 0,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 12,
+    "st.global": 6,
+    "ld.shared": 20,
+    "st.shared": 4,
+    "bar.sync": 12,
+    "barrier": 0,
+    "shfl.sync": 6,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 8,
+    "stmatrix": 4,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 66,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 0,
+    "bra": 4
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "merge_16x16_to_64x64_inverse_kernel",
+   "config": "warps4_stages2",
+   "path": "evidence/G0/fla_ptx/merge_16x16_to_64x64_inverse_kernel/warps4_stages2/kernel.ptx",
+   "families": {
+    "ld.param": 3,
+    "mov": 44,
+    "logic.shift": 102,
+    "math.int": 118,
+    "setp": 40,
+    "cvt.int": 8,
+    "ld.global": 32,
+    "cvt.bf16f32": 52,
+    "math.f32": 42,
+    "selp": 30,
+    "bra": 9,
+    "bar.sync": 30,
+    "fma.f32": 516,
+    "shfl.sync": 12,
+    "st.shared": 8,
+    "ld.shared": 96,
+    "stmatrix": 19,
+    "ldmatrix": 48,
+    "st.global": 20
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b64": 2,
+     "ld.param.s32": 1
+    },
+    "mov": {
+     "mov.u32": 3,
+     "mov.b16": 1,
+     "mov.u16": 32,
+     "mov.b32": 1,
+     "mov.b64": 7
+    },
+    "logic.shift": {
+     "and.b32": 16,
+     "or.b32": 6,
+     "and.b64": 2,
+     "or.b64": 14,
+     "shl.b64": 29,
+     "shl.b32": 10,
+     "shr.u32": 4,
+     "xor.b32": 2,
+     "shr.u64": 1,
+     "xor.b16": 18
+    },
+    "math.int": {
+     "bfe.u32": 1,
+     "mul.wide.u32": 4,
+     "mul.lo.s64": 2,
+     "add.s64": 93,
+     "sub.s64": 1,
+     "bfe.s32": 1,
+     "add.s32": 10,
+     "neg.s32": 1,
+     "min.u64": 4,
+     "neg.s64": 1
+    },
+    "setp": {
+     "setp.gt.u32": 2,
+     "setp.lt.s64": 9,
+     "setp.gt.u64": 12,
+     "setp.eq.b64": 8,
+     "setp.ne.b64": 4,
+     "setp.lt.u64": 3,
+     "setp.eq.b32": 2
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 5,
+     "cvt.u32.u64": 3
+    },
+    "ld.global": {
+     "ld.global.b16": 32
+    },
+    "cvt.bf16f32": {
+     "cvt.f32.bf16": 32,
+     "cvt.rn.bf16.f32": 20
+    },
+    "math.f32": {
+     "neg.f32": 14,
+     "mul.f32": 4,
+     "add.f32": 24
+    },
+    "selp": {
+     "selp.f32": 30
+    },
+    "bra": {
+     "bra": 8,
+     "ret": 1
+    },
+    "bar.sync": {
+     "bar.sync": 30
+    },
+    "fma.f32": {
+     "fma.rn.f32": 516
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 12
+    },
+    "st.shared": {
+     "st.shared::cta.b32": 8
+    },
+    "ld.shared": {
+     "ld.shared.b32": 8,
+     "ld.shared.v4.b32": 88
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x2.shared.b16": 19
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 48
+    },
+    "st.global": {
+     "st.global.b16": 20
+    }
+   },
+   "mma_signatures": {},
+   "resources": {
+    "regs": 246,
+    "smem_static": null,
+    "smem_dynamic": 10240,
+    "spill_stores": 0,
+    "spill_loads": 0,
+    "num_warps": 4
+   },
+   "bra_total": 8,
+   "loop_backedges": 4,
+   "g0_fams": {
+    "mma.sync": 0,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 32,
+    "st.global": 20,
+    "ld.shared": 96,
+    "st.shared": 8,
+    "bar.sync": 30,
+    "barrier": 0,
+    "shfl.sync": 12,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 48,
+    "stmatrix": 19,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 516,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 0,
+    "bra": 8
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "prepare_wy_repr_bwd_kernel",
+   "config": "warps2_stages4",
+   "path": "evidence/G0/fla_ptx/prepare_wy_repr_bwd_kernel/warps2_stages4/kernel.ptx",
+   "families": {
+    "ld.param": 12,
+    "mov": 2115,
+    "cvt.int": 26,
+    "logic.shift": 640,
+    "math.int": 1149,
+    "setp": 153,
+    "selp": 137,
+    "ld.global": 450,
+    "st.shared": 353,
+    "bar.sync": 160,
+    "ld.shared": 59,
+    "ex2.approx": 56,
+    "cvt.bf16f32": 916,
+    "math.f32": 772,
+    "ldmatrix": 232,
+    "mov.pred": 9,
+    "math.f32x2": 308,
+    "mma.sync": 576,
+    "shfl.sync": 104,
+    "stmatrix": 40,
+    "st.global": 194,
+    "bra": 4,
+    "fma.f32": 64
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b64": 11,
+     "ld.param.s32": 1
+    },
+    "mov": {
+     "mov.u32": 4,
+     "mov.b64": 536,
+     "mov.b16": 3,
+     "mov.u16": 449,
+     "mov.b32": 1123
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 23,
+     "cvt.u32.u16": 3
+    },
+    "logic.shift": {
+     "and.b64": 33,
+     "and.b32": 34,
+     "shr.u32": 19,
+     "or.b64": 88,
+     "or.b32": 31,
+     "shl.b32": 25,
+     "shl.b16": 45,
+     "or.b16": 45,
+     "and.b16": 21,
+     "shl.b64": 170,
+     "shr.u64": 31,
+     "xor.b32": 30,
+     "and.pred": 68
+    },
+    "math.int": {
+     "mul.wide.u32": 3,
+     "bfe.u32": 1,
+     "mul.lo.s64": 1,
+     "add.s64": 909,
+     "mad.wide.u32": 1,
+     "add.s32": 232,
+     "mul.lo.s32": 1,
+     "bfe.s32": 1
+    },
+    "setp": {
+     "setp.lt.s64": 85,
+     "setp.ne.b32": 15,
+     "setp.ne.b64": 31,
+     "setp.gt.u32": 21,
+     "setp.eq.b32": 1
+    },
+    "selp": {
+     "selp.b16": 136,
+     "selp.b32": 1
+    },
+    "ld.global": {
+     "ld.global.b16": 449,
+     "ld.global.b32": 1
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 259,
+     "st.shared::cta.b32": 3,
+     "st.shared::cta.v4.b32": 88,
+     "st.shared::cta.v4.b16": 1,
+     "st.shared::cta.v2.b32": 2
+    },
+    "bar.sync": {
+     "bar.sync": 160
+    },
+    "ld.shared": {
+     "ld.shared.v4.b16": 1,
+     "ld.shared.v4.b32": 54,
+     "ld.shared.v2.b32": 2,
+     "ld.shared.b16": 1,
+     "ld.shared.b32": 1
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 56
+    },
+    "cvt.bf16f32": {
+     "cvt.f32.bf16": 440,
+     "cvt.rn.bf16x2.f32": 192,
+     "mul.bf16": 128,
+     "cvt.rn.bf16.f32": 92,
+     "mul.bf16x2": 64
+    },
+    "math.f32": {
+     "mul.f32": 568,
+     "add.f32": 112,
+     "sub.f32": 48,
+     "neg.f32": 44
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 176,
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 56
+    },
+    "mov.pred": {
+     "mov.pred": 9
+    },
+    "math.f32x2": {
+     "mul.f32x2": 96,
+     "add.f32x2": 180,
+     "fma.rn.f32x2": 32
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 576
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 104
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 24,
+     "stmatrix.sync.aligned.m8n8.x4.shared.b16": 16
+    },
+    "st.global": {
+     "st.global.b16": 193,
+     "st.global.b32": 1
+    },
+    "bra": {
+     "bra": 3,
+     "ret": 1
+    },
+    "fma.f32": {
+     "fma.rn.f32": 64
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 576
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 17408,
+    "spill_stores": 4808,
+    "spill_loads": 5348,
+    "num_warps": 2
+   },
+   "bra_total": 3,
+   "loop_backedges": 3,
+   "g0_fams": {
+    "mma.sync": 576,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 450,
+    "st.global": 194,
+    "ld.shared": 59,
+    "st.shared": 353,
+    "bar.sync": 160,
+    "barrier": 0,
+    "shfl.sync": 104,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 232,
+    "stmatrix": 40,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 96,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 56,
+    "bra": 3
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "prepare_wy_repr_bwd_kernel",
+   "config": "warps4_stages3",
+   "path": "evidence/G0/fla_ptx/prepare_wy_repr_bwd_kernel/warps4_stages3/kernel.ptx",
+   "families": {
+    "ld.param": 12,
+    "mov": 1315,
+    "cvt.int": 53,
+    "logic.shift": 554,
+    "math.int": 848,
+    "setp": 96,
+    "selp": 78,
+    "ld.global": 308,
+    "st.shared": 291,
+    "bar.sync": 56,
+    "ld.shared": 180,
+    "ex2.approx": 40,
+    "cvt.bf16f32": 726,
+    "math.f32": 534,
+    "ldmatrix": 120,
+    "mov.pred": 9,
+    "math.f32x2": 138,
+    "mma.sync": 288,
+    "shfl.sync": 100,
+    "st.global": 98,
+    "bra": 4,
+    "stmatrix": 8,
+    "fma.f32": 48
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b64": 11,
+     "ld.param.s32": 1
+    },
+    "mov": {
+     "mov.u32": 53,
+     "mov.b64": 252,
+     "mov.b16": 3,
+     "mov.u16": 258,
+     "mov.b32": 749
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 52,
+     "cvt.u32.u16": 1
+    },
+    "logic.shift": {
+     "and.b64": 2,
+     "and.b32": 43,
+     "or.b32": 65,
+     "shr.u32": 22,
+     "or.b64": 55,
+     "shl.b32": 33,
+     "shl.b16": 15,
+     "or.b16": 15,
+     "and.b16": 7,
+     "shl.b64": 190,
+     "xor.b32": 48,
+     "and.pred": 59
+    },
+    "math.int": {
+     "mul.wide.u32": 1,
+     "bfe.s32": 2,
+     "bfe.u32": 2,
+     "mul.lo.s64": 1,
+     "add.s64": 577,
+     "mad.wide.u32": 1,
+     "add.s32": 263,
+     "mul.lo.s32": 1
+    },
+    "setp": {
+     "setp.lt.s64": 51,
+     "setp.ne.b32": 15,
+     "setp.eq.b32": 3,
+     "setp.gt.u32": 27
+    },
+    "selp": {
+     "selp.b16": 76,
+     "selp.b32": 2
+    },
+    "ld.global": {
+     "ld.global.b16": 258,
+     "ld.global.b32": 50
+    },
+    "st.shared": {
+     "st.shared::cta.v4.b32": 48,
+     "st.shared::cta.b16": 130,
+     "st.shared::cta.v2.b16": 112,
+     "st.shared::cta.v2.b32": 1
+    },
+    "bar.sync": {
+     "bar.sync": 56
+    },
+    "ld.shared": {
+     "ld.shared.v4.b32": 65,
+     "ld.shared.v2.b16": 112,
+     "ld.shared.b16": 1,
+     "ld.shared.v2.b32": 1,
+     "ld.shared.b32": 1
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 40
+    },
+    "cvt.bf16f32": {
+     "cvt.f32.bf16": 264,
+     "cvt.rn.bf16x2.f32": 80,
+     "cvt.rn.bf16.f32": 158,
+     "mul.bf16": 192,
+     "add.rn.f32.bf16": 32
+    },
+    "math.f32": {
+     "mul.f32": 360,
+     "add.f32": 112,
+     "sub.f32": 32,
+     "neg.f32": 30
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 84,
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 36
+    },
+    "mov.pred": {
+     "mov.pred": 9
+    },
+    "math.f32x2": {
+     "mul.f32x2": 64,
+     "add.f32x2": 74
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 288
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 100
+    },
+    "st.global": {
+     "st.global.b16": 97,
+     "st.global.b32": 1
+    },
+    "bra": {
+     "bra": 3,
+     "ret": 1
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x4.shared.b16": 8
+    },
+    "fma.f32": {
+     "fma.rn.f32": 48
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 288
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 24576,
+    "spill_stores": 1556,
+    "spill_loads": 2092,
+    "num_warps": 4
+   },
+   "bra_total": 3,
+   "loop_backedges": 3,
+   "g0_fams": {
+    "mma.sync": 288,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 308,
+    "st.global": 98,
+    "ld.shared": 180,
+    "st.shared": 291,
+    "bar.sync": 56,
+    "barrier": 0,
+    "shfl.sync": 100,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 120,
+    "stmatrix": 8,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 48,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 40,
+    "bra": 3
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "recompute_w_u_fwd_kernel",
+   "config": "warps2_stages3",
+   "path": "evidence/G0/fla_ptx/recompute_w_u_fwd_kernel/warps2_stages3/kernel.ptx",
+   "families": {
+    "ld.param": 8,
+    "mov": 509,
+    "cvt.int": 2,
+    "logic.shift": 307,
+    "math.int": 824,
+    "setp": 65,
+    "ld.global": 194,
+    "st.shared": 194,
+    "bar.sync": 40,
+    "ld.shared": 22,
+    "mov.pred": 6,
+    "ldmatrix": 48,
+    "cvt.bf16f32": 224,
+    "mma.sync": 128,
+    "stmatrix": 16,
+    "st.global": 128,
+    "bra": 3,
+    "ex2.approx": 1,
+    "math.f32x2": 32
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b64": 7,
+     "ld.param.s32": 1
+    },
+    "mov": {
+     "mov.u32": 4,
+     "mov.b16": 2,
+     "mov.u16": 193,
+     "mov.b32": 242,
+     "mov.b64": 68
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 2
+    },
+    "logic.shift": {
+     "and.b64": 2,
+     "and.b32": 11,
+     "or.b64": 67,
+     "shl.b64": 200,
+     "shl.b32": 8,
+     "shr.u32": 2,
+     "xor.b32": 15,
+     "or.b32": 2
+    },
+    "math.int": {
+     "mul.wide.u32": 4,
+     "mul.lo.s64": 1,
+     "add.s64": 649,
+     "add.s32": 170
+    },
+    "setp": {
+     "setp.lt.s64": 65
+    },
+    "ld.global": {
+     "ld.global.b16": 193,
+     "ld.global.b32": 1
+    },
+    "st.shared": {
+     "st.shared::cta.b16": 193,
+     "st.shared::cta.b32": 1
+    },
+    "bar.sync": {
+     "bar.sync": 40
+    },
+    "ld.shared": {
+     "ld.shared.v4.b32": 18,
+     "ld.shared.v2.b64": 4
+    },
+    "mov.pred": {
+     "mov.pred": 6
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 16,
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 32
+    },
+    "cvt.bf16f32": {
+     "mul.bf16x2": 64,
+     "cvt.rn.bf16x2.f32": 96,
+     "cvt.f32.bf16": 64
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 128
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 16
+    },
+    "st.global": {
+     "st.global.b16": 128
+    },
+    "bra": {
+     "bra": 2,
+     "ret": 1
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 1
+    },
+    "math.f32x2": {
+     "mul.f32x2": 32
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 128
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 16384,
+    "spill_stores": 444,
+    "spill_loads": 444,
+    "num_warps": 2
+   },
+   "bra_total": 2,
+   "loop_backedges": 2,
+   "g0_fams": {
+    "mma.sync": 128,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 194,
+    "st.global": 128,
+    "ld.shared": 22,
+    "st.shared": 194,
+    "bar.sync": 40,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 48,
+    "stmatrix": 16,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 1,
+    "bra": 2
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "recompute_w_u_fwd_kernel",
+   "config": "warps4_stages2",
+   "path": "evidence/G0/fla_ptx/recompute_w_u_fwd_kernel/warps4_stages2/kernel.ptx",
+   "families": {
+    "ld.param": 8,
+    "mov": 371,
+    "cvt.int": 35,
+    "logic.shift": 391,
+    "math.int": 517,
+    "setp": 47,
+    "selp": 16,
+    "ld.global": 160,
+    "st.shared": 124,
+    "bar.sync": 12,
+    "ld.shared": 22,
+    "mov.pred": 6,
+    "ldmatrix": 32,
+    "cvt.bf16f32": 224,
+    "mma.sync": 64,
+    "st.global": 64,
+    "bra": 3,
+    "ex2.approx": 16,
+    "math.f32x2": 32
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b64": 7,
+     "ld.param.s32": 1
+    },
+    "mov": {
+     "mov.u32": 35,
+     "mov.b16": 2,
+     "mov.u16": 128,
+     "mov.b32": 130,
+     "mov.b64": 76
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 34,
+     "cvt.u32.u16": 1
+    },
+    "logic.shift": {
+     "and.b64": 2,
+     "and.b32": 29,
+     "or.b32": 41,
+     "or.b64": 35,
+     "shl.b16": 15,
+     "or.b16": 15,
+     "and.b16": 7,
+     "shl.b64": 199,
+     "shr.u32": 17,
+     "shl.b32": 14,
+     "xor.b32": 17
+    },
+    "math.int": {
+     "mul.wide.u32": 2,
+     "bfe.s32": 1,
+     "bfe.u32": 1,
+     "mul.lo.s64": 1,
+     "add.s64": 391,
+     "add.s32": 121
+    },
+    "setp": {
+     "setp.lt.s64": 32,
+     "setp.ne.b32": 15
+    },
+    "selp": {
+     "selp.b16": 16
+    },
+    "ld.global": {
+     "ld.global.b16": 128,
+     "ld.global.b32": 32
+    },
+    "st.shared": {
+     "st.shared::cta.v4.b32": 12,
+     "st.shared::cta.b16": 96,
+     "st.shared::cta.v4.b16": 16
+    },
+    "bar.sync": {
+     "bar.sync": 12
+    },
+    "ld.shared": {
+     "ld.shared.v4.b32": 6,
+     "ld.shared.v4.b16": 16
+    },
+    "mov.pred": {
+     "mov.pred": 6
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.m8n8.x4.trans.shared.b16": 16,
+     "ldmatrix.sync.aligned.m8n8.x4.shared.b16": 16
+    },
+    "cvt.bf16f32": {
+     "mul.bf16x2": 64,
+     "cvt.rn.bf16.f32": 64,
+     "cvt.f32.bf16": 64,
+     "cvt.rn.bf16x2.f32": 32
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 64
+    },
+    "st.global": {
+     "st.global.b16": 64
+    },
+    "bra": {
+     "bra": 2,
+     "ret": 1
+    },
+    "ex2.approx": {
+     "ex2.approx.ftz.f32": 16
+    },
+    "math.f32x2": {
+     "mul.f32x2": 32
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 64
+   },
+   "resources": {
+    "regs": 255,
+    "smem_static": null,
+    "smem_dynamic": 16384,
+    "spill_stores": 328,
+    "spill_loads": 328,
+    "num_warps": 4
+   },
+   "bra_total": 2,
+   "loop_backedges": 2,
+   "g0_fams": {
+    "mma.sync": 64,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 160,
+    "st.global": 64,
+    "ld.shared": 22,
+    "st.shared": 124,
+    "bar.sync": 12,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 32,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 16,
+    "bra": 2
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "solve_tril_16x16_kernel",
+   "config": "warps1_stages4",
+   "path": "evidence/G0/fla_ptx/solve_tril_16x16_kernel/warps1_stages4/kernel.ptx",
+   "families": {
+    "ld.param": 3,
+    "mov": 27,
+    "cvt.int": 21,
+    "logic.shift": 74,
+    "math.int": 57,
+    "setp": 41,
+    "ld.global": 17,
+    "selp": 31,
+    "bra": 3,
+    "math.f32": 19,
+    "math.f32x2": 3,
+    "shfl.sync": 1,
+    "cvt.bf16f32": 8,
+    "st.global": 8
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b64": 2,
+     "ld.param.s32": 1
+    },
+    "mov": {
+     "mov.u32": 20,
+     "mov.b32": 1,
+     "mov.b64": 6
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 11,
+     "cvt.u32.u64": 10
+    },
+    "logic.shift": {
+     "and.b64": 3,
+     "or.b32": 7,
+     "and.b32": 2,
+     "or.b64": 19,
+     "shl.b64": 25,
+     "xor.b32": 17,
+     "shr.u64": 1
+    },
+    "math.int": {
+     "bfe.u32": 1,
+     "mul.lo.s64": 2,
+     "add.s64": 50,
+     "mul.wide.u32": 2,
+     "sub.s64": 1,
+     "min.u64": 1
+    },
+    "setp": {
+     "setp.gt.u32": 8,
+     "setp.lt.s64": 9,
+     "setp.gt.u64": 8,
+     "setp.eq.b64": 7,
+     "setp.ne.b64": 1,
+     "setp.eq.b32": 8
+    },
+    "ld.global": {
+     "ld.global.b32": 17
+    },
+    "selp": {
+     "selp.f32": 31
+    },
+    "bra": {
+     "bra": 2,
+     "ret": 1
+    },
+    "math.f32": {
+     "mul.f32": 8,
+     "add.f32": 11
+    },
+    "math.f32x2": {
+     "add.f32x2": 3
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 1
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 8
+    },
+    "st.global": {
+     "st.global.b16": 8
+    }
+   },
+   "mma_signatures": {},
+   "resources": {
+    "regs": 66,
+    "smem_static": null,
+    "smem_dynamic": 0,
+    "spill_stores": 0,
+    "spill_loads": 0,
+    "num_warps": 1
+   },
+   "bra_total": 2,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 0,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 17,
+    "st.global": 8,
+    "ld.shared": 0,
+    "st.shared": 0,
+    "bar.sync": 0,
+    "barrier": 0,
+    "shfl.sync": 1,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 0,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 0,
+    "bra": 2
+   }
+  },
+  {
+   "ref": "fla",
+   "kernel": "solve_tril_16x16_kernel",
+   "config": "warps4_stages2",
+   "path": "evidence/G0/fla_ptx/solve_tril_16x16_kernel/warps4_stages2/kernel.ptx",
+   "families": {
+    "ld.param": 3,
+    "mov": 11,
+    "cvt.int": 9,
+    "logic.shift": 50,
+    "math.int": 36,
+    "setp": 13,
+    "ld.global": 5,
+    "selp": 9,
+    "bra": 3,
+    "math.f32": 7,
+    "bar.sync": 4,
+    "fma.f32": 1,
+    "shfl.sync": 3,
+    "st.shared": 2,
+    "ld.shared": 2,
+    "cvt.bf16f32": 2,
+    "st.global": 2
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b64": 2,
+     "ld.param.s32": 1
+    },
+    "mov": {
+     "mov.u32": 8,
+     "mov.b32": 2,
+     "mov.b64": 1
+    },
+    "cvt.int": {
+     "cvt.u64.u32": 5,
+     "cvt.u32.u64": 4
+    },
+    "logic.shift": {
+     "and.b64": 3,
+     "or.b32": 2,
+     "and.b32": 9,
+     "or.b64": 7,
+     "shl.b64": 13,
+     "xor.b32": 7,
+     "shr.u32": 3,
+     "shl.b32": 5,
+     "shr.u64": 1
+    },
+    "math.int": {
+     "bfe.u32": 1,
+     "mul.lo.s64": 2,
+     "add.s64": 19,
+     "mul.wide.u32": 2,
+     "sub.s64": 1,
+     "bfe.s32": 1,
+     "add.s32": 7,
+     "neg.s32": 1,
+     "min.u64": 1,
+     "neg.s64": 1
+    },
+    "setp": {
+     "setp.gt.u32": 2,
+     "setp.lt.s64": 3,
+     "setp.gt.u64": 3,
+     "setp.eq.b64": 2,
+     "setp.ne.b64": 1,
+     "setp.eq.b32": 2
+    },
+    "ld.global": {
+     "ld.global.b32": 5
+    },
+    "selp": {
+     "selp.f32": 9
+    },
+    "bra": {
+     "bra": 2,
+     "ret": 1
+    },
+    "math.f32": {
+     "mul.f32": 1,
+     "add.f32": 6
+    },
+    "bar.sync": {
+     "bar.sync": 4
+    },
+    "fma.f32": {
+     "fma.rn.f32": 1
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 3
+    },
+    "st.shared": {
+     "st.shared::cta.b32": 2
+    },
+    "ld.shared": {
+     "ld.shared.b32": 2
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 2
+    },
+    "st.global": {
+     "st.global.b16": 2
+    }
+   },
+   "mma_signatures": {},
+   "resources": {
+    "regs": 40,
+    "smem_static": null,
+    "smem_dynamic": 256,
+    "spill_stores": 0,
+    "spill_loads": 0,
+    "num_warps": 4
+   },
+   "bra_total": 2,
+   "loop_backedges": 1,
+   "g0_fams": {
+    "mma.sync": 0,
+    "cp.async": 0,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 5,
+    "st.global": 2,
+    "ld.shared": 2,
+    "st.shared": 2,
+    "bar.sync": 4,
+    "barrier": 0,
+    "shfl.sync": 3,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 0,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 1,
+    "cp.async.ctrl": 0,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 0,
+    "ex2.approx": 0,
+    "bra": 2
+   }
+  },
+  {
+   "ref": "qla",
+   "kernel": "fused_bwd",
+   "config": "default",
+   "path": "evidence/G0/qla_ptx/fused_bwd/kernel.ptx",
+   "families": {
+    "ld.param": 149,
+    "mov": 2432,
+    "cvta": 48,
+    "elect.sync": 21,
+    "setp": 575,
+    "logic.shift": 3156,
+    "bra": 603,
+    "prefetch.tensormap": 8,
+    "mbarrier": 194,
+    "barrier": 24,
+    "bar.sync": 127,
+    "math.int": 1693,
+    "cvt.bf16f32": 838,
+    "cvt.int": 978,
+    "ld.global": 77,
+    "st.shared": 322,
+    "setmaxnreg": 4,
+    "ld.shared": 569,
+    "math.f32": 463,
+    "ex2.approx": 34,
+    "stmatrix": 104,
+    "math.f32x2": 835,
+    "shfl.sync": 80,
+    "ldmatrix": 712,
+    "mma.sync": 1600,
+    "st.global": 137,
+    "selp": 64,
+    "tma.bulk.tensor": 41,
+    "tma.bulk.ctrl": 6
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b64": 30,
+     "ld.param.b32": 119
+    },
+    "mov": {
+     "mov.b64": 1300,
+     "mov.b32": 929,
+     "mov.s32": 42,
+     "mov.u32": 155,
+     "mov.b16": 6
+    },
+    "cvta": {
+     "cvta.to.global.u64": 32,
+     "cvta.param.u64": 16
+    },
+    "elect.sync": {
+     "elect.sync": 21
+    },
+    "setp": {
+     "setp.eq.b32": 33,
+     "setp.ne.b32": 20,
+     "setp.lt.s32": 158,
+     "setp.gt.s32": 7,
+     "setp.ge.s32": 288,
+     "setp.gt.u32": 60,
+     "setp.ge.u32": 4,
+     "setp.lt.u32": 5
+    },
+    "logic.shift": {
+     "and.b32": 520,
+     "or.pred": 232,
+     "shr.u32": 174,
+     "shr.s32": 60,
+     "shl.b32": 990,
+     "or.b32": 1011,
+     "shl.b64": 52,
+     "or.b64": 26,
+     "and.pred": 18,
+     "not.pred": 20,
+     "xor.b32": 49,
+     "not.b32": 4
+    },
+    "bra": {
+     "bra": 573,
+     "bra.uni": 29,
+     "ret": 1
+    },
+    "prefetch.tensormap": {
+     "prefetch.tensormap": 8
+    },
+    "mbarrier": {
+     "mbarrier.init.shared::cta.b64": 25,
+     "mbarrier.arrive.shared::cta.b64": 60,
+     "mbarrier.try_wait.parity.shared::cta.b64": 90,
+     "mbarrier.expect_tx.shared::cta.b64": 19
+    },
+    "barrier": {
+     "fence.mbarrier_init.release.cluster": 1,
+     "fence.proxy.async.shared::cta": 23
+    },
+    "bar.sync": {
+     "bar.sync": 127
+    },
+    "math.int": {
+     "add.s32": 1384,
+     "mul.lo.s64": 6,
+     "mul.wide.u32": 33,
+     "add.s64": 97,
+     "mad.lo.s64": 20,
+     "neg.s32": 4,
+     "sub.s32": 127,
+     "sub.s64": 1,
+     "mul.wide.s32": 21
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 838
+    },
+    "cvt.int": {
+     "cvt.u32.u16": 841,
+     "cvt.u64.u32": 59,
+     "cvt.s64.s32": 26,
+     "cvt.u32.u64": 52
+    },
+    "ld.global": {
+     "ld.global.nc.v4.b32": 25,
+     "ld.global.nc.b32": 44,
+     "ld.global.nc.b16": 7,
+     "ld.global.b32": 1
+    },
+    "st.shared": {
+     "st.shared.v4.b32": 75,
+     "st.shared.b32": 199,
+     "st.shared.v2.b16": 16,
+     "st.shared.b16": 32
+    },
+    "setmaxnreg": {
+     "setmaxnreg.inc.sync.aligned.u32": 3,
+     "setmaxnreg.dec.sync.aligned.u32": 1
+    },
+    "ld.shared": {
+     "ld.shared.b32": 121,
+     "ld.shared.v2.b16": 176,
+     "ld.shared.v4.b32": 128,
+     "ld.shared.b64": 16,
+     "ld.shared.b16": 128
+    },
+    "math.f32": {
+     "mul.f32": 34,
+     "sub.f32": 2,
+     "add.f32": 391,
+     "neg.f32": 36
+    },
+    "ex2.approx": {
+     "ex2.approx.f32": 34
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.x4.m8n8.shared.b16": 104
+    },
+    "math.f32x2": {
+     "mul.rn.f32x2": 656,
+     "fma.rn.f32x2": 64,
+     "add.rn.f32x2": 83,
+     "sub.rn.f32x2": 32
+    },
+    "shfl.sync": {
+     "shfl.sync.bfly.b32": 80
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.x4.trans.m8n8.shared.b16": 304,
+     "ldmatrix.sync.aligned.x4.m8n8.shared.b16": 408
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 1600
+    },
+    "st.global": {
+     "st.global.b32": 37,
+     "st.global.v4.b32": 96,
+     "st.global.b16": 4
+    },
+    "selp": {
+     "selp.b32": 32,
+     "selp.f32": 32
+    },
+    "tma.bulk.tensor": {
+     "cp.async.bulk.tensor.4d.shared::cta.global.mbarrier::complete_tx::bytes.L2::cache_hint": 29,
+     "cp.async.bulk.tensor.4d.global.shared::cta.bulk_group": 6,
+     "cp.async.bulk.tensor.5d.shared::cta.global.mbarrier::complete_tx::bytes.L2::cache_hint": 6
+    },
+    "tma.bulk.ctrl": {
+     "cp.async.bulk.commit_group": 3,
+     "cp.async.bulk.wait_group.read": 3
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 1600
+   },
+   "resources": {
+    "regs": 128,
+    "smem_static": 2048,
+    "smem_dynamic": null,
+    "spill_stores": 1098,
+    "spill_loads": 1752,
+    "num_warps": null
+   },
+   "bra_total": 422,
+   "loop_backedges": 8,
+   "g0_fams": {
+    "mma.sync": 1600,
+    "cp.async": 47,
+    "tma.bulk": 47,
+    "mbarrier": 230,
+    "exp.approx": 0,
+    "ld.global": 77,
+    "st.global": 137,
+    "ld.shared": 569,
+    "st.shared": 322,
+    "bar.sync": 127,
+    "barrier": 0,
+    "shfl.sync": 80,
+    "redux": 0,
+    "setmaxnreg": 4,
+    "movmatrix": 0,
+    "ldmatrix": 712,
+    "stmatrix": 104,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 64,
+    "cp.async.ctrl": 0,
+    "elect.sync": 21,
+    "prefetch.tensormap": 8,
+    "ld.global.nc": 76,
+    "ex2.approx": 34,
+    "bra": 602
+   },
+   "g0_parity_diff": {
+    "tma.bulk": [
+     0,
+     47
+    ]
+   }
+  },
+  {
+   "ref": "qla",
+   "kernel": "fused_fwd",
+   "config": "default",
+   "path": "evidence/G0/qla_ptx/fused_fwd/kernel.ptx",
+   "families": {
+    "mov": 1558,
+    "ld.param": 136,
+    "cvta": 23,
+    "elect.sync": 18,
+    "setp": 482,
+    "logic.shift": 1681,
+    "bra": 672,
+    "prefetch.tensormap": 6,
+    "mbarrier": 74,
+    "math.int": 759,
+    "barrier": 5,
+    "bar.sync": 22,
+    "setmaxnreg": 4,
+    "ld.global": 186,
+    "cvt.bf16f32": 580,
+    "cvt.int": 618,
+    "stmatrix": 44,
+    "ld.shared": 107,
+    "math.f32x2": 272,
+    "ldmatrix": 136,
+    "mma.sync": 384,
+    "st.global": 96,
+    "math.f32": 43,
+    "ex2.approx": 34,
+    "st.shared": 290,
+    "tma.bulk.tensor": 31,
+    "tma.bulk.ctrl": 24
+   },
+   "variants": {
+    "mov": {
+     "mov.b64": 488,
+     "mov.b32": 1020,
+     "mov.s32": 36,
+     "mov.u32": 14
+    },
+    "ld.param": {
+     "ld.param.b64": 9,
+     "ld.param.b32": 127
+    },
+    "cvta": {
+     "cvta.to.global.u64": 9,
+     "cvta.param.u64": 14
+    },
+    "elect.sync": {
+     "elect.sync": 18
+    },
+    "setp": {
+     "setp.eq.b32": 26,
+     "setp.ne.b32": 12,
+     "setp.lt.u32": 7,
+     "setp.gt.u32": 77,
+     "setp.lt.s32": 270,
+     "setp.ge.s32": 47,
+     "setp.ge.u32": 4,
+     "setp.gt.s32": 39
+    },
+    "logic.shift": {
+     "and.b32": 194,
+     "or.pred": 39,
+     "shr.u32": 38,
+     "shr.s32": 5,
+     "not.pred": 34,
+     "not.b32": 17,
+     "shl.b32": 665,
+     "or.b32": 551,
+     "or.b64": 13,
+     "xor.b32": 26,
+     "shl.b64": 16,
+     "and.pred": 83
+    },
+    "bra": {
+     "bra": 421,
+     "bra.uni": 250,
+     "ret": 1
+    },
+    "prefetch.tensormap": {
+     "prefetch.tensormap": 6
+    },
+    "mbarrier": {
+     "mbarrier.init.shared::cta.b64": 11,
+     "mbarrier.try_wait.parity.shared::cta.b64": 30,
+     "mbarrier.arrive.shared::cta.b64": 29,
+     "mbarrier.expect_tx.shared::cta.b64": 4
+    },
+    "math.int": {
+     "add.s32": 694,
+     "mad.lo.s32": 1,
+     "mul.lo.s32": 3,
+     "div.u32": 5,
+     "sub.s32": 5,
+     "mul.wide.u32": 12,
+     "mul.wide.s32": 1,
+     "add.s64": 30,
+     "neg.s32": 1,
+     "mad.lo.s64": 5,
+     "mul.lo.s64": 2
+    },
+    "barrier": {
+     "fence.mbarrier_init.release.cluster": 1,
+     "fence.proxy.async.shared::cta": 4
+    },
+    "bar.sync": {
+     "bar.sync": 22
+    },
+    "setmaxnreg": {
+     "setmaxnreg.inc.sync.aligned.u32": 3,
+     "setmaxnreg.dec.sync.aligned.u32": 1
+    },
+    "ld.global": {
+     "ld.global.nc.v2.b32": 64,
+     "ld.global.nc.v4.b32": 112,
+     "ld.global.nc.b16": 4,
+     "ld.global.nc.b32": 6
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 580
+    },
+    "cvt.int": {
+     "cvt.u32.u16": 580,
+     "cvt.u64.u32": 29,
+     "cvt.s64.s32": 8,
+     "cvt.u32.u64": 1
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.x4.m8n8.shared.b16": 44
+    },
+    "ld.shared": {
+     "ld.shared.b32": 19,
+     "ld.shared.v2.b16": 48,
+     "ld.shared.b64": 8,
+     "ld.shared.v4.b32": 32
+    },
+    "math.f32x2": {
+     "mul.rn.f32x2": 224,
+     "add.rn.f32x2": 32,
+     "sub.rn.f32x2": 16
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.x4.trans.m8n8.shared.b16": 80,
+     "ldmatrix.sync.aligned.x4.m8n8.shared.b16": 56
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 384
+    },
+    "st.global": {
+     "st.global.v2.b32": 64,
+     "st.global.v4.b32": 32
+    },
+    "math.f32": {
+     "mul.f32": 38,
+     "sub.f32": 1,
+     "neg.f32": 4
+    },
+    "ex2.approx": {
+     "ex2.approx.f32": 34
+    },
+    "st.shared": {
+     "st.shared.b32": 62,
+     "st.shared.v4.b32": 228
+    },
+    "tma.bulk.tensor": {
+     "cp.async.bulk.tensor.4d.shared::cta.global.mbarrier::complete_tx::bytes.L2::cache_hint": 7,
+     "cp.async.bulk.tensor.4d.global.shared::cta.bulk_group": 12,
+     "cp.async.bulk.tensor.5d.global.shared::cta.bulk_group": 12
+    },
+    "tma.bulk.ctrl": {
+     "cp.async.bulk.commit_group": 12,
+     "cp.async.bulk.wait_group.read": 12
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 384
+   },
+   "resources": {
+    "regs": 128,
+    "smem_static": 2048,
+    "smem_dynamic": null,
+    "spill_stores": 1160,
+    "spill_loads": 1272,
+    "num_warps": null
+   },
+   "bra_total": 611,
+   "loop_backedges": 12,
+   "g0_fams": {
+    "mma.sync": 384,
+    "cp.async": 55,
+    "tma.bulk": 55,
+    "mbarrier": 82,
+    "exp.approx": 0,
+    "ld.global": 186,
+    "st.global": 96,
+    "ld.shared": 107,
+    "st.shared": 290,
+    "bar.sync": 22,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 4,
+    "movmatrix": 0,
+    "ldmatrix": 136,
+    "stmatrix": 44,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "cp.async.ctrl": 0,
+    "elect.sync": 18,
+    "prefetch.tensormap": 6,
+    "ld.global.nc": 186,
+    "ex2.approx": 34,
+    "bra": 671
+   },
+   "g0_parity_diff": {
+    "tma.bulk": [
+     0,
+     55
+    ]
+   }
+  },
+  {
+   "ref": "qla",
+   "kernel": "kkt_solve",
+   "config": "default",
+   "path": "evidence/G0/qla_ptx/kkt_solve/kernel.ptx",
+   "families": {
+    "ld.param": 5,
+    "cvta": 3,
+    "mov": 151,
+    "logic.shift": 261,
+    "math.int": 213,
+    "setp": 214,
+    "selp": 120,
+    "bra": 108,
+    "cvt.int": 60,
+    "cp.async.classic": 8,
+    "cp.async.ctrl": 2,
+    "cvt.bf16f32": 18,
+    "ld.global": 10,
+    "st.shared": 58,
+    "bar.sync": 24,
+    "ldmatrix": 32,
+    "mma.sync": 64,
+    "ld.shared": 230,
+    "math.f32x2": 56,
+    "math.f32": 240,
+    "st.global": 16
+   },
+   "variants": {
+    "ld.param": {
+     "ld.param.b64": 3,
+     "ld.param.b32": 2
+    },
+    "cvta": {
+     "cvta.to.global.u64": 3
+    },
+    "mov": {
+     "mov.u32": 6,
+     "mov.b32": 65,
+     "mov.b64": 80
+    },
+    "logic.shift": {
+     "shr.u32": 16,
+     "and.pred": 22,
+     "shl.b32": 64,
+     "and.b32": 46,
+     "shl.b64": 30,
+     "or.b32": 65,
+     "or.b64": 4,
+     "or.pred": 10,
+     "xor.b32": 2,
+     "shr.s32": 2
+    },
+    "math.int": {
+     "div.s32": 1,
+     "mul.lo.s32": 1,
+     "sub.s32": 1,
+     "add.s32": 108,
+     "mul.wide.s32": 9,
+     "add.s64": 66,
+     "mul.lo.s64": 3,
+     "mad.lo.s64": 24
+    },
+    "setp": {
+     "setp.ne.b32": 5,
+     "setp.lt.s32": 48,
+     "setp.gt.s32": 47,
+     "setp.eq.b32": 50,
+     "setp.ge.s32": 20,
+     "setp.gt.u32": 6,
+     "setp.lt.u32": 38
+    },
+    "selp": {
+     "selp.b32": 26,
+     "selp.b64": 54,
+     "selp.f32": 40
+    },
+    "bra": {
+     "bra": 69,
+     "bra.uni": 38,
+     "ret": 1
+    },
+    "cvt.int": {
+     "cvt.s64.s32": 9,
+     "cvt.u64.u32": 33,
+     "cvt.u32.u16": 18
+    },
+    "cp.async.classic": {
+     "cp.async.cg.shared.global": 8
+    },
+    "cp.async.ctrl": {
+     "cp.async.commit_group": 1,
+     "cp.async.wait_all": 1
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 18
+    },
+    "ld.global": {
+     "ld.global.v4.b32": 8,
+     "ld.global.nc.b16": 2
+    },
+    "st.shared": {
+     "st.shared.v4.b32": 17,
+     "st.shared.b32": 20,
+     "st.shared.v2.b32": 9,
+     "st.shared.b64": 12
+    },
+    "bar.sync": {
+     "bar.sync": 24
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.x4.m8n8.shared.b16": 32
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 64
+    },
+    "ld.shared": {
+     "ld.shared.b32": 144,
+     "ld.shared.v2.b32": 4,
+     "ld.shared.v4.b32": 48,
+     "ld.shared.b64": 34
+    },
+    "math.f32x2": {
+     "mul.rn.f32x2": 24,
+     "fma.rn.f32x2": 32
+    },
+    "math.f32": {
+     "mul.f32": 120,
+     "sub.f32": 120
+    },
+    "st.global": {
+     "st.global.v2.b32": 16
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 64
+   },
+   "resources": {
+    "regs": 88,
+    "smem_static": 1024,
+    "smem_dynamic": null,
+    "spill_stores": 0,
+    "spill_loads": 0,
+    "num_warps": null
+   },
+   "bra_total": 107,
+   "loop_backedges": 0,
+   "g0_fams": {
+    "mma.sync": 64,
+    "cp.async": 10,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 10,
+    "st.global": 16,
+    "ld.shared": 230,
+    "st.shared": 58,
+    "bar.sync": 24,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 32,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 32,
+    "cp.async.ctrl": 2,
+    "elect.sync": 0,
+    "prefetch.tensormap": 0,
+    "ld.global.nc": 2,
+    "ex2.approx": 0,
+    "bra": 107
+   }
+  },
+  {
+   "ref": "qla",
+   "kernel": "prepare_h",
+   "config": "default",
+   "path": "evidence/G0/qla_ptx/prepare_h/kernel.ptx",
+   "families": {
+    "mov": 1035,
+    "ld.param": 95,
+    "cvta": 23,
+    "elect.sync": 10,
+    "setp": 260,
+    "logic.shift": 1150,
+    "bra": 445,
+    "prefetch.tensormap": 4,
+    "mbarrier": 58,
+    "math.int": 491,
+    "barrier": 5,
+    "bar.sync": 15,
+    "setmaxnreg": 4,
+    "ld.global": 154,
+    "cvt.bf16f32": 420,
+    "cvt.int": 441,
+    "stmatrix": 32,
+    "ld.shared": 43,
+    "math.f32": 8,
+    "ex2.approx": 3,
+    "math.f32x2": 192,
+    "ldmatrix": 68,
+    "mma.sync": 224,
+    "st.global": 128,
+    "st.shared": 174,
+    "tma.bulk.tensor": 14,
+    "tma.bulk.ctrl": 10
+   },
+   "variants": {
+    "mov": {
+     "mov.b64": 312,
+     "mov.b32": 688,
+     "mov.s32": 20,
+     "mov.u32": 15
+    },
+    "ld.param": {
+     "ld.param.b64": 11,
+     "ld.param.b32": 84
+    },
+    "cvta": {
+     "cvta.to.global.u64": 15,
+     "cvta.param.u64": 8
+    },
+    "elect.sync": {
+     "elect.sync": 10
+    },
+    "setp": {
+     "setp.eq.b32": 15,
+     "setp.ne.b32": 11,
+     "setp.lt.u32": 6,
+     "setp.gt.u32": 38,
+     "setp.lt.s32": 174,
+     "setp.gt.s32": 5,
+     "setp.ge.s32": 10,
+     "setp.le.s32": 1
+    },
+    "logic.shift": {
+     "and.b32": 151,
+     "or.pred": 6,
+     "shr.u32": 25,
+     "shr.s32": 3,
+     "not.pred": 2,
+     "not.b32": 6,
+     "shl.b32": 468,
+     "or.b32": 400,
+     "or.b64": 9,
+     "xor.b32": 25,
+     "shl.b64": 16,
+     "and.pred": 39
+    },
+    "bra": {
+     "bra": 260,
+     "bra.uni": 184,
+     "ret": 1
+    },
+    "prefetch.tensormap": {
+     "prefetch.tensormap": 4
+    },
+    "mbarrier": {
+     "mbarrier.init.shared::cta.b64": 8,
+     "mbarrier.try_wait.parity.shared::cta.b64": 22,
+     "mbarrier.arrive.shared::cta.b64": 25,
+     "mbarrier.expect_tx.shared::cta.b64": 3
+    },
+    "math.int": {
+     "add.s32": 425,
+     "mad.lo.s32": 1,
+     "mul.lo.s32": 3,
+     "div.u32": 5,
+     "sub.s32": 2,
+     "mul.wide.u32": 14,
+     "mul.wide.s32": 4,
+     "add.s64": 31,
+     "neg.s32": 2,
+     "mad.lo.s64": 3,
+     "mul.lo.s64": 1
+    },
+    "barrier": {
+     "fence.mbarrier_init.release.cluster": 1,
+     "fence.proxy.async.shared::cta": 4
+    },
+    "bar.sync": {
+     "bar.sync": 15
+    },
+    "setmaxnreg": {
+     "setmaxnreg.inc.sync.aligned.u32": 3,
+     "setmaxnreg.dec.sync.aligned.u32": 1
+    },
+    "ld.global": {
+     "ld.global.nc.v2.b32": 64,
+     "ld.global.nc.v4.b32": 80,
+     "ld.global.nc.b32": 6,
+     "ld.global.nc.b16": 4
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 420
+    },
+    "cvt.int": {
+     "cvt.u32.u16": 420,
+     "cvt.u64.u32": 17,
+     "cvt.s64.s32": 4
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.x4.m8n8.shared.b16": 32
+    },
+    "ld.shared": {
+     "ld.shared.b32": 11,
+     "ld.shared.v2.b16": 32
+    },
+    "math.f32": {
+     "mul.f32": 3,
+     "neg.f32": 4,
+     "sub.f32": 1
+    },
+    "ex2.approx": {
+     "ex2.approx.f32": 3
+    },
+    "math.f32x2": {
+     "mul.rn.f32x2": 160,
+     "sub.rn.f32x2": 32
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.x4.trans.m8n8.shared.b16": 64,
+     "ldmatrix.sync.aligned.x4.m8n8.shared.b16": 4
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 224
+    },
+    "st.global": {
+     "st.global.v2.b32": 64,
+     "st.global.b64": 64
+    },
+    "st.shared": {
+     "st.shared.b32": 13,
+     "st.shared.v4.b32": 161
+    },
+    "tma.bulk.tensor": {
+     "cp.async.bulk.tensor.4d.shared::cta.global.mbarrier::complete_tx::bytes.L2::cache_hint": 4,
+     "cp.async.bulk.tensor.5d.global.shared::cta.bulk_group": 10
+    },
+    "tma.bulk.ctrl": {
+     "cp.async.bulk.commit_group": 5,
+     "cp.async.bulk.wait_group.read": 5
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 224
+   },
+   "resources": {
+    "regs": 128,
+    "smem_static": 2048,
+    "smem_dynamic": null,
+    "spill_stores": 0,
+    "spill_loads": 0,
+    "num_warps": null
+   },
+   "bra_total": 400,
+   "loop_backedges": 11,
+   "g0_fams": {
+    "mma.sync": 224,
+    "cp.async": 24,
+    "tma.bulk": 24,
+    "mbarrier": 63,
+    "exp.approx": 0,
+    "ld.global": 154,
+    "st.global": 128,
+    "ld.shared": 43,
+    "st.shared": 174,
+    "bar.sync": 15,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 4,
+    "movmatrix": 0,
+    "ldmatrix": 68,
+    "stmatrix": 32,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "cp.async.ctrl": 0,
+    "elect.sync": 10,
+    "prefetch.tensormap": 4,
+    "ld.global.nc": 154,
+    "ex2.approx": 3,
+    "bra": 444
+   },
+   "g0_parity_diff": {
+    "tma.bulk": [
+     0,
+     24
+    ]
+   }
+  },
+  {
+   "ref": "qla",
+   "kernel": "prepare_h_s3",
+   "config": "default",
+   "path": "evidence/G0/qla_ptx/prepare_h_s3/kernel.ptx",
+   "families": {
+    "mov": 1051,
+    "ld.param": 96,
+    "cvta": 23,
+    "elect.sync": 10,
+    "setp": 263,
+    "logic.shift": 1193,
+    "bra": 445,
+    "prefetch.tensormap": 4,
+    "mbarrier": 60,
+    "math.int": 582,
+    "barrier": 5,
+    "bar.sync": 15,
+    "setmaxnreg": 4,
+    "ld.global": 154,
+    "selp": 3,
+    "cvt.bf16f32": 420,
+    "cvt.int": 444,
+    "stmatrix": 32,
+    "ld.shared": 43,
+    "math.f32": 8,
+    "ex2.approx": 3,
+    "math.f32x2": 192,
+    "ldmatrix": 68,
+    "mma.sync": 224,
+    "st.global": 128,
+    "st.shared": 174,
+    "tma.bulk.tensor": 14,
+    "tma.bulk.ctrl": 10
+   },
+   "variants": {
+    "mov": {
+     "mov.b64": 312,
+     "mov.b32": 691,
+     "mov.s32": 20,
+     "mov.u32": 28
+    },
+    "ld.param": {
+     "ld.param.b64": 11,
+     "ld.param.b32": 85
+    },
+    "cvta": {
+     "cvta.to.global.u64": 15,
+     "cvta.param.u64": 8
+    },
+    "elect.sync": {
+     "elect.sync": 10
+    },
+    "setp": {
+     "setp.eq.b32": 15,
+     "setp.ne.b32": 11,
+     "setp.lt.u32": 6,
+     "setp.gt.u32": 41,
+     "setp.lt.s32": 174,
+     "setp.gt.s32": 5,
+     "setp.ge.s32": 10,
+     "setp.le.s32": 1
+    },
+    "logic.shift": {
+     "and.b32": 132,
+     "or.pred": 6,
+     "shr.u32": 28,
+     "shr.s32": 3,
+     "not.pred": 2,
+     "not.b32": 7,
+     "shl.b32": 475,
+     "or.b32": 446,
+     "or.b64": 9,
+     "xor.b32": 27,
+     "and.b16": 3,
+     "shl.b64": 16,
+     "and.pred": 39
+    },
+    "bra": {
+     "bra": 260,
+     "bra.uni": 184,
+     "ret": 1
+    },
+    "prefetch.tensormap": {
+     "prefetch.tensormap": 4
+    },
+    "mbarrier": {
+     "mbarrier.init.shared::cta.b64": 10,
+     "mbarrier.try_wait.parity.shared::cta.b64": 22,
+     "mbarrier.arrive.shared::cta.b64": 25,
+     "mbarrier.expect_tx.shared::cta.b64": 3
+    },
+    "math.int": {
+     "add.s32": 483,
+     "mad.lo.s32": 4,
+     "mul.lo.s32": 13,
+     "div.u32": 5,
+     "sub.s32": 13,
+     "mul.wide.u32": 14,
+     "mul.wide.s32": 4,
+     "add.s64": 31,
+     "neg.s32": 2,
+     "mul.hi.u32": 6,
+     "mul.wide.u16": 3,
+     "mad.lo.s64": 3,
+     "mul.lo.s64": 1
+    },
+    "barrier": {
+     "fence.mbarrier_init.release.cluster": 1,
+     "fence.proxy.async.shared::cta": 4
+    },
+    "bar.sync": {
+     "bar.sync": 15
+    },
+    "setmaxnreg": {
+     "setmaxnreg.inc.sync.aligned.u32": 3,
+     "setmaxnreg.dec.sync.aligned.u32": 1
+    },
+    "ld.global": {
+     "ld.global.nc.v2.b32": 64,
+     "ld.global.nc.v4.b32": 80,
+     "ld.global.nc.b32": 6,
+     "ld.global.nc.b16": 4
+    },
+    "selp": {
+     "selp.b32": 3
+    },
+    "cvt.bf16f32": {
+     "cvt.rn.bf16.f32": 420
+    },
+    "cvt.int": {
+     "cvt.u32.u16": 420,
+     "cvt.u16.u32": 3,
+     "cvt.u64.u32": 17,
+     "cvt.s64.s32": 4
+    },
+    "stmatrix": {
+     "stmatrix.sync.aligned.x4.m8n8.shared.b16": 32
+    },
+    "ld.shared": {
+     "ld.shared.b32": 11,
+     "ld.shared.v2.b16": 32
+    },
+    "math.f32": {
+     "mul.f32": 3,
+     "neg.f32": 4,
+     "sub.f32": 1
+    },
+    "ex2.approx": {
+     "ex2.approx.f32": 3
+    },
+    "math.f32x2": {
+     "mul.rn.f32x2": 160,
+     "sub.rn.f32x2": 32
+    },
+    "ldmatrix": {
+     "ldmatrix.sync.aligned.x4.trans.m8n8.shared.b16": 64,
+     "ldmatrix.sync.aligned.x4.m8n8.shared.b16": 4
+    },
+    "mma.sync": {
+     "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 224
+    },
+    "st.global": {
+     "st.global.v2.b32": 64,
+     "st.global.b64": 64
+    },
+    "st.shared": {
+     "st.shared.b32": 13,
+     "st.shared.v4.b32": 161
+    },
+    "tma.bulk.tensor": {
+     "cp.async.bulk.tensor.4d.shared::cta.global.mbarrier::complete_tx::bytes.L2::cache_hint": 4,
+     "cp.async.bulk.tensor.5d.global.shared::cta.bulk_group": 10
+    },
+    "tma.bulk.ctrl": {
+     "cp.async.bulk.commit_group": 5,
+     "cp.async.bulk.wait_group.read": 5
+    }
+   },
+   "mma_signatures": {
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32": 224
+   },
+   "resources": {
+    "regs": 128,
+    "smem_static": 2048,
+    "smem_dynamic": null,
+    "spill_stores": 8,
+    "spill_loads": 8,
+    "num_warps": null
+   },
+   "bra_total": 400,
+   "loop_backedges": 11,
+   "g0_fams": {
+    "mma.sync": 224,
+    "cp.async": 24,
+    "tma.bulk": 24,
+    "mbarrier": 65,
+    "exp.approx": 0,
+    "ld.global": 154,
+    "st.global": 128,
+    "ld.shared": 43,
+    "st.shared": 174,
+    "bar.sync": 15,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 4,
+    "movmatrix": 0,
+    "ldmatrix": 68,
+    "stmatrix": 32,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "cp.async.ctrl": 0,
+    "elect.sync": 10,
+    "prefetch.tensormap": 4,
+    "ld.global.nc": 154,
+    "ex2.approx": 3,
+    "bra": 444
+   },
+   "g0_parity_diff": {
+    "tma.bulk": [
+     0,
+     24
+    ]
+   }
+  }
+ ],
+ "g0_fams_parity_note": "G0 FAMS imported from tools/harvest_flaptx.py and re-run per config (entries[].g0_fams); G0's 'tma.bulk' regex was broken (never matched) and mbarrier missed the mbarrier_init spelling \u2014 fixed in EXTRA_FAMS; entries[].g0_parity_diff lists any deltas vs G0 meta.json ptx_features"
+}

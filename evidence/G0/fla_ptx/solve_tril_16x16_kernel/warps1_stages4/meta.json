@@ -1,0 +1,39 @@
+{
+ "kernel": "solve_tril_16x16_kernel",
+ "config": {
+  "warps": 1,
+  "stages": 4
+ },
+ "shared_dynamic": 0,
+ "num_warps": 1,
+ "ptxas": {
+  "registers": 66,
+  "smem_static": null,
+  "spill_stores": 0,
+  "spill_loads": 0,
+  "stack_frame": 0
+ },
+ "ptx_features": {
+  "mma.sync": 0,
+  "cp.async": 0,
+  "tma.bulk": 0,
+  "mbarrier": 0,
+  "exp.approx": 0,
+  "ld.global": 17,
+  "st.global": 8,
+  "ld.shared": 0,
+  "st.shared": 0,
+  "bar.sync": 0,
+  "barrier": 0,
+  "shfl.sync": 1,
+  "redux": 0,
+  "setmaxnreg": 0,
+  "movmatrix": 0,
+  "ldmatrix": 0,
+  "stmatrix": 0,
+  "wmma": 0,
+  "wgmma": 0,
+  "tcgen05": 0,
+  "fma.f32": 0
+ }
+}

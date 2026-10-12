@@ -1,0 +1,34 @@
+{
+ "kernel": "fused_fwd",
+ "ptxas": {
+  "registers": 128,
+  "smem_static": 2048,
+  "spill_stores": 1160,
+  "spill_loads": 1272,
+  "stack_frame": 720
+ },
+ "ptx_features": {
+  "mma.sync": 384,
+  "cp.async": 55,
+  "tma.bulk": 0,
+  "mbarrier": 82,
+  "exp.approx": 0,
+  "ld.global": 186,
+  "st.global": 96,
+  "ld.shared": 107,
+  "st.shared": 290,
+  "bar.sync": 22,
+  "barrier": 0,
+  "shfl.sync": 0,
+  "redux": 0,
+  "setmaxnreg": 4,
+  "movmatrix": 0,
+  "ldmatrix": 136,
+  "stmatrix": 44,
+  "wmma": 0,
+  "wgmma": 0,
+  "tcgen05": 0,
+  "fma.f32": 0,
+  "mma.sync.other": 0
+ }
+}

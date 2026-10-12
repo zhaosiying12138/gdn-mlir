@@ -1,0 +1,78 @@
+	.target	sm_120a
+
+	.elftype	@"ET_EXEC"
+
+
+//--------------------- .text.gdn_ref_kernel_kernel --------------------------
+	.section	.text.gdn_ref_kernel_kernel,"ax",@progbits
+	.align	128
+        .global         gdn_ref_kernel_kernel
+        .type           gdn_ref_kernel_kernel,@function
+        .size           gdn_ref_kernel_kernel,(.L_x_1 - gdn_ref_kernel_kernel)
+        .other          gdn_ref_kernel_kernel,@"STO_CUDA_ENTRY STV_DEFAULT"
+gdn_ref_kernel_kernel:
+.text.gdn_ref_kernel_kernel:
+        /*0000*/                   LDC R1, c[0x0][0x37c] ;
+        /*0010*/                   S2R R13, SR_TID.X ;
+        /*0020*/                   LDCU.64 UR6, c[0x4][0x8] ;
+        /*0030*/                   LDC.64 R10, c[0x4][RZ] ;
+        /*0040*/                   LDCU.64 UR8, c[0x4][0x10] ;
+        /*0050*/                   LDCU.64 UR10, c[0x4][URZ] ;
+        /*0060*/                   LDCU.64 UR4, c[0x0][0x358] ;
+        /*0070*/                   SHF.R.U64 R7, R13, 0x2, RZ ;
+        /*0080*/                   SHF.L.U64.HI R3, R7.reuse, 0x3, RZ ;
+        /*0090*/                   IMAD.SHL.U32 R2, R7.reuse, 0x8, RZ ;
+        /*00a0*/                   LEA R4, P0, R7.reuse, UR6, 0x5 ;
+        /*00b0*/                   LEA R8, P2, R7, UR10, 0x4 ;
+        /*00c0*/                   IMAD.WIDE.U32 R2, R13, 0x2, -R2 ;
+        /*00d0*/                   LEA.HI.X R5, R7.reuse, UR7, RZ, 0x5, P0 ;
+        /*00e0*/                   LEA.HI.X R9, R7, UR11, RZ, 0x4, P2 ;
+        /*00f0*/                   LEA R6, P1, R2, UR8, 0x4 ;
+        /*0100*/                   LEA.HI.X R0, R2.reuse, UR9, R3.reuse, 0x4, P1 ;
+        /*0110*/                   LEA R6, P0, R7.reuse, R6, 0x1 ;
+        /*0120*/                   SHF.L.U64.HI R3, R2.reuse, 0x1, R3 ;
+        /*0130*/                   IMAD.SHL.U32 R2, R2, 0x2, RZ ;
+        /*0140*/                   LEA.HI.X R7, R7, R0, RZ, 0x1, P0 ;
+        /*0150*/                   IADD.64 R4, R2.reuse, R4 ;
+        /*0160*/                   LDG.E.U16.CONSTANT R0, desc[UR4][R6.64] ;
+        /*0170*/                   IADD.64 R8, R2, R8 ;
+        /*0180*/                   LDG.E.U16.CONSTANT R17, desc[UR4][R6.64+0x10] ;
+        /*0190*/                   IMAD.WIDE.U32 R2, R13, 0x4, R10 ;
+        /*01a0*/                   LDG.E.U16.CONSTANT R16, desc[UR4][R6.64+0x80] ;
+        /*01b0*/                   LDG.E.U16.CONSTANT R19, desc[UR4][R6.64+0x90] ;
+        /*01c0*/                   LDG.E.CONSTANT R12, desc[UR4][R4.64] ;
+        /*01d0*/                   LDG.E.CONSTANT R13, desc[UR4][R4.64+0x100] ;
+        /*01e0*/                   LDG.E.CONSTANT R14, desc[UR4][R4.64+0x10] ;
+        /*01f0*/                   LDG.E.CONSTANT R15, desc[UR4][R4.64+0x110] ;
+        /*0200*/                   LDG.E R10, desc[UR4][R2.64] ;
+        /*0210*/                   LDG.E R11, desc[UR4][R8.64+0x80] ;
+        /*0220*/                   PRMT R18, R0, 0x5410, R17 ;
+        /*0230*/                   PRMT R19, R16, 0x5410, R19 ;
+        /*0240*/                   HMMA.16816.F16 R10, R12, R18, R10 ;
+        /*0250*/                   @!UPT UIADD3 URZ, UPT, UPT, URZ, URZ, URZ ;
+        /*0260*/                   @!UPT UIADD3 URZ, UPT, UPT, URZ, URZ, URZ ;
+        /*0270*/                   STG.E desc[UR4][R2.64], R10 ;
+        /*0280*/                   STG.E desc[UR4][R8.64+0x80], R11 ;
+        /*0290*/                   EXIT ;
+.L_x_0:
+        /*02a0*/                   BRA `(.L_x_0);
+        /*02b0*/                   NOP;
+        /*02c0*/                   NOP;
+        /*02d0*/                   NOP;
+        /*02e0*/                   NOP;
+        /*02f0*/                   NOP;
+        /*0300*/                   NOP;
+        /*0310*/                   NOP;
+        /*0320*/                   NOP;
+        /*0330*/                   NOP;
+        /*0340*/                   NOP;
+        /*0350*/                   NOP;
+        /*0360*/                   NOP;
+        /*0370*/                   NOP;
+.L_x_1:
+
+
+//--------------------- SYMBOLS --------------------------
+
+	.type		.nv.reservedSmem.offset0,@object
+	.size		.nv.reservedSmem.offset0,0x4

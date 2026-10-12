@@ -1,0 +1,42 @@
+{
+ "shape": [
+  1,
+  2048,
+  16,
+  128,
+  128
+ ],
+ "|dW|max": 2.9222011268874435,
+ "dW_delta_vs_exact": {
+  "exact": 0.0,
+  "current": 2.2213614859545316e-05,
+  "wpark_f32": 2.2332824149096098e-05,
+  "wpark_bf16": 0.007726582596219722
+ },
+ "graded": {
+  "exact|dk|vs_current": 1.261497392934796e-07,
+  "exact|dk|vs_exact": 0.0,
+  "exact|dbeta|vs_current": 6.935901875060324e-08,
+  "exact|dbeta|vs_exact": 0.0,
+  "exact|dg|vs_current": 5.879159246935384e-08,
+  "exact|dg|vs_exact": 0.0,
+  "current|dk|vs_current": 0.0,
+  "current|dk|vs_exact": 1.261497392934796e-07,
+  "current|dbeta|vs_current": 0.0,
+  "current|dbeta|vs_exact": 6.935901875060324e-08,
+  "current|dg|vs_current": 0.0,
+  "current|dg|vs_exact": 5.879159246935384e-08,
+  "wpark_f32|dk|vs_current": 3.239596899767827e-09,
+  "wpark_f32|dk|vs_exact": 1.2722128869824267e-07,
+  "wpark_f32|dbeta|vs_current": 1.3903470874598867e-09,
+  "wpark_f32|dbeta|vs_exact": 7.06278052708953e-08,
+  "wpark_f32|dg|vs_current": 1.1234218104394511e-09,
+  "wpark_f32|dg|vs_exact": 5.852960854174638e-08,
+  "wpark_bf16|dk|vs_current": 4.282189027304817e-05,
+  "wpark_bf16|dk|vs_exact": 4.280521851393604e-05,
+  "wpark_bf16|dbeta|vs_current": 2.6938738577633736e-05,
+  "wpark_bf16|dbeta|vs_exact": 2.6957823766854405e-05,
+  "wpark_bf16|dg|vs_current": 1.9152638306849795e-05,
+  "wpark_bf16|dg|vs_exact": 1.913923558446648e-05
+ }
+}

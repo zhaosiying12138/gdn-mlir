@@ -1,0 +1,132 @@
+{
+  "what": "G5 final adjudication: interleaved fla-vs-ours fwd, 5 pairs/shape, CUDA events, shared-recipe inputs",
+  "probe": {
+    "FLA_FLASH_QLA": "0",
+    "flash_qla_importable": false,
+    "flash_qla_backend_can_use": false,
+    "torch": "2.14.1+cu130"
+  },
+  "knobs": {
+    "warps": 4,
+    "bv": 32,
+    "f2_segments": 1
+  },
+  "gpu_start": {
+    "util_pct": 1,
+    "mem_used_mib": 9198,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 180
+  },
+  "results": {
+    "B4T2048": {
+      "shape": {
+        "name": "B4T2048",
+        "B": 4,
+        "T": 2048,
+        "H": 16,
+        "K": 128,
+        "V": 128
+      },
+      "ours_samples_ms": [
+        0.82592,
+        0.825952,
+        1.018624,
+        0.827744,
+        0.827808,
+        1.014944,
+        0.825952,
+        0.827072,
+        0.825216,
+        0.830336,
+        0.825408,
+        0.82384,
+        0.826464,
+        1.044352,
+        0.825664,
+        0.824256,
+        1.178112,
+        0.844544,
+        0.849696,
+        0.847808,
+        0.844064,
+        1.056864,
+        0.848,
+        0.846368,
+        0.848352,
+        0.841824,
+        0.843488,
+        0.841696,
+        0.83792,
+        1.080096
+      ],
+      "fla_samples_ms": [
+        1.186016,
+        1.035712,
+        0.982304,
+        0.956,
+        1.16816,
+        0.961728,
+        1.41824,
+        1.13488,
+        0.960704,
+        0.93552,
+        1.010528,
+        1.112096,
+        0.966752,
+        1.006976,
+        1.052832,
+        1.079552,
+        2.57952,
+        1.039232,
+        1.189824,
+        0.95792,
+        1.230336,
+        1.193728,
+        1.267904,
+        1.35632,
+        0.986368,
+        1.036416,
+        1.015008,
+        0.9512,
+        0.97696,
+        1.40624
+      ],
+      "ours_median_ms": 0.84176,
+      "fla_median_ms": 1.037824,
+      "speedup_ratio_of_medians": 1.2329,
+      "speedup_median_of_ratios": 1.2308,
+      "ours_min_ms": 0.82384,
+      "fla_min_ms": 0.93552,
+      "window_pre": {
+        "util_pct": 20,
+        "mem_used_mib": 10204,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2302
+      },
+      "window_post": {
+        "util_pct": 33,
+        "mem_used_mib": 10204,
+        "mem_total_mib": 24463,
+        "sm_clock_mhz": 2782
+      },
+      "stats": {
+        "n_pairs": 30,
+        "median_ratio": 1.2308,
+        "iqr": 0.2364,
+        "iqr_over_median": 0.192,
+        "min_ratio": 0.9476,
+        "max_ratio": 2.1895,
+        "sign_test_p_vs_1": 8e-06,
+        "decidable_rule": "(median-1) > 3*IQR/median",
+        "decidable": false
+      },
+      "window_clean": true
+    }
+  },
+  "gpu_end": {
+    "util_pct": 33,
+    "mem_used_mib": 10204,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 2782
+  }
+}

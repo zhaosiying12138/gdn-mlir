@@ -1,0 +1,63 @@
+{
+  "what": "R25-fwd dual v1/v2 decidability verdicts on the fresh W32P archival pairs (n=30, --stats, cubins e7c8eb4c/39f094c3/be5b2377)",
+  "source": "/home/zhaosiying/codebase/gdn-mlir/evidence/G5/final_adjudicate_r25f_w32p.json",
+  "results": {
+    "B1T8192": {
+      "n": 30,
+      "median_ratio": 1.330720865521374,
+      "wins": 29,
+      "p": 2.8870999813079834e-08,
+      "v1": {
+        "iqr": 0.23632565780704473,
+        "iqr_rel": 0.17759220880214632,
+        "decidable": false
+      },
+      "v2": {
+        "tiqr": 0.15833537829470945,
+        "tiqr_rel": 0.11898466642940474,
+        "decidable": false
+      },
+      "ratio_of_medians": 1.3493,
+      "ours_median_ms": 0.785056,
+      "fla_median_ms": 1.059296
+    },
+    "B4T2048": {
+      "n": 30,
+      "median_ratio": 1.2029401713984964,
+      "wins": 25,
+      "p": 0.00016245711594820023,
+      "v1": {
+        "iqr": 0.32878958040206085,
+        "iqr_rel": 0.2733216399447543,
+        "decidable": false
+      },
+      "v2": {
+        "tiqr": 0.20192539908014884,
+        "tiqr_rel": 0.16785988520559372,
+        "decidable": false
+      },
+      "ratio_of_medians": 1.2211,
+      "ours_median_ms": 0.821312,
+      "fla_median_ms": 1.002944
+    },
+    "B1T2048": {
+      "n": 30,
+      "median_ratio": 2.1173812133419787,
+      "wins": 30,
+      "p": 9.313225746154785e-10,
+      "v1": {
+        "iqr": 0.8890841775167881,
+        "iqr_rel": 0.4198980192676301,
+        "decidable": false
+      },
+      "v2": {
+        "tiqr": 0.7342281927172951,
+        "tiqr_rel": 0.34676240069138164,
+        "decidable": true
+      },
+      "ratio_of_medians": 2.125,
+      "ours_median_ms": 0.18656,
+      "fla_median_ms": 0.396448
+    }
+  }
+}

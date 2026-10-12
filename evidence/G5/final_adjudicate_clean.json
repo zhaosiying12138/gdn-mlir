@@ -1,0 +1,162 @@
+{
+ "what": "G5 final adjudication: interleaved fla-vs-ours fwd, 5 pairs/shape, CUDA events, shared-recipe inputs",
+ "probe": {
+  "FLA_FLASH_QLA": "0",
+  "flash_qla_importable": false,
+  "flash_qla_backend_can_use": false,
+  "torch": "2.14.1+cu130"
+ },
+ "knobs": {
+  "warps": 8,
+  "bv": 64,
+  "f2_segments": 1
+ },
+ "gpu_start": {
+  "util_pct": 0,
+  "mem_used_mib": 2407,
+  "mem_total_mib": 24463,
+  "sm_clock_mhz": 180
+ },
+ "results": {
+  "B1T2048": {
+   "shape": {
+    "name": "B1T2048",
+    "B": 1,
+    "T": 2048,
+    "H": 16,
+    "K": 128,
+    "V": 128
+   },
+   "ours_samples_ms": [
+    0.262624,
+    0.254496,
+    0.263488,
+    0.244576,
+    0.242752
+   ],
+   "fla_samples_ms": [
+    0.724096,
+    0.36816,
+    0.379872,
+    0.352064,
+    0.35904
+   ],
+   "ours_median_ms": 0.254496,
+   "fla_median_ms": 0.36816,
+   "speedup_ratio_of_medians": 1.4466,
+   "speedup_median_of_ratios": 1.4466,
+   "ours_min_ms": 0.242752,
+   "fla_min_ms": 0.352064,
+   "window_pre": {
+    "util_pct": 2,
+    "mem_used_mib": 2709,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 1612
+   },
+   "window_post": {
+    "util_pct": 2,
+    "mem_used_mib": 2709,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 1612
+   },
+   "window_clean": true
+  },
+  "B1T8192": {
+   "shape": {
+    "name": "B1T8192",
+    "B": 1,
+    "T": 8192,
+    "H": 16,
+    "K": 128,
+    "V": 128
+   },
+   "ours_samples_ms": [
+    1.043296,
+    1.02512,
+    1.020992,
+    1.028928,
+    1.023104
+   ],
+   "fla_samples_ms": [
+    1.241824,
+    0.979456,
+    0.9352,
+    0.927264,
+    0.924352
+   ],
+   "ours_median_ms": 1.02512,
+   "fla_median_ms": 0.9352,
+   "speedup_ratio_of_medians": 0.9123,
+   "speedup_median_of_ratios": 0.916,
+   "ours_min_ms": 1.020992,
+   "fla_min_ms": 0.924352,
+   "window_pre": {
+    "util_pct": 1,
+    "mem_used_mib": 3613,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 1627
+   },
+   "window_post": {
+    "util_pct": 1,
+    "mem_used_mib": 3613,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 1687
+   },
+   "window_clean": true
+  },
+  "B4T2048": {
+   "shape": {
+    "name": "B4T2048",
+    "B": 4,
+    "T": 2048,
+    "H": 16,
+    "K": 128,
+    "V": 128
+   },
+   "ours_samples_ms": [
+    1.147424,
+    1.131584,
+    1.120672,
+    1.089024,
+    1.089344
+   ],
+   "fla_samples_ms": [
+    1.575808,
+    1.292672,
+    1.271904,
+    1.35552,
+    1.27264
+   ],
+   "ours_median_ms": 1.120672,
+   "fla_median_ms": 1.292672,
+   "speedup_ratio_of_medians": 1.1535,
+   "speedup_median_of_ratios": 1.1683,
+   "ours_min_ms": 1.089024,
+   "fla_min_ms": 1.271904,
+   "window_pre": {
+    "util_pct": 10,
+    "mem_used_mib": 4209,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 180
+   },
+   "window_post": {
+    "util_pct": 10,
+    "mem_used_mib": 4209,
+    "mem_total_mib": 24463,
+    "sm_clock_mhz": 180
+   },
+   "window_clean": true
+  }
+ },
+ "gpu_end": {
+  "util_pct": 10,
+  "mem_used_mib": 4209,
+  "mem_total_mib": 24463,
+  "sm_clock_mhz": 180
+ },
+ "_annotation_20261011": {
+  "note": "Fired by the standing poller (launched R7-era) when the co-job's supervised service finally stopped >6min. Used the poller-era knobs (w8/bv64) = the PRE-W32P cubin generation, NOT the r25 W32P archival ships (w4/bv32+F2US+WST+W32P, ours T8192 0.7851ms). The T8192 0.912x is the OLD-generation number; the r25 W32P formal records (2.1250x/1.2211x/1.3493x, n=30, co-load interleaved) remain the records of standing. The proper clean3 with W32P ship env is the documented ready-to-fire command in paper/camera_ready_resolution.md. This file is archived as the clean-window OLD-generation datapoint.",
+  "knobs": "w8/bv64/f2seg1 (poller default)",
+  "our_generation": "pre-W32P (approximately r14-era US-build class)"
+ }
+}

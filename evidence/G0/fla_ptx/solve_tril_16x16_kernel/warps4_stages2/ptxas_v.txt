@@ -1,0 +1,6 @@
+ptxas-blackwell info    : 0 bytes gmem
+ptxas-blackwell info    : Compiling entry function 'solve_tril_16x16_kernel' for 'sm_120a'
+ptxas-blackwell info    : Function properties for solve_tril_16x16_kernel
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas-blackwell info    : Used 40 registers, used 1 barriers
+ptxas-blackwell info    : Compile time = 9.897 ms

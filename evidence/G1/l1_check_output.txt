@@ -1,0 +1,12 @@
+
+case       shape                       max|o-mlir-ref|  max|ht-mlir-ref|   numpy chunk-vs-seq  verdict
+base       B1 T128 H2 K16 V16 C64            6.184e-07         8.643e-07            2.384e-07  PASS
+chunk32    B1 T128 H2 K16 V16 C32            5.513e-07         7.153e-07            1.192e-07  PASS
+tail_t96   B1 T96 H2 K16 V16 C64             5.662e-07         6.258e-07            2.384e-07  PASS
+tail_b2    B2 T100 H2 K16 V16 C64            5.960e-07         3.099e-06            3.874e-07  PASS
+jax_C64_h0 B2 T128 H2 K16 V16 C64            6.407e-07         8.643e-07            5.662e-07  PASS
+jax_C64    B2 T128 H2 K16 V16 C64            6.407e-07         8.643e-07            5.662e-07  PASS
+jax_C32    B2 T128 H2 K16 V16 C32            5.066e-07         5.513e-07            5.066e-07  PASS
+
+gate: max abs diff < 1e-03 for o and ht (fp32 CPU)
+ALL PASS

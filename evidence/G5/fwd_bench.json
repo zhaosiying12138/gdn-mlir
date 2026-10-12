@@ -1,0 +1,122 @@
+{
+  "what": "G5-B full-op GDN forward: staged trio + persistent fused kernel, CUDA events median-of-N, shared GPU",
+  "gpu_start": {
+    "util_pct": 20,
+    "mem_used_mib": 17899,
+    "sm_clock_mhz": 2580
+  },
+  "results": {
+    "B1T2048": {
+      "name": "B1T2048",
+      "shape": {
+        "B": 1,
+        "T": 2048,
+        "H": 16,
+        "K": 128,
+        "V": 128
+      },
+      "knobs": {
+        "warps": 8,
+        "bv": 64
+      },
+      "gpu": {
+        "util_pct": 19,
+        "mem_used_mib": 18152,
+        "sm_clock_mhz": 2760
+      },
+      "staged": {
+        "median_ms": 1.597024,
+        "min_ms": 1.278144,
+        "p25_ms": 1.498232,
+        "p75_ms": 1.749488,
+        "mean_ms": 1.681725
+      },
+      "fused": {
+        "median_ms": 2.009504,
+        "min_ms": 1.77616,
+        "p25_ms": 1.86032,
+        "p75_ms": 2.210152,
+        "mean_ms": 2.04426
+      }
+    },
+    "B1T8192": {
+      "name": "B1T8192",
+      "shape": {
+        "B": 1,
+        "T": 8192,
+        "H": 16,
+        "K": 128,
+        "V": 128
+      },
+      "knobs": {
+        "warps": 8,
+        "bv": 64
+      },
+      "gpu": {
+        "util_pct": 19,
+        "mem_used_mib": 18152,
+        "sm_clock_mhz": 2760
+      },
+      "staged": {
+        "median_ms": 5.397872,
+        "min_ms": 5.071072,
+        "p25_ms": 5.23816,
+        "p75_ms": 5.57256,
+        "mean_ms": 5.418186
+      },
+      "fused": {
+        "median_ms": 8.567056,
+        "min_ms": 7.789728,
+        "p25_ms": 8.357512,
+        "p75_ms": 8.76088,
+        "mean_ms": 8.590397
+      }
+    },
+    "B4T2048": {
+      "name": "B4T2048",
+      "shape": {
+        "B": 4,
+        "T": 2048,
+        "H": 16,
+        "K": 128,
+        "V": 128
+      },
+      "knobs": {
+        "warps": 8,
+        "bv": 64
+      },
+      "gpu": {
+        "util_pct": 21,
+        "mem_used_mib": 18152,
+        "sm_clock_mhz": 2767
+      },
+      "staged": {
+        "median_ms": 4.475872,
+        "min_ms": 4.0728,
+        "p25_ms": 4.325104,
+        "p75_ms": 4.792512,
+        "mean_ms": 4.593343
+      },
+      "fused": {
+        "median_ms": 4.585024,
+        "min_ms": 3.925664,
+        "p25_ms": 4.320848,
+        "p75_ms": 4.695568,
+        "mean_ms": 4.551082
+      }
+    }
+  },
+  "fla_baselines_median_ms": {
+    "fla_triton_B1T2048": 0.3157919943332672,
+    "fla_triton_B1T8192": 0.8730719983577728,
+    "fla_triton_B4T2048": 0.8441919982433319,
+    "fla_default_B1T2048": 0.34651200473308563,
+    "fla_default_B1T8192": 0.9967520236968994,
+    "fla_default_B4T2048": 1.022383987903595
+  },
+  "gpu_end": {
+    "util_pct": 18,
+    "mem_used_mib": 17899,
+    "sm_clock_mhz": 2572
+  }
+}

@@ -1,0 +1,41 @@
+{
+ "kernel": "chunk_scaled_dot_kkt_fwd_kernel",
+ "config": {
+  "BK": 128,
+  "warps": 8,
+  "stages": 3
+ },
+ "shared_dynamic": 32768,
+ "num_warps": 8,
+ "ptxas": {
+  "registers": 64,
+  "smem_static": null,
+  "spill_stores": 20,
+  "spill_loads": 20,
+  "stack_frame": 24
+ },
+ "ptx_features": {
+  "mma.sync": 32,
+  "cp.async": 0,
+  "tma.bulk": 0,
+  "mbarrier": 0,
+  "exp.approx": 0,
+  "ld.global": 44,
+  "st.global": 16,
+  "ld.shared": 36,
+  "st.shared": 52,
+  "bar.sync": 3,
+  "barrier": 0,
+  "shfl.sync": 0,
+  "redux": 0,
+  "setmaxnreg": 0,
+  "movmatrix": 0,
+  "ldmatrix": 16,
+  "stmatrix": 0,
+  "wmma": 0,
+  "wgmma": 0,
+  "tcgen05": 0,
+  "fma.f32": 0,
+  "mma.sync.other": 0
+ }
+}

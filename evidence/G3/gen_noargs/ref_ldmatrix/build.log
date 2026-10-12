@@ -1,0 +1,6 @@
+[run_l2] ref_ldmatrix
+[run_l2] identity transform script -> skip -transform-interpreter
+extracted 6121 bytes of PTX -> kernel.ptx
+[run_l2] meta.json: regs=34 smem=None mma=1 cp.async=0
+[run_l2] done: kernel.ptx kernel.cubin ptxas_v.txt sass.txt meta.json
+[smem_fix] ref_ldmatrix: malloc_callseqs=2 cvta_patched=2 shared_decls=[('__gdn_smem0', 512), ('__gdn_smem1', 512)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin

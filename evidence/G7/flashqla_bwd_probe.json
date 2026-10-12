@@ -1,0 +1,69 @@
+{
+ "what": "FlashQLA sm120 backward existence probe (camera-ready TODO #2): attempt the public bwd under autograd",
+ "shape": {
+  "B": 1,
+  "T": 2048,
+  "H": 16,
+  "K": 128,
+  "V": 128
+ },
+ "env": {
+  "torch": "2.14.1+cu130",
+  "tilelang": "0.1.15",
+  "flash_qla": "/home/zhaosiying/codebase/FlashQLA",
+  "flash_qla_commit": "da06429 (v0.1.3, shallow clone 2026-10-09)",
+  "gpu": "NVIDIA GeForce RTX 5090 Laptop GPU",
+  "capability": "sm_120",
+  "sm120_aggregate_shim": true
+ },
+ "attempts": [
+  {
+   "attempt": "A_shipped_defaults",
+   "auto_cp": true,
+   "fwd_block_dv_forced": null,
+   "status": "FAILED",
+   "error": "InternalError: Failed to set the allowed dynamic shared memory size to 112640"
+  },
+  {
+   "attempt": "B_dense_no_autocp",
+   "auto_cp": false,
+   "fwd_block_dv_forced": null,
+   "status": "FAILED",
+   "error": "InternalError: Failed to set the allowed dynamic shared memory size to 112640"
+  },
+  {
+   "attempt": "C_dense_bdv64_fwdshim",
+   "auto_cp": false,
+   "fwd_block_dv_forced": 64,
+   "fwd_s": 9.368,
+   "first_grad_s": 36.862,
+   "grads_finite": true,
+   "warm_grad_ms": {
+    "median": 1.4348,
+    "min": 1.3275,
+    "samples_ms": [
+     5.0085,
+     1.5777,
+     1.6777,
+     1.4583,
+     1.4335,
+     1.398,
+     1.3275,
+     1.4226,
+     1.4271,
+     1.4361
+    ]
+   },
+   "status": "LAUNCHED"
+  }
+ ],
+ "smi_before": {
+  "gpu": "3 %, 9014 MiB",
+  "compute_apps": "3998048, [N/A]\n3998658, [N/A]"
+ },
+ "smi_after": {
+  "gpu": "29 %, 9208 MiB",
+  "compute_apps": "3998048, [N/A]\n3998658, [N/A]"
+ },
+ "shared_gpu": true
+}

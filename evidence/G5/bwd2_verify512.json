@@ -1,0 +1,53 @@
+{
+  "shape": "1,512,4,128,128",
+  "chunk": 64,
+  "seed": 0,
+  "tolerances": {
+    "dq": 0.008,
+    "dk": 0.008,
+    "dv": 0.008,
+    "dbeta": 0.02,
+    "dg": 0.02,
+    "dh0": 0.008
+  },
+  "stage_times_ms": {
+    "wy": 0.1359,
+    "fwdscan": 0.1711,
+    "dhu": 0.1461,
+    "dqkwg": 0.1294,
+    "wyb": 0.1436
+  },
+  "grads": {
+    "dq": {
+      "max_abs_diff": 5.201557360945408e-07,
+      "tol": 0.008,
+      "verdict": "PASS"
+    },
+    "dk": {
+      "max_abs_diff": 1.695288388248173e-05,
+      "tol": 0.008,
+      "verdict": "PASS"
+    },
+    "dv": {
+      "max_abs_diff": 1.3794369827513364e-06,
+      "tol": 0.008,
+      "verdict": "PASS"
+    },
+    "dbeta": {
+      "max_abs_diff": 1.5132502166892436e-05,
+      "tol": 0.02,
+      "verdict": "PASS"
+    },
+    "dg": {
+      "max_abs_diff": 6.6818244293109785e-06,
+      "tol": 0.02,
+      "verdict": "PASS"
+    },
+    "dh0": {
+      "max_abs_diff": 1.069227545044682e-08,
+      "tol": 0.008,
+      "verdict": "PASS"
+    }
+  },
+  "overall": "PASS"
+}

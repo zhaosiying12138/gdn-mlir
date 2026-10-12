@@ -1,0 +1,261 @@
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(621): warning #1444-D: type "longlong4" was declared deprecated ("use longlong4_16a or longlong4_32a")
+    longlong4 result;
+              ^
+/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h(553): note #3287-D: because of a "deprecated" attribute
+  typedef __attribute__((device_builtin)) struct longlong4 __attribute__((deprecated("use longlong4_16a or longlong4_32a"))) longlong4;
+                                                                          ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(639): warning #1444-D: type "longlong4" was declared deprecated ("use longlong4_16a or longlong4_32a")
+    longlong4 result;
+              ^
+/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h(553): note #3287-D: because of a "deprecated" attribute
+  typedef __attribute__((device_builtin)) struct longlong4 __attribute__((deprecated("use longlong4_16a or longlong4_32a"))) longlong4;
+                                                                          ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(657): warning #1444-D: type "ulonglong4" was declared deprecated ("use ulonglong4_16a or ulonglong4_32a")
+    ulonglong4 result;
+               ^
+/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h(554): note #3287-D: because of a "deprecated" attribute
+  typedef __attribute__((device_builtin)) struct ulonglong4 __attribute__((deprecated("use ulonglong4_16a or ulonglong4_32a"))) ulonglong4;
+                                                                           ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1032): warning #20012-D: __device__ annotation is ignored on a non-virtual function("float_e4m3_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1032): warning #20012-D: __host__ annotation is ignored on a non-virtual function("float_e4m3_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                                                     ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1049): warning #20012-D: __device__ annotation is ignored on a non-virtual function("float_e5m2_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1049): warning #20012-D: __host__ annotation is ignored on a non-virtual function("float_e5m2_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                                                     ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1066): warning #20012-D: __device__ annotation is ignored on a non-virtual function("tfloat32_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1066): warning #20012-D: __host__ annotation is ignored on a non-virtual function("tfloat32_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                                                     ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(42): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e4_2_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_2_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_2_t(const fp8_e4_2_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_2_t &operator=(const fp8_e4_2_t &other) { static_assert(sizeof(fp8_e4_2_t) == sizeof(uint16_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e4_2_t) >= alignof(uint16_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint16_t *>(this) = *reinterpret_cast<const uint16_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(51): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e4_4_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_4_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_4_t(const fp8_e4_4_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_4_t &operator=(const fp8_e4_4_t &other) { static_assert(sizeof(fp8_e4_4_t) == sizeof(uint32_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e4_4_t) >= alignof(uint32_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint32_t *>(this) = *reinterpret_cast<const uint32_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(58): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e4_8_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_8_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_8_t(const fp8_e4_8_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_8_t &operator=(const fp8_e4_8_t &other) { static_assert(sizeof(fp8_e4_8_t) == sizeof(uint2), "FP8 copy size mismatch"); static_assert(alignof(fp8_e4_8_t) >= alignof(uint2), "FP8 copy alignment mismatch"); *reinterpret_cast<uint2 *>(this) = *reinterpret_cast<const uint2 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(65): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e4_16_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_16_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_16_t(const fp8_e4_16_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_16_t &operator=(const fp8_e4_16_t &other) { static_assert(sizeof(fp8_e4_16_t) == sizeof(uint4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e4_16_t) >= alignof(uint4), "FP8 copy alignment mismatch"); *reinterpret_cast<uint4 *>(this) = *reinterpret_cast<const uint4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(72): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e4_32_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_32_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_32_t(const fp8_e4_32_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_32_t &operator=(const fp8_e4_32_t &other) { static_assert(sizeof(fp8_e4_32_t) == sizeof(ulonglong4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e4_32_t) >= alignof(ulonglong4), "FP8 copy alignment mismatch"); *reinterpret_cast<ulonglong4 *>(this) = *reinterpret_cast<const ulonglong4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(79): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e5_2_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_2_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_2_t(const fp8_e5_2_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_2_t &operator=(const fp8_e5_2_t &other) { static_assert(sizeof(fp8_e5_2_t) == sizeof(uint16_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e5_2_t) >= alignof(uint16_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint16_t *>(this) = *reinterpret_cast<const uint16_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(88): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e5_4_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_4_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_4_t(const fp8_e5_4_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_4_t &operator=(const fp8_e5_4_t &other) { static_assert(sizeof(fp8_e5_4_t) == sizeof(uint32_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e5_4_t) >= alignof(uint32_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint32_t *>(this) = *reinterpret_cast<const uint32_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(95): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e5_8_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_8_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_8_t(const fp8_e5_8_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_8_t &operator=(const fp8_e5_8_t &other) { static_assert(sizeof(fp8_e5_8_t) == sizeof(uint2), "FP8 copy size mismatch"); static_assert(alignof(fp8_e5_8_t) >= alignof(uint2), "FP8 copy alignment mismatch"); *reinterpret_cast<uint2 *>(this) = *reinterpret_cast<const uint2 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(102): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e5_16_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_16_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_16_t(const fp8_e5_16_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_16_t &operator=(const fp8_e5_16_t &other) { static_assert(sizeof(fp8_e5_16_t) == sizeof(uint4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e5_16_t) >= alignof(uint4), "FP8 copy alignment mismatch"); *reinterpret_cast<uint4 *>(this) = *reinterpret_cast<const uint4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(109): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e5_32_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_32_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_32_t(const fp8_e5_32_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_32_t &operator=(const fp8_e5_32_t &other) { static_assert(sizeof(fp8_e5_32_t) == sizeof(ulonglong4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e5_32_t) >= alignof(ulonglong4), "FP8 copy alignment mismatch"); *reinterpret_cast<ulonglong4 *>(this) = *reinterpret_cast<const ulonglong4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(116): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e8_2_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_2_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_2_t(const fp8_e8_2_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_2_t &operator=(const fp8_e8_2_t &other) { static_assert(sizeof(fp8_e8_2_t) == sizeof(uint16_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e8_2_t) >= alignof(uint16_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint16_t *>(this) = *reinterpret_cast<const uint16_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(125): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e8_4_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_4_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_4_t(const fp8_e8_4_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_4_t &operator=(const fp8_e8_4_t &other) { static_assert(sizeof(fp8_e8_4_t) == sizeof(uint32_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e8_4_t) >= alignof(uint32_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint32_t *>(this) = *reinterpret_cast<const uint32_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(132): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e8_8_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_8_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_8_t(const fp8_e8_8_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_8_t &operator=(const fp8_e8_8_t &other) { static_assert(sizeof(fp8_e8_8_t) == sizeof(uint2), "FP8 copy size mismatch"); static_assert(alignof(fp8_e8_8_t) >= alignof(uint2), "FP8 copy alignment mismatch"); *reinterpret_cast<uint2 *>(this) = *reinterpret_cast<const uint2 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(139): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e8_16_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_16_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_16_t(const fp8_e8_16_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_16_t &operator=(const fp8_e8_16_t &other) { static_assert(sizeof(fp8_e8_16_t) == sizeof(uint4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e8_16_t) >= alignof(uint4), "FP8 copy alignment mismatch"); *reinterpret_cast<uint4 *>(this) = *reinterpret_cast<const uint4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(146): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e8_32_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_32_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_32_t(const fp8_e8_32_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_32_t &operator=(const fp8_e8_32_t &other) { static_assert(sizeof(fp8_e8_32_t) == sizeof(ulonglong4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e8_32_t) >= alignof(ulonglong4), "FP8 copy alignment mismatch"); *reinterpret_cast<ulonglong4 *>(this) = *reinterpret_cast<const ulonglong4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/codebase/gdn-mlir/evidence/G0/qla_ptx/prepare_h_s3/kernel.cu(110): warning #1046-D: floating-point value cannot be represented exactly
+        g_last_local_S[0] = exp2f((g_shared[(((i_s % 3) * 64) + 63)] * 0x1.715475a31a4bep+0f ));
+                                                                       ^
+
+/home/zhaosiying/codebase/gdn-mlir/evidence/G0/qla_ptx/prepare_h_s3/kernel.cu(290): warning #1046-D: floating-point value cannot be represented exactly
+          g_last_local_X[0] = exp2f((g_prod_X[0] * 0x1.715475a31a4bep+0f ));
+                                                   ^
+
+/home/zhaosiying/codebase/gdn-mlir/evidence/G0/qla_ptx/prepare_h_s3/kernel.cu(338): warning #1046-D: floating-point value cannot be represented exactly
+              g_rev_exp_shared[(((int)threadIdx.x) - 256)] = exp2f(((g_last_local_Y[0] - g_shared[((((i_s_2 % 3) * 64) + ((int)threadIdx.x)) - 256)]) * 0x1.715475a31a4bep+0f ));
+                                                                                                                                                        ^
+
+/home/zhaosiying/codebase/gdn-mlir/evidence/G0/qla_ptx/prepare_h_s3/kernel.cu(340): warning #1046-D: floating-point value cannot be represented exactly
+            g_last_local_Y[0] = exp2f((g_last_local_Y[0] * 0x1.715475a31a4bep+0f ));
+                                                           ^
+
+/home/zhaosiying/codebase/gdn-mlir/evidence/G0/qla_ptx/prepare_h_s3/kernel.cu(483): warning #1046-D: floating-point value cannot be represented exactly
+            g_last_local_Y[0] = exp2f((g_prod_Y[0] * 0x1.715475a31a4bep+0f ));
+                                                     ^
+
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(621): warning #1444-D: type "longlong4" was declared deprecated ("use longlong4_16a or longlong4_32a")
+    longlong4 result;
+              ^
+/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h(553): note #3287-D: because of a "deprecated" attribute
+  typedef __attribute__((device_builtin)) struct longlong4 __attribute__((deprecated("use longlong4_16a or longlong4_32a"))) longlong4;
+                                                                          ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(639): warning #1444-D: type "longlong4" was declared deprecated ("use longlong4_16a or longlong4_32a")
+    longlong4 result;
+              ^
+/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h(553): note #3287-D: because of a "deprecated" attribute
+  typedef __attribute__((device_builtin)) struct longlong4 __attribute__((deprecated("use longlong4_16a or longlong4_32a"))) longlong4;
+                                                                          ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(657): warning #1444-D: type "ulonglong4" was declared deprecated ("use ulonglong4_16a or ulonglong4_32a")
+    ulonglong4 result;
+               ^
+/usr/local/cuda/bin/../targets/x86_64-linux/include/vector_types.h(554): note #3287-D: because of a "deprecated" attribute
+  typedef __attribute__((device_builtin)) struct ulonglong4 __attribute__((deprecated("use ulonglong4_16a or ulonglong4_32a"))) ulonglong4;
+                                                                           ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1032): warning #20012-D: __device__ annotation is ignored on a non-virtual function("float_e4m3_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1032): warning #20012-D: __host__ annotation is ignored on a non-virtual function("float_e4m3_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                                                     ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1049): warning #20012-D: __device__ annotation is ignored on a non-virtual function("float_e5m2_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1049): warning #20012-D: __host__ annotation is ignored on a non-virtual function("float_e5m2_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                                                     ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1066): warning #20012-D: __device__ annotation is ignored on a non-virtual function("tfloat32_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/instruction/../common.h(1066): warning #20012-D: __host__ annotation is ignored on a non-virtual function("tfloat32_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) __attribute__((host))
+                                                                                     ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(42): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e4_2_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_2_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_2_t(const fp8_e4_2_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_2_t &operator=(const fp8_e4_2_t &other) { static_assert(sizeof(fp8_e4_2_t) == sizeof(uint16_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e4_2_t) >= alignof(uint16_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint16_t *>(this) = *reinterpret_cast<const uint16_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(51): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e4_4_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_4_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_4_t(const fp8_e4_4_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_4_t &operator=(const fp8_e4_4_t &other) { static_assert(sizeof(fp8_e4_4_t) == sizeof(uint32_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e4_4_t) >= alignof(uint32_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint32_t *>(this) = *reinterpret_cast<const uint32_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(58): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e4_8_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_8_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_8_t(const fp8_e4_8_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_8_t &operator=(const fp8_e4_8_t &other) { static_assert(sizeof(fp8_e4_8_t) == sizeof(uint2), "FP8 copy size mismatch"); static_assert(alignof(fp8_e4_8_t) >= alignof(uint2), "FP8 copy alignment mismatch"); *reinterpret_cast<uint2 *>(this) = *reinterpret_cast<const uint2 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(65): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e4_16_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_16_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_16_t(const fp8_e4_16_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_16_t &operator=(const fp8_e4_16_t &other) { static_assert(sizeof(fp8_e4_16_t) == sizeof(uint4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e4_16_t) >= alignof(uint4), "FP8 copy alignment mismatch"); *reinterpret_cast<uint4 *>(this) = *reinterpret_cast<const uint4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(72): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e4_32_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_32_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_32_t(const fp8_e4_32_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e4_32_t &operator=(const fp8_e4_32_t &other) { static_assert(sizeof(fp8_e4_32_t) == sizeof(ulonglong4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e4_32_t) >= alignof(ulonglong4), "FP8 copy alignment mismatch"); *reinterpret_cast<ulonglong4 *>(this) = *reinterpret_cast<const ulonglong4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(79): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e5_2_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_2_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_2_t(const fp8_e5_2_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_2_t &operator=(const fp8_e5_2_t &other) { static_assert(sizeof(fp8_e5_2_t) == sizeof(uint16_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e5_2_t) >= alignof(uint16_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint16_t *>(this) = *reinterpret_cast<const uint16_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(88): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e5_4_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_4_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_4_t(const fp8_e5_4_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_4_t &operator=(const fp8_e5_4_t &other) { static_assert(sizeof(fp8_e5_4_t) == sizeof(uint32_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e5_4_t) >= alignof(uint32_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint32_t *>(this) = *reinterpret_cast<const uint32_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(95): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e5_8_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_8_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_8_t(const fp8_e5_8_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_8_t &operator=(const fp8_e5_8_t &other) { static_assert(sizeof(fp8_e5_8_t) == sizeof(uint2), "FP8 copy size mismatch"); static_assert(alignof(fp8_e5_8_t) >= alignof(uint2), "FP8 copy alignment mismatch"); *reinterpret_cast<uint2 *>(this) = *reinterpret_cast<const uint2 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(102): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e5_16_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_16_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_16_t(const fp8_e5_16_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_16_t &operator=(const fp8_e5_16_t &other) { static_assert(sizeof(fp8_e5_16_t) == sizeof(uint4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e5_16_t) >= alignof(uint4), "FP8 copy alignment mismatch"); *reinterpret_cast<uint4 *>(this) = *reinterpret_cast<const uint4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(109): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e5_32_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_32_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_32_t(const fp8_e5_32_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e5_32_t &operator=(const fp8_e5_32_t &other) { static_assert(sizeof(fp8_e5_32_t) == sizeof(ulonglong4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e5_32_t) >= alignof(ulonglong4), "FP8 copy alignment mismatch"); *reinterpret_cast<ulonglong4 *>(this) = *reinterpret_cast<const ulonglong4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(116): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e8_2_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_2_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_2_t(const fp8_e8_2_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_2_t &operator=(const fp8_e8_2_t &other) { static_assert(sizeof(fp8_e8_2_t) == sizeof(uint16_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e8_2_t) >= alignof(uint16_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint16_t *>(this) = *reinterpret_cast<const uint16_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(125): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e8_4_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_4_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_4_t(const fp8_e8_4_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_4_t &operator=(const fp8_e8_4_t &other) { static_assert(sizeof(fp8_e8_4_t) == sizeof(uint32_t), "FP8 copy size mismatch"); static_assert(alignof(fp8_e8_4_t) >= alignof(uint32_t), "FP8 copy alignment mismatch"); *reinterpret_cast<uint32_t *>(this) = *reinterpret_cast<const uint32_t *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(132): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e8_8_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_8_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_8_t(const fp8_e8_8_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_8_t &operator=(const fp8_e8_8_t &other) { static_assert(sizeof(fp8_e8_8_t) == sizeof(uint2), "FP8 copy size mismatch"); static_assert(alignof(fp8_e8_8_t) >= alignof(uint2), "FP8 copy alignment mismatch"); *reinterpret_cast<uint2 *>(this) = *reinterpret_cast<const uint2 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(139): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e8_16_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_16_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_16_t(const fp8_e8_16_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_16_t &operator=(const fp8_e8_16_t &other) { static_assert(sizeof(fp8_e8_16_t) == sizeof(uint4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e8_16_t) >= alignof(uint4), "FP8 copy alignment mismatch"); *reinterpret_cast<uint4 *>(this) = *reinterpret_cast<const uint4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/miniforge3/envs/gdn-tl/lib/python3.12/site-packages/tilelang/src/tl_templates/cuda/./cuda_fp8.h(146): warning #20012-D: __device__ annotation is ignored on a non-virtual function("fp8_e8_32_t") that is explicitly defaulted on its first declaration
+    __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_32_t() = default; __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_32_t(const fp8_e8_32_t &other) { *this = other; } __inline__ __attribute__((always_inline)) __attribute__((device)) fp8_e8_32_t &operator=(const fp8_e8_32_t &other) { static_assert(sizeof(fp8_e8_32_t) == sizeof(ulonglong4), "FP8 copy size mismatch"); static_assert(alignof(fp8_e8_32_t) >= alignof(ulonglong4), "FP8 copy alignment mismatch"); *reinterpret_cast<ulonglong4 *>(this) = *reinterpret_cast<const ulonglong4 *>(&other); return *this; }
+                                                             ^
+
+/home/zhaosiying/codebase/gdn-mlir/evidence/G0/qla_ptx/prepare_h_s3/kernel.cu(110): warning #1046-D: floating-point value cannot be represented exactly
+        g_last_local_S[0] = exp2f((g_shared[(((i_s % 3) * 64) + 63)] * 0x1.715475a31a4bep+0f ));
+                                                                       ^
+
+/home/zhaosiying/codebase/gdn-mlir/evidence/G0/qla_ptx/prepare_h_s3/kernel.cu(290): warning #1046-D: floating-point value cannot be represented exactly
+          g_last_local_X[0] = exp2f((g_prod_X[0] * 0x1.715475a31a4bep+0f ));
+                                                   ^
+
+/home/zhaosiying/codebase/gdn-mlir/evidence/G0/qla_ptx/prepare_h_s3/kernel.cu(338): warning #1046-D: floating-point value cannot be represented exactly
+              g_rev_exp_shared[(((int)threadIdx.x) - 256)] = exp2f(((g_last_local_Y[0] - g_shared[((((i_s_2 % 3) * 64) + ((int)threadIdx.x)) - 256)]) * 0x1.715475a31a4bep+0f ));
+                                                                                                                                                        ^
+
+/home/zhaosiying/codebase/gdn-mlir/evidence/G0/qla_ptx/prepare_h_s3/kernel.cu(340): warning #1046-D: floating-point value cannot be represented exactly
+            g_last_local_Y[0] = exp2f((g_last_local_Y[0] * 0x1.715475a31a4bep+0f ));
+                                                           ^
+
+/home/zhaosiying/codebase/gdn-mlir/evidence/G0/qla_ptx/prepare_h_s3/kernel.cu(483): warning #1046-D: floating-point value cannot be represented exactly
+            g_last_local_Y[0] = exp2f((g_prod_Y[0] * 0x1.715475a31a4bep+0f ));
+                                                     ^
+
+ptxas info    : 10 bytes gmem
+ptxas info    : Compiling entry function 'tilelang_prepare_h_kernel_kernel' for 'sm_120a'
+ptxas info    : Function properties for tilelang_prepare_h_kernel_kernel
+    8 bytes stack frame, 8 bytes spill stores, 8 bytes spill loads
+ptxas info    : Used 128 registers, used 8 barriers, 8 bytes cumulative stack size, 2048 bytes smem
+ptxas info    : Compile time = 234.662 ms

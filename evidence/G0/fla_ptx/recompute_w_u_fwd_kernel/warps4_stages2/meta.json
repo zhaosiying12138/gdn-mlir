@@ -1,0 +1,40 @@
+{
+ "kernel": "recompute_w_u_fwd_kernel",
+ "config": {
+  "warps": 4,
+  "stages": 2
+ },
+ "shared_dynamic": 16384,
+ "num_warps": 4,
+ "ptxas": {
+  "registers": 255,
+  "smem_static": null,
+  "spill_stores": 328,
+  "spill_loads": 328,
+  "stack_frame": 328
+ },
+ "ptx_features": {
+  "mma.sync": 64,
+  "cp.async": 0,
+  "tma.bulk": 0,
+  "mbarrier": 0,
+  "exp.approx": 0,
+  "ld.global": 160,
+  "st.global": 64,
+  "ld.shared": 22,
+  "st.shared": 124,
+  "bar.sync": 12,
+  "barrier": 0,
+  "shfl.sync": 0,
+  "redux": 0,
+  "setmaxnreg": 0,
+  "movmatrix": 0,
+  "ldmatrix": 32,
+  "stmatrix": 0,
+  "wmma": 0,
+  "wgmma": 0,
+  "tcgen05": 0,
+  "fma.f32": 0,
+  "mma.sync.other": 0
+ }
+}

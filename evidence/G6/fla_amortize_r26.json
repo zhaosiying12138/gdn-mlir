@@ -1,0 +1,408 @@
+{
+ "what": "fla chunk_gated_delta_rule autotune AMORTIZATION (camera-ready TODO #3): cold search vs disk-cache-hit first call vs warm steady state, B1T2048H16K128V128",
+ "shape": {
+  "B": 1,
+  "T": 2048,
+  "H": 16,
+  "K": 128,
+  "V": 128
+ },
+ "mechanism": {
+  "fla_version": "local checkout ~/codebase/fla (fla_cache_autotune decorator on all GDN kernels)",
+  "fla_cache_doc": "fla/fla/ops/utils/cache.py (FLA_CACHE_MODE strict/fuzzy/full; FLA_CONFIG_DIR overrides fla/configs/{gpu})",
+  "extract_script": "fla/scripts/extract_triton_autotune_cache.py",
+  "triton": "3.8.0 (Autotuner.check_disk_cache .autotune.json result cache, cache_results=1 default in fla/utils/env.py)"
+ },
+ "n_fla_config_files_extracted": 8,
+ "phases": {
+  "cold_populate": {
+   "phase": "cold_populate",
+   "env": {
+    "FLA_CACHE_MODE": "disabled",
+    "FLA_CONFIG_DIR": "<unset>",
+    "TRITON_CACHE_DIR": "/tmp/g6_r26_amortize/tc_pop",
+    "triton_cache_preexisting_autotune_json": 0,
+    "triton": "3.8.0",
+    "torch": "2.14.1+cu130"
+   },
+   "smi_before": {
+    "gpu": "3 %, 9014 MiB",
+    "compute_apps": "3993998, [N/A]\n3996646, [N/A]"
+   },
+   "first_fwd_s": 17.628,
+   "autotuner_during_first_fwd": {
+    "chunk_local_cumsum_scalar_kernel": {
+     "n_runs": 1,
+     "run_s": 2.08,
+     "bench_s": 0.599
+    },
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel": {
+     "n_runs": 1,
+     "run_s": 6.004,
+     "bench_s": 5.996
+    },
+    "recompute_w_u_fwd_kernel": {
+     "n_runs": 1,
+     "run_s": 4.103,
+     "bench_s": 4.1
+    },
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64": {
+     "n_runs": 1,
+     "run_s": 3.977,
+     "bench_s": 3.963
+    },
+    "chunk_fwd_kernel_o": {
+     "n_runs": 1,
+     "run_s": 1.456,
+     "bench_s": 1.452
+    }
+   },
+   "fla_lookups_during_first_fwd": [],
+   "first_bwd_s": 26.283,
+   "fla_lookups_total": [],
+   "n_fla_lookup_hits": 0,
+   "n_fla_lookup_misses": 0,
+   "warm_fwd_ms": {
+    "median": 0.4108,
+    "min": 0.3867
+   },
+   "warm_bwd_ms": {
+    "median": 1.4338,
+    "min": 1.2486
+   },
+   "autotune_json_in_tc_after": 10,
+   "smi_after": {
+    "gpu": "54 %, 9680 MiB",
+    "compute_apps": "3993998, [N/A]\n3996646, [N/A]"
+   }
+  },
+  "hit_coldtc": {
+   "phase": "hit_coldtc",
+   "env": {
+    "FLA_CACHE_MODE": "strict",
+    "FLA_CONFIG_DIR": "/tmp/g6_r26_amortize/fla_configs",
+    "TRITON_CACHE_DIR": "/tmp/g6_r26_amortize/tc_hit",
+    "triton_cache_preexisting_autotune_json": 0,
+    "triton": "3.8.0",
+    "torch": "2.14.1+cu130"
+   },
+   "smi_before": {
+    "gpu": "6 %, 9014 MiB",
+    "compute_apps": "3993998, [N/A]\n3997196, [N/A]"
+   },
+   "first_fwd_s": 2.45,
+   "autotuner_during_first_fwd": {
+    "chunk_local_cumsum_scalar_kernel": {
+     "n_runs": 1,
+     "run_s": 0.548,
+     "bench_s": 0.0
+    },
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel": {
+     "n_runs": 1,
+     "run_s": 0.779,
+     "bench_s": 0.0
+    },
+    "recompute_w_u_fwd_kernel": {
+     "n_runs": 1,
+     "run_s": 0.208,
+     "bench_s": 0.0
+    },
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64": {
+     "n_runs": 1,
+     "run_s": 0.577,
+     "bench_s": 0.0
+    },
+    "chunk_fwd_kernel_o": {
+     "n_runs": 1,
+     "run_s": 0.313,
+     "bench_s": 0.0
+    }
+   },
+   "fla_lookups_during_first_fwd": [
+    [
+     "chunk_fwd_kernel_o",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+     true
+    ],
+    [
+     "chunk_local_cumsum_scalar_kernel",
+     true
+    ],
+    [
+     "recompute_w_u_fwd_kernel",
+     true
+    ]
+   ],
+   "first_bwd_s": 3.222,
+   "fla_lookups_total": [
+    [
+     "chunk_bwd_kernel_dqkwg",
+     true
+    ],
+    [
+     "chunk_bwd_kernel_dv_local",
+     true
+    ],
+    [
+     "chunk_fwd_kernel_o",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+     true
+    ],
+    [
+     "chunk_local_cumsum_scalar_kernel",
+     true
+    ],
+    [
+     "chunk_local_cumsum_scalar_kernel",
+     true
+    ],
+    [
+     "prepare_wy_repr_bwd_kernel",
+     false
+    ],
+    [
+     "recompute_w_u_fwd_kernel",
+     true
+    ]
+   ],
+   "n_fla_lookup_hits": 10,
+   "n_fla_lookup_misses": 1,
+   "warm_fwd_ms": {
+    "median": 0.3745,
+    "min": 0.3489
+   },
+   "warm_bwd_ms": {
+    "median": 0.9615,
+    "min": 0.8472
+   },
+   "autotune_json_in_tc_after": 0,
+   "smi_after": {
+    "gpu": "4 %, 9224 MiB",
+    "compute_apps": "3993998, [N/A]\n3997196, [N/A]"
+   }
+  },
+  "hit_warmtc": {
+   "phase": "hit_warmtc",
+   "env": {
+    "FLA_CACHE_MODE": "strict",
+    "FLA_CONFIG_DIR": "/tmp/g6_r26_amortize/fla_configs",
+    "TRITON_CACHE_DIR": "/tmp/g6_r26_amortize/tc_pop",
+    "triton_cache_preexisting_autotune_json": 10,
+    "triton": "3.8.0",
+    "torch": "2.14.1+cu130"
+   },
+   "smi_before": {
+    "gpu": "24 %, 9014 MiB",
+    "compute_apps": "3993998, [N/A]\n3997342, [N/A]"
+   },
+   "first_fwd_s": 0.558,
+   "autotuner_during_first_fwd": {
+    "chunk_local_cumsum_scalar_kernel": {
+     "n_runs": 1,
+     "run_s": 0.511,
+     "bench_s": 0.0
+    },
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel": {
+     "n_runs": 1,
+     "run_s": 0.013,
+     "bench_s": 0.0
+    },
+    "recompute_w_u_fwd_kernel": {
+     "n_runs": 1,
+     "run_s": 0.003,
+     "bench_s": 0.0
+    },
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64": {
+     "n_runs": 1,
+     "run_s": 0.009,
+     "bench_s": 0.0
+    },
+    "chunk_fwd_kernel_o": {
+     "n_runs": 1,
+     "run_s": 0.004,
+     "bench_s": 0.0
+    }
+   },
+   "fla_lookups_during_first_fwd": [
+    [
+     "chunk_fwd_kernel_o",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+     true
+    ],
+    [
+     "chunk_local_cumsum_scalar_kernel",
+     true
+    ],
+    [
+     "recompute_w_u_fwd_kernel",
+     true
+    ]
+   ],
+   "first_bwd_s": 0.093,
+   "fla_lookups_total": [
+    [
+     "chunk_bwd_kernel_dqkwg",
+     true
+    ],
+    [
+     "chunk_bwd_kernel_dv_local",
+     true
+    ],
+    [
+     "chunk_fwd_kernel_o",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_bwd_kernel_dhu_blockdim64",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_fwd_kernel_h_blockdim64",
+     true
+    ],
+    [
+     "chunk_gated_delta_rule_fwd_kkt_solve_kernel",
+     true
+    ],
+    [
+     "chunk_local_cumsum_scalar_kernel",
+     true
+    ],
+    [
+     "chunk_local_cumsum_scalar_kernel",
+     true
+    ],
+    [
+     "prepare_wy_repr_bwd_kernel",
+     false
+    ],
+    [
+     "recompute_w_u_fwd_kernel",
+     true
+    ]
+   ],
+   "n_fla_lookup_hits": 10,
+   "n_fla_lookup_misses": 1,
+   "warm_fwd_ms": {
+    "median": 0.6363,
+    "min": 0.4163
+   },
+   "warm_bwd_ms": {
+    "median": 3.0379,
+    "min": 1.2369
+   },
+   "autotune_json_in_tc_after": 10,
+   "smi_after": {
+    "gpu": "3 %, 9224 MiB",
+    "compute_apps": "3993998, [N/A]\n3997342, [N/A]"
+   }
+  },
+  "native_hit": {
+   "phase": "native_hit",
+   "env": {
+    "FLA_CACHE_MODE": "disabled",
+    "FLA_CONFIG_DIR": "<unset>",
+    "TRITON_CACHE_DIR": "/tmp/g6_r26_amortize/tc_pop",
+    "triton_cache_preexisting_autotune_json": 10,
+    "triton": "3.8.0",
+    "torch": "2.14.1+cu130"
+   },
+   "smi_before": {
+    "gpu": "1 %, 9014 MiB",
+    "compute_apps": "3993998, [N/A]\n3997490, [N/A]"
+   },
+   "first_fwd_s": 0.939,
+   "autotuner_during_first_fwd": {
+    "chunk_local_cumsum_scalar_kernel": {
+     "n_runs": 1,
+     "run_s": 0.869,
+     "bench_s": 0.0
+    },
+    "chunk_gated_delta_rule_fwd_kkt_solve_kernel": {
+     "n_runs": 1,
+     "run_s": 0.017,
+     "bench_s": 0.0
+    },
+    "recompute_w_u_fwd_kernel": {
+     "n_runs": 1,
+     "run_s": 0.005,
+     "bench_s": 0.0
+    },
+    "chunk_gated_delta_rule_fwd_kernel_h_blockdim64": {
+     "n_runs": 1,
+     "run_s": 0.013,
+     "bench_s": 0.0
+    },
+    "chunk_fwd_kernel_o": {
+     "n_runs": 1,
+     "run_s": 0.009,
+     "bench_s": 0.0
+    }
+   },
+   "fla_lookups_during_first_fwd": [],
+   "first_bwd_s": 0.132,
+   "fla_lookups_total": [],
+   "n_fla_lookup_hits": 0,
+   "n_fla_lookup_misses": 0,
+   "warm_fwd_ms": {
+    "median": 0.4984,
+    "min": 0.4434
+   },
+   "warm_bwd_ms": {
+    "median": 0.9375,
+    "min": 0.8618
+   },
+   "autotune_json_in_tc_after": 10,
+   "smi_after": {
+    "gpu": "1 %, 9224 MiB",
+    "compute_apps": "3993998, [N/A]\n3997490, [N/A]"
+   }
+  }
+ },
+ "derived": {
+  "hit_coldtc_first_call_total_s": 5.672,
+  "hit_coldtc_amortized_vs_cold_x": 7.7,
+  "hit_warmtc_first_call_total_s": 0.651,
+  "hit_warmtc_amortized_vs_cold_x": 67.5,
+  "native_hit_first_call_total_s": 1.071,
+  "native_hit_amortized_vs_cold_x": 41.0,
+  "cold_first_call_total_s": 43.911,
+  "warm_steady_state_fwd_ms": 0.4108,
+  "warm_steady_state_bwd_ms": 1.4338
+ },
+ "protocol": "each phase = fresh python process; first call wall time incl. cuda sync; warm = median of 10; opportunistic co-loaded window, co-job pid 3993998 never touched; shared ~/.triton never touched",
+ "shared_gpu": true
+}

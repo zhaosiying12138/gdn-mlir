@@ -1,0 +1,13 @@
+ptxas-blackwell warning : Unresolved extern variable 'k' in whole program compilation, ignoring extern qualifier
+ptxas-blackwell warning : Unresolved extern variable 'v' in whole program compilation, ignoring extern qualifier
+ptxas-blackwell warning : Unresolved extern variable 'beta' in whole program compilation, ignoring extern qualifier
+ptxas-blackwell warning : Unresolved extern variable 'g' in whole program compilation, ignoring extern qualifier
+ptxas-blackwell warning : Unresolved extern variable 'u' in whole program compilation, ignoring extern qualifier
+ptxas-blackwell warning : Unresolved extern variable 'w' in whole program compilation, ignoring extern qualifier
+ptxas-blackwell warning : Unresolved extern variable 'gc' in whole program compilation, ignoring extern qualifier
+ptxas-blackwell info    : 33947648 bytes gmem
+ptxas-blackwell info    : Compiling entry function 'gdn_fwd_f1_kernel' for 'sm_120a'
+ptxas-blackwell info    : Function properties for gdn_fwd_f1_kernel
+    0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas-blackwell info    : Used 172 registers, used 1 barriers
+ptxas-blackwell info    : Compile time = 150.255 ms

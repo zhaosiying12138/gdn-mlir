@@ -1,0 +1,10 @@
+{
+  "device": {"name": "NVIDIA GeForce RTX 5090 Laptop GPU", "sm_count": 82, "l2_bytes": 67108864, "clock_peak_khz": 1597000, "clock_peak_mhz": 1597, "shared_per_sm_optin": 101376, "regs_per_sm": 65536},
+  "mma_bf16_m16n8k16": {"median_ms": 1.517280, "min_ms": 1.507040, "max_ms": 1.548992, "instr_per_s": 9.0671e+11, "flops": 3.7139e+15, "instr_per_sm_clk_peaknorm": 6.92, "kernel_reps": 2048, "ilp": 8, "warmup": 5, "iters": 50},
+  "smem_read_bw_gbps": {"median_ms": 0.376896, "min_ms": 0.373760, "max_ms": 0.409088, "gbps": 114067.59, "bytes_moved": 4.299e+10},
+  "gmem_read_l2resident": {"median_ms": 0.015520, "min_ms": 0.014080, "max_ms": 0.017760, "gbps": 2162.01, "buffer_mb": 32.0},
+  "gmem_read_dram": {"median_ms": 0.630560, "min_ms": 0.626528, "max_ms": 0.659072, "gbps": 851.42, "buffer_mb": 512},
+  "sfu_ex2_f32": {"median_ms": 3.007392, "min_ms": 3.003168, "max_ms": 3.043392, "elem_per_s": 3.6596e+12, "elem_per_sm_clk": 27.946},
+  "bar_sync_roundtrip": {"median_ms": 0.153888, "min_ms": 0.151840, "max_ms": 0.180000, "ns_per_bar": 7.694, "reps": 20000, "block_threads": 128},
+  "cp_async_16b": {"median_ms": 13.956128, "min_ms": 13.873184, "max_ms": 16.286976, "gbps": 1540.24, "src_window_mb": 1.0}
+}

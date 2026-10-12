@@ -1,0 +1,6 @@
+[run_l2] ref_f16_sm80_atom
+[run_l2] linalg survivor -> -convert-linalg-to-loops
+extracted 4426 bytes of PTX -> kernel.ptx
+[run_l2] meta.json: regs=22 smem=None mma=1 cp.async=0
+[run_l2] done: kernel.ptx kernel.cubin ptxas_v.txt sass.txt meta.json
+[smem_fix] ref_f16_sm80_atom: malloc_callseqs=0 cvta_patched=0 shared_decls=[] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin

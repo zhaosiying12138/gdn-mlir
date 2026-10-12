@@ -1,0 +1,6 @@
+ptxas-blackwell info    : 11 bytes gmem
+ptxas-blackwell info    : Compiling entry function 'chunk_scaled_dot_kkt_fwd_kernel' for 'sm_120a'
+ptxas-blackwell info    : Function properties for chunk_scaled_dot_kkt_fwd_kernel
+    24 bytes stack frame, 20 bytes spill stores, 20 bytes spill loads
+ptxas-blackwell info    : Used 64 registers, used 1 barriers, 24 bytes cumulative stack size
+ptxas-blackwell info    : Compile time = 38.343 ms

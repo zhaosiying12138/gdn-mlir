@@ -1,0 +1,5 @@
+[run_l2] o_bf16_mma_p0_t32x64x32_w2_K64V64
+extracted 223915 bytes of PTX -> kernel.ptx
+[run_l2] meta.json: regs=96 smem=None mma=32 cp.async=772
+[run_l2] done: kernel.ptx kernel.cubin ptxas_v.txt sass.txt meta.json
+[smem_fix] o_bf16_mma_p0_t32x64x32_w2_K64V64: malloc_callseqs=4 cvta_patched=4 shared_decls=[('__gdn_smem0', 2048), ('__gdn_smem1', 4096), ('__gdn_smem2', 2048), ('__gdn_smem3', 4096)] const_params_substituted=0 dynamic_params_kept=0 -> kernel_smemfix.cubin

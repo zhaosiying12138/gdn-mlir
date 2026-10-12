@@ -1,0 +1,149 @@
+{
+  "kernel": "gdn_fwd_mono",
+  "path": "mono",
+  "shape": {
+    "B": 4,
+    "T": 2048,
+    "H": 16,
+    "K": 128,
+    "V": 128,
+    "C": 64,
+    "NC": 32,
+    "Tp": 2048
+  },
+  "knobs": {
+    "warps": 4,
+    "bv": 32,
+    "bk": 32,
+    "mb": 2,
+    "depth": 2,
+    "f2": "pp",
+    "f2_segments": 2
+  },
+  "params": [
+    {
+      "name": "k",
+      "dtype": "bf16",
+      "elems": 16777216
+    },
+    {
+      "name": "v",
+      "dtype": "bf16",
+      "elems": 16777216
+    },
+    {
+      "name": "beta",
+      "dtype": "f32",
+      "elems": 131072
+    },
+    {
+      "name": "g",
+      "dtype": "f32",
+      "elems": 131072
+    },
+    {
+      "name": "u",
+      "dtype": "bf16",
+      "elems": 16777216
+    },
+    {
+      "name": "w",
+      "dtype": "bf16",
+      "elems": 16777216
+    },
+    {
+      "name": "gc",
+      "dtype": "f32",
+      "elems": 131072
+    },
+    {
+      "name": "h0",
+      "dtype": "f32",
+      "elems": 1048576
+    },
+    {
+      "name": "h_all",
+      "dtype": "bf16",
+      "elems": 33554432
+    },
+    {
+      "name": "v_new",
+      "dtype": "bf16",
+      "elems": 16777216
+    },
+    {
+      "name": "ht",
+      "dtype": "f32",
+      "elems": 1048576
+    },
+    {
+      "name": "seg_exit",
+      "dtype": "bf16",
+      "elems": 2097152
+    },
+    {
+      "name": "q",
+      "dtype": "bf16",
+      "elems": 16777216
+    },
+    {
+      "name": "o",
+      "dtype": "bf16",
+      "elems": 16777216
+    }
+  ],
+  "kernels": [
+    {
+      "name": "gdn_fwd_f1",
+      "grid": [
+        32,
+        64,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "gdn_fwd_f2a",
+      "grid": [
+        512,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "gdn_fwd_f2c",
+      "grid": [
+        512,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ]
+    },
+    {
+      "name": "gdn_fwd_f3",
+      "grid": [
+        2048,
+        1,
+        1
+      ],
+      "block": [
+        128,
+        1,
+        1
+      ]
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "kernel": "gdn_fwd_fused",
+  "path": "fused",
+  "shape": {
+    "B": 4,
+    "T": 2048,
+    "H": 16,
+    "K": 128,
+    "V": 128,
+    "C": 64,
+    "NC": 32,
+    "Tp": 2048
+  },
+  "knobs": {
+    "warps": 4,
+    "bv": 32,
+    "copies": "async"
+  },
+  "params": [
+    {
+      "name": "q",
+      "dtype": "bf16",
+      "elems": 16777216
+    },
+    {
+      "name": "k",
+      "dtype": "bf16",
+      "elems": 16777216
+    },
+    {
+      "name": "v",
+      "dtype": "bf16",
+      "elems": 16777216
+    },
+    {
+      "name": "beta",
+      "dtype": "f32",
+      "elems": 131072
+    },
+    {
+      "name": "g",
+      "dtype": "f32",
+      "elems": 131072
+    },
+    {
+      "name": "h0",
+      "dtype": "f32",
+      "elems": 1048576
+    },
+    {
+      "name": "o",
+      "dtype": "bf16",
+      "elems": 16777216
+    },
+    {
+      "name": "ht",
+      "dtype": "f32",
+      "elems": 1048576
+    }
+  ],
+  "grid": [
+    256,
+    1,
+    1
+  ],
+  "block": [
+    128,
+    1,
+    1
+  ],
+  "metrics": {
+    "registers": 255,
+    "smem_static": null,
+    "spill_stores": 160,
+    "spill_loads": 196,
+    "stack_frame": 160,
+    "smem_dynamic": 0
+  },
+  "ptx_features": {
+    "mma.sync": 320,
+    "cp.async": 24,
+    "tma.bulk": 0,
+    "mbarrier": 0,
+    "exp.approx": 0,
+    "ld.global": 3,
+    "st.global": 2,
+    "ld.shared": 91,
+    "st.shared": 210,
+    "bar.sync": 23,
+    "barrier": 0,
+    "shfl.sync": 0,
+    "redux": 0,
+    "setmaxnreg": 0,
+    "movmatrix": 0,
+    "ldmatrix": 284,
+    "stmatrix": 0,
+    "wmma": 0,
+    "wgmma": 0,
+    "tcgen05": 0,
+    "fma.f32": 0,
+    "mma.sync.other": 0,
+    "ex2.approx": 64
+  },
+  "sass_ops": {
+    "HMMA": 320,
+    "LDGSTS": 18,
+    "LDS": 202,
+    "STS": 266,
+    "LDL": 47,
+    "STL": 38,
+    "BAR.SYNC": 23,
+    "LDSM": 284,
+    "EX2": 85
+  },
+  "ptx_size_bytes": 141805,
+  "sass_size_bytes": 237109,
+  "sass_line_count": 3787,
+  "mma_signatures": [
+    "mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32"
+  ],
+  "ex2_variants": [
+    "ex2.approx.f32"
+  ],
+  "ldmatrix": 284,
+  "ptx_version": "8.7",
+  "tools": {
+    "ptxas": "Build cuda_13.3.r13.3/compiler.38244171_0"
+  },
+  "extraction_method": "gpu-lower-to-nvvm-pipeline cubin-format=assembly -> gpu.binary #gpu.object assembly attr -> python unescape"
+}

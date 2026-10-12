@@ -1,0 +1,53 @@
+{
+  "shape": "1,2048,16,128,128",
+  "chunk": 64,
+  "seed": 0,
+  "tolerances": {
+    "dq": 0.008,
+    "dk": 0.008,
+    "dv": 0.008,
+    "dbeta": 0.02,
+    "dg": 0.02,
+    "dh0": 0.008
+  },
+  "stage_times_ms": {
+    "wy": 0.1448,
+    "fwdscan": 0.1295,
+    "dhu": 0.2699,
+    "dqkwg": 0.2774,
+    "wyb": 0.0563
+  },
+  "grads": {
+    "dq": {
+      "max_abs_diff": 0.003050551457441597,
+      "tol": 0.008,
+      "verdict": "PASS"
+    },
+    "dk": {
+      "max_abs_diff": 0.9158385214763538,
+      "tol": 0.008,
+      "verdict": "FAIL"
+    },
+    "dv": {
+      "max_abs_diff": 0.007160458243522516,
+      "tol": 0.008,
+      "verdict": "PASS"
+    },
+    "dbeta": {
+      "max_abs_diff": 0.09826959583888548,
+      "tol": 0.02,
+      "verdict": "FAIL"
+    },
+    "dg": {
+      "max_abs_diff": 5.575395039206415,
+      "tol": 0.02,
+      "verdict": "FAIL"
+    },
+    "dh0": {
+      "max_abs_diff": 0.0002019233322514899,
+      "tol": 0.008,
+      "verdict": "PASS"
+    }
+  },
+  "overall": "FAIL"
+}
