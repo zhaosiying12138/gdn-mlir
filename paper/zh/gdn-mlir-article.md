@@ -1253,7 +1253,7 @@ cubin-features=+ptx87 向 NVVM 后端声明目标特性集合。后端把较新�
 
 cubin-format=assembly 是三旋钮中承担架构决策的一个。该管线默认直接产出 cubin 二进制；assembly 改为产出 PTX 文本并挂在 gpu.binary 的 #gpu.object assembly 属性上。原因：本编译器在 PTX 定案之前还有一层后处理（第十八章的四个变换全部发生在 NVVM 下译之后、ptxas 之前），必须以文本形态拿到 PTX；若走默认 cubin 路线，四个变换的介入点就不存在了。附带两个收益。其一，编译器版本可控——仓库统一选用 PTX ISA 9.3 能力的 ptxas-blackwell（scripts/run_l2.sh:34-36 的挑选顺序），把"哪个 ptxas 定案"从环境巧合变成受控输入。其二，asmobj.mlir 里主机侧 gpu.launch_func 的实参清单仍然在档，它是后处理中常量参数消除的输入——transform 解释与 hatch 下译会把 launch 区域内的常量提升回主机端，每个常量变成一个内核参数，最多可达约 140 个，而它们的值都能从这份清单恢复（tools/gdn_smem_fix.py:27-41 docstring）。
 
-3. sm_80 集成测试作为管线冒烟
+3. 管线冒烟：上游 sm_80 集成测试重定向 sm_120a
 
 整条链（transform 解释 → nvgpu → nvvm → PTX → ptxas → cubin → 真机运行）在接入本项目内核之前，先用树内现成的集成测试冒烟：mlir/test/Integration/GPU/CUDA/TensorCore/sm80/transform-mma-sync-matmul-f16-f16-accum.mlir。scripts/smoke_sm80.sh 优先走 llvm-lit；装置不可用时转手动管线，把 chip 换成 sm_120a 后交给 mlir-runner 加载运行：
 
