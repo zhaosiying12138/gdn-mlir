@@ -449,4 +449,4 @@ make repro-all               # G0→G6 顺序执行，首个失败即停止，�
 
 ## 许可
 
-TBD（代码与证据树待定；参考实现 fla=MIT / FlashQLA=MIT 仅作对照基准使用，其 PTX 收割物不含其源码）。
+Apache License 2.0（见 [LICENSE](LICENSE)，适用于代码、文档与证据树）。参考实现 fla=MIT / FlashQLA=MIT 仅作对照基准使用，其 PTX 收割物不含其源码。
