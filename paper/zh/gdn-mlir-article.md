@@ -65,7 +65,7 @@ cp.async.ca.shared.global [%rd15], [%rd549+32], 16;
 
 6. 最后两站：PTX 后处理与 L4 定案
 
-MLIR 语义完整下译之后、ptxas 定案之前，stock 流水线遗留四个真实问题——静态共享内存、生存期别名的实现载体、寄存器上限、bank 几何。856 行文本改写器 gdn_smem_fix.py 承载全部四个变换；工程原则是每步改写要么逐位相同、要么回退到正确形态、失败时显式报告。L4 定案的命令链：gpu-lower-to-nvvm-pipeline 以 cubin-chip=sm_120a、cubin-features=+ptx87、cubin-format=assembly 产出 PTX，改写后由 ptxas-blackwell -v 编译为 cubin，SASS 由 nvdisasm 审计；全链在 5090 上以树内 sm_80 transform-mma 集成测试冒烟通过。这一段的尺子是位级等价与跨进程逐位复现——同一 cubin 同一输入跨进程 5 次全过方为通过。
+MLIR 语义完整下译之后、ptxas 定案之前，stock 流水线遗留四个真实问题——静态共享内存、生存期别名的实现载体、寄存器上限、bank 几何。856 行文本改写器 gdn_smem_fix.py 承载全部四个变换；工程原则是每步改写要么逐位相同、要么回退到正确形态、失败时显式报告。L4 定案的命令链：gpu-lower-to-nvvm-pipeline 以 cubin-chip=sm_120a、cubin-features=+ptx87、cubin-format=assembly 产出 PTX，改写后由 ptxas-blackwell -v 编译为 cubin，SASS 由 nvdisasm 审计；全链的冒烟以树内 sm_80 transform-mma 集成测试完成——文件名沿用上游目录名，chip 重定向为 sm_120a 后在 5090 上编译运行（sm_120 的张量核即 Ampere 风格 mma.sync，同指令族故该测试有效，第十五章展开）。这一段的尺子是位级等价与跨进程逐位复现——同一 cubin 同一输入跨进程 5 次全过方为通过。
 
 7. 四个可检验主张
 
