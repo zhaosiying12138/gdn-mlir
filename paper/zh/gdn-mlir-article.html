@@ -140,7 +140,7 @@ transform.nvgpu.pipeline_shared_memory_copies failures(propagate)
 的文本：复现一个配置等于复现一份工件。规模与质量：kkt 阶段 368
 个合法配置 0.29 秒枚举完毕，o 阶段 465 个配置 0.33 秒；每新形状调度 0.8
 秒纯 CPU；排序与实测的 Spearman 秩相关 0.8962（门槛
-0.7）。机制展开在第二十一至二十九章。</p>
+0.7）。机制展开在第四至十二章。</p>
 <h3 id="5-第四站l3数据怎么流进张量核">5.
 第四站：L3，数据怎么流进张量核</h3>
 <p>L3 的机制按功能分五组：数值到指令的映射（split-bf16 与 mma
@@ -166,10 +166,10 @@ PTX，改写后由 ptxas-blackwell -v 编译为 cubin，SASS 由 nvdisasm
 审计；全链的冒烟以树内 sm_80 transform-mma
 集成测试完成——文件名沿用上游目录名，chip 重定向为 sm_120a 后在 5090
 上编译运行（sm_120 的张量核即 Ampere 风格
-mma.sync，同指令族故该测试有效，第十五章展开）。这一段的尺子是位级等价与跨进程逐位复现——同一
+mma.sync，同指令族故该测试有效，第二十四章展开）。这一段的尺子是位级等价与跨进程逐位复现——同一
 cubin 同一输入跨进程 5 次全过方为通过。</p>
 <h3 id="7-四个可检验主张">7. 四个可检验主张</h3>
-<p>旅程的产出物接受四条检验，数字继承自证据章（第二章速览，第三十六至四十一章完整论证）：</p>
+<p>旅程的产出物接受四条检验，数字继承自证据章（第二章速览，第三十六至四十二章完整论证）：</p>
 <ol type="1">
 <li>表达力：旋钮空间在 PTX 指令族与结构两层覆盖两家手写参考；mma
 指令签名层对两家双向一致；为此只需 1 个自定义 NVVM op（预算 ≤5）。</li>
@@ -218,10 +218,14 @@ cubin 同一输入跨进程 5 次全过方为通过。</p>
 </table>
 <h3 id="9-章节地图">9. 章节地图</h3>
 <ul>
-<li>第四至二十章（MLIR 体系）：方言定义、L0 与 L1 的全部 IR 展品、下降
-pass 与三方交叉验证——旅程的前两站。</li>
-<li>第二十一至二十九章（Z3
-与成本模型）：约束即代码的求解器、零逐配置拟合的解析成本模型、一次性标定表与排序质量门槛——第三站的两个引擎。</li>
+<li>第四至十二章（调度求解器与成本模型）：把 autotune
+变成求解器的动机与设计、旋钮空间建模、约束工程、确定性枚举、一次性标定与排序质量——编译期调度的两个引擎，自顶向下先讲设计决策。</li>
+<li>第十三至二十三章（MLIR 体系）：方言定义、L0 与 L1 的全部 IR
+展品、下降 pass、IR 中层（linalg、scf、bufferize、transform
+dialect）、树内行为的边界与生成器工程——语义层到调度工件的实现。</li>
+<li>第二十四至二十九章（下译与 PTX 层）：NVVM 下译旋钮、nvgpu op
+地图、inline_asm 逃生舱、PTX 后处理的四个变换与 ptxas/SASS
+审计——离硬件最近的一层放最后讲。</li>
 <li>第三十至三十五章（kernel 工程）：前向与反向内核族的制胜机制、PTX
 后处理的四个变换与前后对照——第四站与第五站的机器层细节。</li>
 <li>第三十六至四十二章（验证与边界）：分层验证塔、测量口径、覆盖证明与反向精度上界的四类分析、工具链发现与相关工作——全部尺子的说明书，也是主张
@@ -335,7 +339,7 @@ u 变化的部分），斜率是每单位 u
 的边际成本（扫描链每长一单位多付的时间）。本方截距更低（0.138 对
 0.298）、斜率更高（1.996 对
 0.746）——小形状的领先由截距优势决定，大形状的落后由斜率劣势决定；斜率差由精度合同强制的
-fp32 中间量字节解释，完整论证见第三十六至四十一章。图中 u=4
+fp32 中间量字节解释，完整论证见第三十九章。图中 u=4
 处有两个测点（两个形状组合落在同一负载参数上），两点时间相近、贴在同一条拟合直线附近，是拟合质量的直观佐证。</p>
 <figure>
 <svg viewBox="0 0 740 320" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
@@ -425,8 +429,7 @@ sm_120 反向链在当前发布状态下无法启动：缺少 export，单 kerne
 fla 相当。三者构成一个三角：fla 前向反向俱全而速度居后，FlashQLA
 前向最快而反向在该架构上不可启动，本方以同一条编译期调度管线供给前向与反向、速度居于两者之间。FlashQLA
 在本书中还有第二重身份：它与 fla 一起构成覆盖合同（T1/T2）的两方参考，其
-PTX 与 SASS
-全部离线获取用于逐族对照，这层身份在第三十六至四十一章展开。</p>
+PTX 与 SASS 全部离线获取用于逐族对照，这层身份在第三十八章展开。</p>
 <h3 id="6-覆盖一句话">6. 覆盖一句话</h3>
 <p>第一章主张 1 的证据浓缩为三个判定。T1 指令族终态 33 族：8 YES / 19
 PARTIAL / 6 NO——YES 指已发射且变体齐备，PARTIAL 指已发射但缺个别变体，NO
@@ -435,13 +438,13 @@ PARTIAL / 6 NO——YES 指已发射且变体齐备，PARTIAL 指已发射但缺
 指令签名层对两家参考双向一致。T2 结构匹配：fla 极点与 FlashQLA
 极点的每个结构要素都在旋钮空间内可生成。逃生舱（自定义 NVVM op）预算
 ≤5，实际支出
-1（gdn.mma.tf32k8）。判定方法与逐族矩阵在第三十六至四十一章展开。</p>
+1（gdn.mma.tf32k8）。判定方法与逐族矩阵在第三十八章展开。</p>
 <h2
 id="三为什么这个算子值得一个编译器">三、为什么这个算子值得一个编译器</h2>
 <p>第一章给出了旅程的地图，第二章给出了终点的成绩单；本章回答一个前置问题：这个算子凭什么值得一条专门的编译管线？答案有两半。前一半是数学：GDN
 的递推在 chunk
 化之后暴露出三角性、仿射性、双侧掩蔽三重结构，结构精巧且随形状、精度位点、内存布局大幅变化，任何一份手写内核都只覆盖这片变化空间的一个小角落。后一半是工程：手写路线把调度知识锁死在内核源码里，每换一个形状或算子就要重新手写一遍，且调度决策被推迟到运行时。本章先建立数学对象（直觉到机制），再看手写现状的结构性代价，最后给出本编译器的回答——调度即
-IR。本章的数学是第四至二十章 L1 展开的全部依据。</p>
+IR。本章的数学是第十三至二十三章 L1 展开的全部依据。</p>
 <h3 id="1-算子与递推四步契约">1. 算子与递推四步契约</h3>
 <p>Gated DeltaNet 对每个 token 维护一个 K×V 的状态矩阵
 h，并按固定顺序递推（g ≤ 0，β ∈ (0,1)）：</p>
@@ -464,7 +467,7 @@ token 读写一遍 K×V
 步顺序依赖折叠成一次批量计算。这是从扫描到矩阵乘的转换枢纽：扫描按 token
 串行地触碰状态，矩阵乘按 chunk 整块地触碰状态，访存量相差一个 chunk
 长度的因子。值得强调：chunk
-化及其后的全部代数整理都是精确恒等式，不含近似步骤——第四至二十章的三方交叉验证正是以
+化及其后的全部代数整理都是精确恒等式，不含近似步骤——第十三至二十三章的三方交叉验证正是以
 fp64 核对这份精确性。chunk 化后的核心是三个对象。</p>
 <h3 id="3-对象一kkt-矩阵与前代换">3. 对象一：KKT 矩阵与前代换</h3>
 <p>直觉是联立方程。chunk 内每个 token 的修正项 b_i
@@ -501,7 +504,7 @@ dA = −strict_tril( Tᵀ · strict_tril(G) · Tᵀ )，与 fla 的
 prepare_wy_repr_bwd 等价。"双侧"的含义：左右两次 Tᵀ
 各携带一次掩蔽，直达项与交叉项各计一次。这一步在最终反向链的 wyb kernel
 中执行，产出最终的
-dk、dβ、dg、dv；它是反向链正确性的分水岭，也是第三十六至四十一章容差合同的数学基础之一。</p>
+dk、dβ、dg、dv；它是反向链正确性的分水岭，也是第三十七章容差合同的数学基础之一。</p>
 <h3 id="6-现状手写内核的两个结构性代价">6.
 现状：手写内核的两个结构性代价</h3>
 <p>这个算子目前由手写内核服务。fla 基于 Triton，运行时
@@ -551,8 +554,1061 @@ kernel
 <p>本章三个数学对象之所以支撑得起这套回答，在于其全部结构都能被 IR
 与求解框架显式承载：三角性落在 L1
 的掩蔽控制流里，仿射性落在矩阵乘与递推的边界划分里，双侧掩蔽落在反向链的收缩步骤里；形状、精度位点、内存布局的变化则全部交给旋钮空间。数学对象如何在
-L1 落成逐行可执行的 IR，第四章起展开。</p>
-<h2 id="四用-tablegen-定义领域方言">四、用 TableGen 定义领域方言</h2>
+L1 落成逐行可执行的 IR，第十三章起展开。</p>
+<h2 id="四把-autotune-变成求解器动机与总体设计">四、把 autotune
+变成求解器：动机与总体设计</h2>
+<p>本章与后续五章讲同一份源码：tools/gdn_solver.py，661
+行，含命令行与自检。它的职责在编译器总览里只占一句话——为给定形状求出全部合法的旋钮组合并按预测时间排序——但这一句是整个
+L2
+调度层的心脏。先说清它为什么存在。手写内核把调度决策固化在源码里（FlashQLA
+的 warp 专化调度即手写成果），Triton 系把决策推迟到运行时（fla
+每形状首次搜索需 39.8 秒设备时间，48
+个配置逐个上机）。两条路线各有代价：前者每换一个形状、每加一个算子都要重新手写，后者的搜索开销与冷启动由每个部署进程反复支付。第三条路线把"哪些旋钮组合合法"表述为一个约束可满足性问题，在编译期求解、在编译期排序、在编译期产出工件。本章讲这条路线的动机与总体设计，第二十二到二十六章按建模、约束、枚举、防御、复现五个侧面把源码读完；读完的标准是读者能照写一个自己的调度求解器。</p>
+<p>术语先立三条。Z3 是一个 SMT 求解器；SMT（Satisfiability Modulo
+Theories，模理论可满足性）在布尔可满足性问题（SAT）之上叠加整数算术、布尔量等理论的可满足判定，z3py
+是它的 Python 前端。旋钮向量指十维离散决策变量——数据类型、精度、tile
+三个维度、warp 数、流水深度、mma 开关、warp 专化、TMA——即第二十一章
+transform
+工件的参数化自由度。合法指同时满足耦合、结构与资源三类约束（第六章）。</p>
+<h3 id="1-哲学的移植与两问">1. 哲学的移植与两问</h3>
+<p>第一章表 1 对标的哲学是 XLA 在 TPU
+上的调度组织：调度决策全部在编译期做出、编译产物不携带运行时搜索、每层
+IR 独立可验证。把这套哲学移植到原生 MLIR、消费级
+Blackwell、单算子族上，在写任何求解代码之前必须先回答两问，且两问都不关于求解器本身。</p>
+<p>第一问，凭什么排序。求解器只判定合法性，"哪个合法配置更快"由成本模型回答；若成本模型不可靠，全空间枚举只是把错误的排序做得更全面。本项目的答案先行验证：零自由常数的校准解析成本模型，对
+18 个实测配置的 Spearman 秩相关 0.8962（门槛
+0.7），全部结构常数扰动正负两倍后秩相关仍在
+0.882–0.902（第十二章）。第二问，凭什么相信。求解出的配置要真的编译、真的装载、真的算对，这由验证塔把关：L2
+出口有 ptxas 静态资源复核（第二十九章），L3 逐配置对 fp64 参考，L4
+交错终判（第三十七章）。</p>
+<p>两问的答案塑造了求解器的形态：职责三分——合法性归
+Z3，优劣归成本模型，正确性归验证塔。求解器因此可以很小且全部可读，它的每个输出在下游都有一道独立关卡复核。</p>
+<h3 id="2-为什么是-z3">2. 为什么是 Z3</h3>
+<p>合法性问题的形状决定工具。约束是异构的：整除性（tile
+对齐写成整除断言）、布尔蕴涵（TMA 的启用蕴含 warp
+专化）、资源不等式（共享内存字节数不超过容量），并且资源项本身按布尔旋钮分岔——mma
+开关在两套字节公式中选一套。这类整数、布尔与条件算术的混合组合约束正是
+SMT
+求解器的原生工作负载：约束写成符号断言交给求解器，可满足性的判定与满足指派的提取都由它完成。若以嵌套循环手写合法性过滤，耦合与资源约束会摊进多层循环条件里，每加一条约束都要改动循环结构；写成断言列表后，加一条约束只是加一行
+s.add，且每行与文档逐条对应（第一章章节地图所称的"约束即代码"）。Z3
+还自带枚举机制：对已产出的解追加一条阻塞子句，下一次判定即给出新解，全空间穷尽有现成的循环写法（第七章）。</p>
+<h3 id="3-上移一层从指令时槽到旋钮向量">3.
+上移一层：从指令时槽到旋钮向量</h3>
+<p>这套机制的血统来自 TileLang。TileLang 自带一个 z3
+调度器，但它只存在于 Ascend 后端，CUDA
+侧退化为运行时搜索。它的机制是模调度（modulo
+scheduling，软件流水的经典构造）：决策变量是每条指令的发射时槽，求解器在依赖与资源约束下最小化启动间距（II，initiation
+interval），由延迟估计引导对 II
+做二分搜索。本项目移植该机制并上移一层：决策变量从"每条指令何时发射"改为"这份内核用哪组旋钮"。源码头部的自述：</p>
+<pre><code>GDN Z3 knob solver (G3-B): TileLang z3_scheduler mechanism ported to
+CUDA/sm_120 - v1 form: SMT enumeration/ordering of the DISCRETE KNOB
+SPACE (not instruction start-time scheduling yet).
+
+  objective   : minimize the calibrated analytical cost model
+    (tools/gdn_costmodel.py). The cost model is non-linear
+    (max/blend, divisions), so v1 enumerates every legal knob
+    assignment with Z3 (SAT + blocking clauses) and ranks
+    outside the solver - same role as TileLang&#39;s
+    estimate_latency-guided II binary search, one level up.</code></pre>
+<p>［tools/gdn_solver.py:1-4、14-19，模块 docstring
+节选，机制与目标两段］</p>
+<p>上移一层带来两个直接后果。其一，解即工件参数：旋钮向量经一次字典翻译即成
+transform 工件的 factor、depth、tile_sizes
+与发射几何（第十二、二十二章），流水线里没有指令调度器这个部件，指令级编排由
+NVVM
+管线与生成器模板承担。其二，问题规模塌缩：变量十个、每维取值个位数，合法空间只有数百个点，穷尽枚举在亚秒级完成，"求解"从搜索问题变成枚举问题。</p>
+<h3 id="4-总体数据流">4. 总体数据流</h3>
+<p>求解器坐在一条单向流水的中段，源码 docstring
+把下游记作回环（loopback）：solve 之后，Top-K 配置交 gdn_l2_gen.py
+生成并编译（scripts/run_l2.sh 驱动），ptxas -v
+做静态资源复核，再用实测的编译期特征重排，幸存者进窗口计时（23-26
+行）。各站与承载：</p>
+<p>表 21-1：求解回环 | 站 | 做什么 | 承载 | |---|---|---| | 建模 |
+声明十维变量与域 | KnobSpace 构造器（第五章） | | 约束 |
+耦合、结构、资源三类断言 | 同上（第六章） | | 枚举 |
+全空间穷尽、记录结束态 | enumerate（第七章） | | 排序 |
+成本模型预测、终排序键定序 | gdn_costmodel 与 solve（第七章、第十一章）
+| | 实例化 | Top-K 配置生成工件与 cubin | gdn_l2_gen.py 与 run_l2.sh | |
+复核与计时 | 资源包络对账、窗口裁决 | ptxas
+-v（第二十九章）、交错终判（第三十七章） |</p>
+<p>数字放进语境。kkt 阶段合法空间 368 个配置，枚举 0.29 秒；o 阶段 465
+个配置，0.33 秒。两个数字的含义分开读：368 与 465
+说明空间小到可以穷尽——穷尽给出完备性，排名覆盖每一个合法点；0.29 与 0.33
+说明穷尽快到可以放在编译期——合进标定读取与成本模型计算，整条新形状调度
+0.8 秒纯 CPU、GPU 时间为零，对照 fla 首搜 39.8
+秒设备时间。穷尽的收尾是一个可机查的凭证：最后一次判定返回
+unsat，即"再无未枚举的合法点"（第七章）；这份凭证随输出落盘（第九章）。</p>
+<h2 id="五旋钮空间的建模">五、旋钮空间的建模</h2>
+<p>求解器读到的世界由建模决定。建模回答两个问题：哪些自由度交给求解器（决策变量），每个自由度允许取哪些值（域）。这份建模的质量决定下游一切——约束引用变量、枚举读取模型、补全遍历域、阻塞子句按声明序构造，全部挂在这份十维声明上。本章逐段读源码的变量声明与域定义两段，最后讲"决策变量选在旋钮层"这条设计决策的含义。</p>
+<p>术语先立。决策变量（decision
+variable）指求解器自由指派的符号量；z3.Int 声明整数符号常量、z3.Bool
+声明布尔符号常量，求解之前它们没有值，只是约束里的名字。域（domain）指一个变量的全部候选取值集合。</p>
+<h3 id="1-十维决策变量与固定声明序">1. 十维决策变量与固定声明序</h3>
+<p>七个整数变量加三个布尔变量，按一个写死的顺序声明：</p>
+<pre><code># -- decision variables (fixed declaration order =&gt; determinism) --
+dtype = z3.Int(&quot;dtype&quot;)            # 0 = bf16, 1 = f32
+prec = z3.Int(&quot;prec&quot;)              # 0 = bf16, 1 = tf32
+bt = z3.Int(&quot;tile_M&quot;)
+bv = z3.Int(&quot;tile_N&quot;)
+bk = z3.Int(&quot;tile_K&quot;)
+warps = z3.Int(&quot;warps&quot;)
+pipe = z3.Int(&quot;pipeline&quot;)
+mma = z3.Bool(&quot;mma&quot;)
+ws = z3.Bool(&quot;warpspec&quot;)
+tma = z3.Bool(&quot;tma&quot;)
+self.v = dict(dtype=dtype, prec=prec, bt=bt, bv=bv, bk=bk,
+              warps=warps, pipe=pipe, mma=mma, ws=ws, tma=tma)</code></pre>
+<p>［tools/gdn_solver.py:98-110，逐字］</p>
+<p>整数承载"从几个候选里选一个数"的维度：dtype 与 prec 各两个候选，tile
+三维、warp 数、流水深度从各自域里选。布尔承载开关：mma、warp
+专化、TMA。整数与布尔的分工本身是一个编码决策。dtype 只有 0 与 1
+两个候选，表面上看布尔也装得下；用整数的理由有两条。其一，它要进入算术：共享内存字节模型按
+dtype 选元素宽度（第六章的 esz 项），条件写法是 If(dtype == 0, 2,
+4)，整数比较是最直接的载体。其二，统一的整数编码让多数读回路径走同一条
+as_long
+转换。布尔用在纯开关上，代价是三处代码都要做类型分派——阻塞子句对布尔维用
+BoolVal、对整数维用 IntVal（254-256 行），域登记要分别写 (False, True)
+与整数元组。编码的原则可以提炼成一句：进算术的用整数，纯开关的用布尔，两类的分派集中在一处处理。</p>
+<p>self.v
+这份字典是变量的唯一登记处，声明序即字典序——注释把意图写明：固定声明序服务于确定性。这个顺序被三处消费：枚举循环按它读取模型（for
+k, zv in
+self.v.items()，第七章）、补全按它遍历缺失键（第八章）、阻塞子句按它逐项构造。声明序因此是确定性控制面的第一根支柱（第九章）。</p>
+<h3 id="2-域从全局维与硬件宽度推导">2. 域：从全局维与硬件宽度推导</h3>
+<p>域不硬写在求解断言里，先经三份模块级常量给出基域：</p>
+<pre><code>TILE_DOMAIN = (32, 64, 128)      # G3 knob-space definition (see report:
+# gdn_l2_gen also admits M=16 and 8-multiples below 32; excluded here per
+# the G3 knob-space contract)
+WARPS_DOMAIN = (2, 4, 8)
+PIPE_DOMAIN = (0, 2, 3)</code></pre>
+<p>［tools/gdn_solver.py:70-74，逐字（注释并入）］</p>
+<p>tile 三档候选来自切块的常用粒度；warp 数三档对应 64/128/256
+线程的发射几何；流水深度 0、2、三档覆盖关闭与两级软件流水。深度 0
+的语义是关闭流水：字节模型里缓冲版本数写作 If(pipe &gt; 0, pipe,
+1)（第六章），0 与 1
+折叠为同一份单缓冲。基域再按当前阶段与形状过滤——tile
+必须整除对应的全局维，否则切块铺不满边界：</p>
+<pre><code>m_dom = [t for t in tile_domain if 64 % t == 0]
+n_dom = [t for t in tile_domain
+         if self.n_glob % t == 0 and t &gt;= 8]
+k_dom = [t for t in tile_domain if K % t == 0 and t &gt;= 8]
+s.add(z3.Or([dtype == d for d in (0, 1)]))
+s.add(z3.Or([bt == t for t in m_dom]))
+s.add(z3.Or([bv == t for t in n_dom]))
+s.add(z3.Or([bk == t for t in k_dom]))
+s.add(z3.Or([warps == w for w in WARPS_DOMAIN]))
+s.add(z3.Or([pipe == p for p in PIPE_DOMAIN]))</code></pre>
+<p>［tools/gdn_solver.py:112-121，逐字；n_glob 与 n_gemm 的阶段分岔在
+90-91 行（kkt 阶段 64、o 阶段 V）］</p>
+<p>域的约束来源有三。其一，整除全局维：M 维的整除对象是常量 64，即 chunk
+尺寸；N 维整除 n_glob（kkt 阶段 64、o 阶段 V）；K 维整除归约长度 K。tile
+不整除全局维时边界产生残块，生成器不处理残块，因此直接从域里剔除。其二，宽度下限：N、K
+两维加了 t &gt;= 8 的下限，低于 8 的取值不构成有效的 tile
+划分。其三，合同裁剪：生成器 gdn_l2_gen 本身允许 M=16 与 32 以下的 8
+倍数，G3
+旋钮空间合同显式把它们排除，把研究空间钉在报告口径上——注释里专门留了这段交代，防止后人把"求解器域"误读为"生成器能力"。</p>
+<p>域登记两次。第一次作为约束：z3.Or
+的成员断言告诉求解器每个变量只许取域内值。第二次作为 Python
+数据：self.domains 字典把十个变量的候选存成元组（bt、bv、bk 三项直接复用
+m_dom/n_dom/k_dom 的过滤结果，168-173
+行），供补全算法按序探测。同一份过滤结果供两个消费方，约束与数据不会漂移。</p>
+<h3 id="3-决策变量是旋钮解即工件参数">3.
+决策变量是旋钮：解即工件参数</h3>
+<p>决策变量选在旋钮层，带来的简化贯穿全链。枚举产出的向量经 to_config
+翻译为配置字典（261-275 行），再经 config_name 拼成规范名（278-289
+行）——kkt_bf16_mma_p2_t64x64x32_w4
+这样一段字符串。规范名既是证据文件里的键，也是第三十八章 T2
+结构匹配的检索键。向量到工件的映射是直接的：pipe 同时供
+transform.memref.multibuffer 的 factor 与 pipeline_shared_memory_copies
+的 depth 取参（第二十一章），tile 三维给 tile_sizes，warps
+给发射几何，dtype、prec、mma、ws、tma 选择生成器路径与载荷形态。</p>
+<p>这条设计的深层含义：求解器的解无需经过任何指令级翻译即可执行。变量是旋钮时，一个满足全部约束的指派本身就是
+transform 工件的参数表；合法性已在求解层断言（第六章），实例化后的 ptxas
+静态复核（第二十九章）作为第二道对账存在。求解器因此不包含任何指令调度逻辑——它解出的每个值都直接是生成器的一个参数。对照
+TileLang
+的做法（第四章）：变量落在指令时槽时，求解器之后还需要一套从时槽到代码的展开机制；变量落在旋钮层时，展开机制由既有的工件模板承担，求解器与生成器之间只剩一份字典翻译。</p>
+<p>翻译本身值得看一眼，它是解与工件之间的全部黏合：</p>
+<pre><code>def to_config(self, kv):
+    cfg = {
+        &quot;stage&quot;: self.stage,
+        &quot;dtype&quot;: &quot;bf16&quot; if kv[&quot;dtype&quot;] == 0 else &quot;f32&quot;,
+        &quot;prec&quot;: &quot;bf16&quot; if kv[&quot;prec&quot;] == 0 else &quot;tf32&quot;,
+        &quot;dims&quot;: {&quot;K&quot;: self.K, &quot;V&quot;: self.V if self.stage == &quot;o&quot; else 64},
+        &quot;tile&quot;: {&quot;M&quot;: kv[&quot;bt&quot;], &quot;N&quot;: kv[&quot;bv&quot;], &quot;K&quot;: kv[&quot;bk&quot;]},
+        &quot;warps&quot;: kv[&quot;warps&quot;],
+        &quot;mma&quot;: kv[&quot;mma&quot;],
+        &quot;pipeline&quot;: kv[&quot;pipe&quot;],
+        &quot;warpspec&quot;: &quot;producer_consumer&quot; if kv[&quot;ws&quot;] else &quot;off&quot;,
+        &quot;tma&quot;: &quot;on&quot; if kv[&quot;tma&quot;] else &quot;off&quot;,
+    }
+    cfg[&quot;name&quot;] = config_name(cfg)
+    return cfg</code></pre>
+<p>［tools/gdn_solver.py:261-275，逐字］</p>
+<p>翻译是逐维一一对应的：整数码转回字符串枚举（0 转 bf16、1 转
+f32），布尔转回开关语义，dims 按阶段补齐形状参数。名字由 config_name
+按固定模板拼出（278-289 行）——阶段、类型、mma 路径、流水深度、tile
+三维、warp 数，warp 专化与 TMA
+作后缀。同一向量永远拼出同一名字，排名文件、证据目录与第十七章 T2
+结构卡因此共享同一套键；回读方向同理，knob_vector
+把配置字典还原为向量（292-298 行），供枚举结果与生成器 INDEX
+对账。解、配置、名字、工件四层之间的映射全部是纯函数式的字典翻译——这正是"决策变量是旋钮"在工程上的兑现：没有隐藏状态，没有需要解释的中间表示。</p>
+<h2 id="六约束工程">六、约束工程</h2>
+<p>约束是领域知识进入求解器的唯一通道。每条约束对应一条可以独立陈述的合法性事实——旋钮之间的语义依赖、工件拼写的对齐要求、硬件资源的容量上限。约束工程的目标是让这份知识可审计：断言列表与文档一一对应，任何一条可以被单独质疑、删除、验证。本章把
+KnobSpace
+构造器里的约束按耦合、结构、资源三类展开；前两类决定"拼写上存在的东西是否语义成立"，第三类决定"语义成立的东西是否装得进硬件"。</p>
+<p>术语先立。断言（assertion）指加入求解器的 z3 表达式；Implies
+是布尔蕴涵（前件成立则后件必须成立）；z3.If
+是条件项（按布尔条件在两个表达式里选一个的符号写法）。</p>
+<h3 id="1-耦合约束旋钮间的语义依赖">1. 耦合约束：旋钮间的语义依赖</h3>
+<p>某些旋钮只在另一些旋钮的取值下才有独立含义。精度旋钮 prec
+是典型：tf32 只对 f32 数据配 mma 的组合存在——</p>
+<pre><code># precision is a real knob only for dtype=f32+mma (tf32); bf16 mma
+# is bf16-only, f32 is tf32-only, and mma=off removes the knob.
+s.add(z3.Implies(dtype == 0, prec == 0))
+s.add(z3.Implies(dtype == 1, prec == 1))
+s.add(z3.Implies(z3.Not(mma), prec == dtype))</code></pre>
+<p>［tools/gdn_solver.py:123-128，逐字（注释并入）］</p>
+<p>三条断言的净效果：prec 拥有独立自由度当且仅当 dtype 为 f32 且 mma
+为真；其余组合下 prec 被固定，枚举不会产出"bf16 数据配 tf32
+精度"这类拼写上存在、语义上无意义的配置。warp 专化与 TMA
+的耦合同理（139-145 行）：ws 只对 kkt 阶段的 bf16 加 mma
+开放——注意这里的阶段条件是编码期就坍缩的 Python 布尔（stage
+是构造器参数，构建 kkt 空间时该项直接为真，构建 o
+空间时整条蕴涵的前件永假）；tma 蕴含 ws；ws 形态下 pipe 被固定为
+2——warpspec 载荷用 identity
+工件（第二十一章），流水在该形态下不可观测，固定到内建约定是为了避免枚举出行为相同、名字不同的重复配置。耦合约束消灭的是冗余坐标：它们缩小的是编码的膨胀，语义空间本身没有变化。</p>
+<h3 id="2-结构合法性约束继承展品">2. 结构合法性约束（继承展品）</h3>
+<p>结构约束守住工件拼写的硬性要求——mma fragment
+的对齐与流水深度的上限：</p>
+<pre><code>s.add(z3.Implies(mma, bt % 16 == 0))                     # M 对齐
+s.add(z3.Implies(z3.And(mma, dtype == 0), bk % 16 == 0)) # bf16 K 对齐
+s.add(z3.Implies(z3.And(mma, dtype == 1), bk % 4 == 0))  # tf32 K 对齐
+s.add(z3.Implies(mma, bv % (8 * warps) == 0))            # N 对齐
+s.add(z3.Implies(z3.And(mma, pipe &gt; 0), K &gt;= bk * pipe)) # 流水深度 ≤ K 趟数</code></pre>
+<p>［tools/gdn_solver.py:131-137（继承展品）；紧随的 137 行给 nomma
+路径单设 K &gt;= bk］</p>
+<p>五条断言对应五个物理事实：M 维按 16 对齐，源自 mma fragment 的 M
+高度；K 维按数据宽度打包对齐，bf16 每 16 个元素一组、tf32 每 4
+个一组，来自 mma 指令的操作数布局；N 维按 8 乘 warps 对齐，每个 warp
+至少分得一个完整的 N 侧 fragment 份额；流水深度乘 tile K
+不能超过归约长度，multibuffer 的每份缓冲都要有对应的装载趟次；nomma
+路径若开流水，同样要求 K 装得下一次
+tile。注意这些断言全部带条件前件——Implies(mma, …)——因为 fragment
+布局只对 mma 路径存在；前件让约束在无关分支上自动失效，mma 与 nomma
+两条路径在同一约束集里互不挤占。这些约束把第二十一章工件拼写的合法性（factor
+超过趟数、fragment
+尺寸错位）从"编译器报错时才发现"提前到求解阶段——被拒绝的组合根本不进入实例化，错误信息从
+ptxas 的回溯变成一行可指认的断言。</p>
+<h3 id="3-资源约束寄存器预算与-smem-字节模型">3. 资源约束：寄存器预算与
+smem 字节模型</h3>
+<p>资源约束把硬件容量写成不等式。寄存器一条，先看展品：</p>
+<pre><code>esz = z3.If(dtype == 0, 2, 4)
+threads = 32 * (warps + z3.If(ws, 1, 0))
+# regs: &lt;=255/thread is a ptxas given (all family members hit the
+# cap); the SM-level budget is threads*255 &lt;= 65536
+s.add(threads * 255 &lt;= 65536)</code></pre>
+<p>［tools/gdn_solver.py:148-152，逐字（注释并入）；esz 供下文 smem
+模型复用］</p>
+<p>不等式的三个成分各有出处。每线程 255 的上限来自 ptxas
+的分配事实——源码注释记录该算子家族的 kernel 全员顶格，保守按上限记账。每
+SM 65,536 个 32 位寄存器是 sm_120 的结构常数（gdn_costmodel.py 的
+REGS_PER_SM）。线程数按 32 乘 warp 数计算，ws 为真时多计一支——warp
+专化把一个 warp
+让渡给生产者角色，驻留与寄存器预算照付。这条断言的直接效果写在模块头部：warps=8
+加生产者 warp 即 288 线程，乘 255 超出 64K
+预算，该组合在求解阶段即被剔除，无需等编译失败（docstring 40-41
+行）。</p>
+<p>共享内存按字节模型记账（继承展品）：</p>
+<pre><code>pair = (bt * bk + bk * bv) * esz                    # tile 对字节
+smem_mma = z3.If(ws,
+                 pair + z3.If(tma, 64*64*esz, 0) + 8,  # ws：单缓冲+TMA staging+mbarrier
+                 pair * z3.If(pipe &gt; 0, pipe, 1) * n_gemm)  # 流水=多缓冲版本数
+smem_nomma = (bt * K + K * bv + bt * bv) * esz        # nomma：整 K 驻留
+smem = z3.If(mma, smem_mma, smem_nomma)
+s.add(smem &lt;= cap)                                   # strict 100,352B / generator 220KB</code></pre>
+<p>［tools/gdn_solver.py:153-161（继承展品）；n_gemm：kkt 阶段 1 个
+GEMM、o 阶段 2 个（90-91 行）］</p>
+<p>三种形态各有推导。其一，mma 无 warp 专化：共享内存放 A 与 B 两个
+tile（pair 字节，esz 随 dtype 取 2 或
+4）；流水的每个版本各要一套缓冲（multibuffer factor 等于 pipe，pipe 为 0
+视作 1）；o 阶段两个 GEMM 各配一对
+tile——三项相乘即该形态的字节数。其二，ws
+形态：生产者与消费者单缓冲，pair 一份即够；TMA 开启时加 64 乘 64 乘 esz
+的输出 staging，再加 8 字节的 mbarrier
+固定开销。其三，nomma：标量路径没有 tile 流水，K 维整段驻留，三个 tile
+的并集照全尺寸记账。容量分两档：strict 档 100,352 字节——sm_120 每块 99KB
+的 opt-in 上限减 1KB 驱动保留（gdn_costmodel.py 的 SMEM_TOTAL_B 减
+SMEM_RESERVED_B，112-114 行）——守住真机可装载；generator 档
+220KB，镜像生成器自身 validate() 的上限，用于与生成器口径对账。</p>
+<h3 id="4-写成-if-与-implies-的教学意义">4. 写成 If 与 Implies
+的教学意义</h3>
+<p>先把三类约束的清单摆在一起，便于对账：</p>
+<p>表 23-1：KnobSpace 构造器的断言清单 | 类别 | 条数 | 守护的对象 | 行号
+| |---|---|---|---| | 域成员 | 6 | 各变量只取域内值（第五章） | 116-121
+| | 耦合 | 6 | prec 对 dtype 与 mma 的从属；ws、tma、pipe 之间的从属 |
+126-128、140-145 | | 结构 | 6 | fragment 对齐、流水深度上限 | 131-137 |
+| 资源 | 2 | 寄存器预算、共享内存容量 | 152、160 |</p>
+<p>二十条断言定义了第七章要穷尽的全部合法性。它们只用三个 z3py
+构造写成：Implies（蕴涵）、And 与
+Or（合取、析取）、If（条件项）。共同点是符号表达式：在没有具体取值时也成立，求解器对整张断言集做一次全局判定。这正是与
+Python if-else 的分野——if-else
+在编码期对具体值执行分支，而写约束时旋钮尚无值，分支无从执行；z3.If
+把分岔留进公式，求解器在搜索中对每个候选指派分别求值。教学上的收益有三条。约束即断言：每条
+s.add 可被单独验证——临时加一条假设再
+check，空间的空与非空就是对该假设的裁决。约束即文档：断言列表与字节模型的文字推导逐行对齐，审阅者对照阅读即可。约束即测试：删除任一条重新枚举，合法空间尺寸的变化就是该条约束的独立贡献量——这张清单同时也是一张可逐条做差分的实验设计表。</p>
+<h2 id="七sat-与阻塞子句全空间确定性枚举">七、SAT
+与阻塞子句：全空间确定性枚举</h2>
+<p>建模与约束定义了合法空间，枚举把它物化成一张完整清单。本章讲这台引擎的原理：z3py
+判定接口的三态语义、阻塞子句如何强制求解器给出新解、以及为什么对数百个点的空间穷尽枚举优于任何启发式。枚举的目标在函数
+docstring
+里写死：确定性顺序、完整覆盖、结束态可查。三个目标分别由三段机制承担——固定声明序（第五章）、阻塞子句循环、last_check
+记录。</p>
+<p>术语先立。可满足（satisfiable，sat）指存在一组变量指派使全部断言成立；不可满足（unsat）指证明不存在这样的指派；求解模型（model）指一个具体的满足指派，注意它与成本模型是两个词。</p>
+<h3 id="1-checkmodel-与三态语义">1. check、model 与三态语义</h3>
+<p>z3py 交互的核心是两个调用。Solver.check()
+对当前断言集做一次可满足性判定，返回三个值之一：sat，存在满足全部断派的指派；unsat，已证明不存在；unknown，求解器放弃——资源限额耗尽、问题落入判定能力之外的片段等。三态的认识论地位并不对等：sat
+与 unsat 是证明，unknown 只是承认。一个返回 unsat
+的求解器等于出具了"无解"的数学凭证；一个返回 unknown
+的求解器什么都没证明。这个不对称在第八章变成一整章的防御性设计——unknown
+绝不能与 unsat 混同处理。</p>
+<p>check 返回 sat 后，Solver.model() 取出一个满足指派。model 里的变量经
+m[var] 读回取值，但 model 的契约只保证"足以证明 sat
+的那部分指派"，被其余指派唯一决定的变量可能缺席——读回 None。这是 partial
+model
+现象，第八章展开其成因与补全。枚举循环先把这两件事做成一台引擎。</p>
+<h3 id="2-为什么把排序放在求解器外">2. 为什么把排序放在求解器外</h3>
+<p>z3 提供优化接口
+Optimize，可对目标函数求最小值，表面上正合"挑最快配置"的需求。本方案放弃它，理由记录在模块头部：成本模型是非线性的——项间取最大值、做混合、做除法（docstring
+15-16 行）。把这样的目标压进 SMT
+优化器，等于在非线性目标上做优化搜索，其完备性与行为可预期性都弱于纯判定问题。何况约束侧的字节模型本身已含变量乘变量（bt
+乘 bk），这类非线性整数算术 z3 只能不完全地处理，判定尚有返回 unknown
+的风险（第八章的防御正为此设），优化问题在此之上更甚。枚举加外排序的分工因此干净：求解器只回答"哪些合法"——每次一个纯判定问题；排序留在
+Python
+里逐项可审计，且每个配置的分解项（terms_ms）本来就要作为证据随排名输出。求解器与成本模型各司其职，中间的接口是一张完整清单。</p>
+<h3 id="3-阻塞子句强制新解">3. 阻塞子句：强制新解</h3>
+<p>枚举循环（继承展品）：</p>
+<pre><code>while len(out) &lt; limit:
+    r = s.check()
+    if r != z3.sat:
+        self.last_check = str(r)      # &quot;unsat&quot; = 空间干净穷尽
+        break
+    m = s.model()
+    # ……读取/补全各旋钮值……
+    out.append(vals)
+    block = [self.v[k] != z3.IntVal(v) for k, v in vals.items()]
+    s.add(z3.Or(block))               # 阻塞子句：下一解必须不同</code></pre>
+<p>［tools/gdn_solver.py:230-235、253-257，中间为模型读取与补全（继承展品，两段合排）；真实代码对布尔旋钮用
+z3.BoolVal 构造不等项，254-256 行］</p>
+<p>阻塞子句（blocking clause）的含义：对刚产出的向量 vals
+的每一维写一个"不等于当前值"，再把全部不等项用 Or
+连接后加入断言集。它的语义是"下一个解至少有一维与这个不同"——已产出的向量被整体排除，任何仍满足原约束加全部阻塞子句的指派必然是没见过的新向量。循环体每轮做三件事：check
+判定、model 取解加读取补全、block
+排除刚产出的解。同一向量不可能重复出现，因为它的阻塞子句永远在场；当全部合法向量都被阻塞后，check
+返回 unsat，循环以穷尽告终。limit
+参数（默认十万）是防御性护栏：清单长度超限时循环退出，此时结束态既非穷尽也非限额中断，由调用方检视。</p>
+<p>模型读取段（236-252 行）按声明序逐维读值：整数维经 val.as_long() 转
+Python 整数，布尔维经 is_true/is_false
+判定，缺席的维度进入补全路径（第八章）。读取与补全的次序也是固定的：先用一遍循环收集全部缺席键，再按声明序逐个补全（250-252
+行）——即使多个维度同时缺席，补全的先后也不依赖字典遍历的任何偶然。读取与补全全部结束后才构造阻塞子句——子句从补全后的
+Python 值构造，绝无直接使用读回的
+None；每轮的模型数、缺席数、补全数都累进 enum_stats（228-229
+行），防御路径的触发量随输出可查。</p>
+<h3 id="4-穷尽优于启发式unsat-作为穷尽凭证">4. 穷尽优于启发式，unsat
+作为穷尽凭证</h3>
+<p>这个空间只有数百个点——kkt 阶段 368 个、o 阶段 465
+个——穷尽枚举分别用时 0.29 与 0.33
+秒。在这个量级上，穷尽对启发式有压倒优势。启发式采样（挑一部分候选评估）省下的时间不足一秒，付出的代价是完备性：排名只覆盖样本，"更优配置落在未采样处"的可能性无法排除，且没有任何事后手段能区分"采样足够"与"恰好漏掉最优"。穷尽枚举的排名覆盖每一个合法点，完备性由求解器的返回值背书。</p>
+<p>这个背书是机器可查的。枚举如何结束被记录在 last_check 字段：循环因 r
+!= sat 退出时，str(r)
+存入——"unsat"意味着在全部约束加全部阻塞子句之下不存在任何指派，即空间已干净穷尽，这是求解器出具的证明；"unknown"则意味着判定被资源限额中断，空间只是被截断（第八章）。输出
+JSON 把 last_check 随 seed、rlimit、enum_stats（模型数、partial model
+数、补全次数）一并落盘（403-406
+行）：复核者不重跑就能看到穷尽凭证，重跑则应当得到逐字节相同的结果（第九章）。</p>
+<p>枚举清单的最终顺序由排序键定（新展品）：</p>
+<pre><code>ranked.sort(key=lambda r: (round(r[&quot;predicted_ms&quot;], 12), r[&quot;name&quot;]))
+for i, r in enumerate(ranked):
+    r[&quot;rank&quot;] = i + 1</code></pre>
+<p>［tools/gdn_solver.py:393-395，逐字；predicted_ms
+为成本模型预测的毫秒数（388 行）］</p>
+<p>排序键是一个两元组：预测毫秒先四舍五入到 12
+位小数——两个预测值相差一千万分之一毫秒纯属浮点尾噪，视为并列；并列者按配置规范名的字母序决胜。排序因此构成全序且确定：输出顺序与求解器给出模型的顺序完全解耦，即使枚举顺序有变，排名文件不变。这行代码是第九章确定性总账的收口一环。</p>
+<h2 id="八防御性求解补全与拒绝">八、防御性求解：补全与拒绝</h2>
+<p>求解器的输出直接喂给编译与计时，一个非法值或一份残缺清单都会污染整条证据链——下游的排序、Top-K、实例化与裁决全部建立在它之上。防御性求解因此把求解器库自身的产物当作不可信输入：求解模型可能缺维（partial
+model 现象），判定可能被资源限额中断（unknown
+截断）。本章讲两套防御——逐候选探测的补全，与解除限额后的重试加拒绝——以及它们背后的工程立场：宁可拒绝产出，绝不出具残缺空间。</p>
+<p>术语先立。partial model
+指缺少部分变量指派的求解模型；见证（witness）指足以证明可满足性的那份部分指派；补全（completion）指为缺席变量确定取值的过程。</p>
+<h3 id="1-partial-model-现象与成因">1. partial model 现象与成因</h3>
+<p>z3
+返回的求解模型只包含它认为需要指派的变量。当某个变量的取值被其余指派唯一决定——比如
+prec 在 dtype 与 mma
+的组合下只剩一个合法值（第六章的耦合约束）——求解器可以不把它写进模型。z3py
+的读回接口此时返回 None：一个空值，一个不抛异常的空值（docstring
+特意注明这是 z3py 的 get_interp 行为，218-219 行）。该行为符合 z3
+的契约：模型是可满足性的见证，只要它指派的变量足以验证 sat
+即可，没有义务为每个声明过的变量给出取值。现象在读回代码里的形态很朴素：m[zv]
+不抛错、不返回哨兵字符串，安静地给 None——若读回处直接
+as_long()，崩溃点是下游某行类型错误，与病因隔着一层。源码注释把这段历史记录在案：G6
+搜索成本测量中发现 enumerate 在 None 上崩溃（163-166
+行引文档记录）。防御的前提是承认现象会再来：补全逻辑是读回协议的一部分，每次读模型都要走。</p>
+<h3 id="2-补全算法逐候选-sat-探测继承展品">2. 补全算法：逐候选 SAT
+探测（继承展品）</h3>
+<pre><code>pin = [self.v[k] == z3.IntVal(v) for k, v in fixed.items()]
+s.add(z3.And(pin))
+for cand in self.domains[key]:
+    s.push()
+    s.add(self.v[key] == z3.IntVal(cand))
+    ok = s.check() == z3.sat          # 第一个保持可满足的候选即补全值
+    s.pop()
+    if ok: return cand</code></pre>
+<p>［tools/gdn_solver.py:192-204（继承展品）；外层先解除
+rlimit，避免探测被限额中断误判］</p>
+<p>算法四步：把已读回的值全部钉住（pin 断言，And
+连接）；按域的固定顺序逐个候选试探；每次试探 push
+保存求解器状态、断言该变量等于候选、check 判定、pop
+撤销；第一个保持整体可满足的候选即补全值。</p>
+<p>这个构造的安全性来自判定对象本身：候选被接受的条件是"钉住的指派加该候选在全部约束下可满足"，而判定的约束集正是定义合法性的那一份——非法候选在
+check
+处即被否决，补全不可能向清单注入任何非法值。换一个说法，合法性无需在补全处重复实现，它被委托给同一个求解器的同一条
+check。确定性有双重来源：域元组顺序固定，返回第一个合法候选；枚举遍历缺失键也按声明序进行（第五章）。存在性同样有保证：求解器返回的模型本身是
+sat 的，缺席变量在其余值钉住后至少还有一个合法取值（函数 docstring
+记录了这条论证，184-185 行）；万一全部候选被否决，RuntimeError
+把它当作求解器契约违例上报，异常文本带完整的阶段、K、V 与钉住值（205-209
+行），绝不静默返回。</p>
+<h3 id="3-探测前解除限额与-pushpop-卫生">3. 探测前解除限额与 push/pop
+卫生</h3>
+<p>补全的探测运行在限额解除的求解器上：进入 _complete 先把 rlimit
+置零，退出时在 finally 里恢复原值（187-189、210-212
+行）。原因在探测的判定语义：探测的 check 若被 rlimit 中断，返回的是
+unknown；代码把返回值与 z3.sat 比较，unknown 落在"非
+sat"一侧，会被误读成"候选被否决"——一个其实合法的候选被限额误杀，补全可能跳到后面的候选甚至误报无解。解除限额让探测的每次判定都是完备判定，"非
+sat"才严格等于"该候选确实非法"。</p>
+<p>push/pop 的配对同样严格：外层一个 push 包住全部 pin
+断言，每个候选一个 push/pop 对，finally
+保证异常路径也恢复现场。补全结束后求解器回到枚举离开时的状态——约束集与限额都复原，阻塞子句照常在其上叠加。还有一个次序细节：补全发生在本轮阻塞子句加入之前，所以被钉住的当前解此刻仍满足全部约束，"至少一个候选合法"的存在性论证才成立。</p>
+<h3 id="4-unknown-截断重试一次然后拒绝新展品">4. unknown
+截断：重试一次，然后拒绝（新展品）</h3>
+<p>枚举的另一个出口是 unknown。rlimit 耗尽时 check 返回 unknown，循环以
+last_check 记为 unknown
+结束——此时清单只是空间的截断，绝不能当作完整空间输出。solve 的处置：</p>
+<pre><code>if getattr(space, &quot;last_check&quot;, &quot;unsat&quot;) == &quot;unknown&quot;:
+    # rlimit abort BEFORE the space was exhausted: silently accepting
+    # it would return a truncated space as if complete (the G6 flake
+    # class).  Retry once with the cap lifted -- these spaces are
+    # small (&lt;= 1e3 configs), the uncapped pass costs well under a
+    # second, and the retry is deterministic.
+    rl_retry = True
+    space = KnobSpace(stage, K, V=V, mode=mode, rlimit=0)
+    combos = space.enumerate(limit=limit)
+    if getattr(space, &quot;last_check&quot;, &quot;unsat&quot;) == &quot;unknown&quot;:
+        raise RuntimeError(
+            f&quot;solver returned unknown even without the rlimit cap &quot;
+            f&quot;({stage} K={K} V={V}); refusing to emit a truncated &quot;
+            f&quot;space of {len(combos)} configs&quot;)</code></pre>
+<p>［tools/gdn_solver.py:360-373，逐字（注释并入）］</p>
+<p>三级处置。正常路径以 unsat 结束，空间干净穷尽。unknown 则整体重建：用
+rlimit 为零的参数新建一个 KnobSpace
+从头枚举——空间至多千级配置，无上限一遍远低于一秒（源码注释的原话：well
+under a
+second），且重试本身的确定性有保障（同种子同声明序，第九章）。重试仍
+unknown 则抛异常，异常文本明写 refusing to emit a truncated
+space——拒绝产出。重试的代价核算也写在注释里：这些空间极小，无上限一遍对
+0.8
+秒的新形状调度预算（第四章）没有实质威胁——防御没有以牺牲编译期调度的速度承诺为代价。</p>
+<p>工程立场在此一句话可以说尽：残缺空间里的排序没有意义。截断可能恰好截掉最优配置，其上的排名、Top-K、后续实例化与计时全部建立在一个看不见的洞上；把这样的清单交出去，失败要到几小时后的裁决环节才显形，且无法定位到"清单本来就残缺"这个根因。对照第七章的两态凭证：unsat
+是穷尽的证明，unknown
+什么都不证明——防御层做的事就是把这两态的差别从"实现细节"提升为"输出协议"。拒绝把一个不可见的失败变成一个立即的、带完整上下文的失败。防御路径的触发本身也被记账：enum_stats
+记录模型数、partial model 数、补全次数三个计数（228-229 行），随输出
+JSON 的 z3 字段落盘（403-406
+行）——补全是否触发、触发多少次、重试是否发生（rlimit_retry_uncapped），复核者逐项可查。</p>
+<h2
+id="九可复现性的工程学种子限额与逐字节一致">九、可复现性的工程学：种子、限额与逐字节一致</h2>
+<p>编译期调度拿走了运行时 autotune 的工作，就必须提供 autotune
+给不了的东西：决策过程可重放、决策产物可存档。运行时搜索的每一次结果都取决于当时的机器状态与竞争负载；编译期求解的每一次结果都应当取决于且仅取决于输入。本章讲求解器的确定性控制面——种子、资源限额与四道顺序纪律——以及它们如何让两次运行逐字节一致、让排名文件成为可存档、可
+diff、可在持续集成里断言的证据。</p>
+<p>术语先立。随机种子（seed）固定伪随机数序列的起点；rlimit 是 z3
+的资源计量上限；逐字节一致指两次运行的全部输出文件在字节层面完全相同，diff
+为空。</p>
+<h3 id="1-控制面种子与限额的设置">1. 控制面：种子与限额的设置</h3>
+<p>z3 求解器内部有启发式分支决策，两个参数把它钉成确定状态：</p>
+<pre><code>DEFAULT_SEED = 7                 # fixed (determinism)
+DEFAULT_RLIMIT = 20_000_000      # cap solver effort (determinism)
+...
+s = z3.Solver()
+# z3 5.1.0: the solver seed parameter is `random_seed`
+s.set(&quot;random_seed&quot;, seed)
+s.set(&quot;rlimit&quot;, rlimit)</code></pre>
+<p>［tools/gdn_solver.py:67-68、93-96，两段合排（注释逐字保留）］</p>
+<p>random_seed 固定分支启发式的伪随机源；源码注释专门记录了 z3 5.1.0
+的参数名拼写，这类版本细节正是复现时的暗礁。rlimit
+给求解工作量设上限，它的语义见第三节。两个默认值作为模块常量存在，调用方不改。docstring
+的确定性条款还有一句总纲：No RNG anywhere else（22
+行）——求解器之外的代码不存在任何随机源，整条链上没有第二个需要固定的随机状态。</p>
+<h3 id="2-rlimit-的语义确定性的资源计量">2. rlimit
+的语义：确定性的资源计量</h3>
+<p>rlimit
+计量求解器内部的资源单位——分支、传播等操作的加权计数，同一问题每执行一次消耗同样的单位。这使它与墙钟超时有本质差别：墙钟随机器与负载漂移，同一问题在不同机器上可能一次穷尽一次截断；rlimit
+与机器无关，同一问题、同一种子、同一限额，两次运行要么都干净穷尽，要么在同一决策点停下。限额因此同时兑现两件事。</p>
+<p>其一，截断可检测。限额耗尽时 check 返回 unknown，与"证明无解"的 unsat
+是不同的返回值——第八章的防御正是靠这个区分，把截断空间拦在产出之前；输出里的
+last_check
+字段让复核者看到枚举究竟以哪种方式结束。其二，截断可复现。即使截断发生，两次运行也截在同一处；解除限额重试的结果同样确定（重试标志
+rlimit_retry_uncapped 随输出落盘）。限额值取
+2×10⁷，对这两个空间绰绰有余（0.29 与 0.33 秒穷尽 368 与 465
+个配置），无上限重试路径作为保险丝存在。一句话概括设计意图：限额是一道确定性的闸，关上时行为可预期，必要时可整体拆除重跑。</p>
+<h3 id="3-四道顺序纪律">3. 四道顺序纪律</h3>
+<p>种子只固定求解器内部的随机性，输出的顺序还依赖四道显式纪律。</p>
+<p>表 26-1：确定性控制面的四道顺序纪律 | 纪律 | 固定的对象 |
+出处与消费处 | |---|---|---| | 变量声明序 | self.v 字典十个键的登记顺序
+| 98-110 行声明；模型读取、补全遍历、阻塞子句构造都按它 | | 域序 |
+domains 各元组的候选排列 | 168-173 行；补全探测按序取第一个合法候选 | |
+阻塞子句序 | 每轮阻塞项的构造与叠加顺序 | 254-257
+行；求解器行为依赖断言集内容与顺序 | | 终排序键 |
+预测毫秒四舍五入到十二位小数，并列按配置名 | 393
+行；输出清单与模型产出顺序解耦 |</p>
+<p>四道纪律的合力可以这样读：求解器每次 check
+面对同一棵搜索树（种子加断言序固定），产出的解序列一致；解序列再经固定的补全顺序与固定的排序键重排，输出清单逐项一致。任何一个环境变量、任何一个字典遍历顺序的偶然变化，都会在第一时间表现为两次运行输出文件的
+diff——可复现性因此本身就是一道回归检测。</p>
+<h3 id="4-逐字节一致的验证与排名作为证据">4.
+逐字节一致的验证与排名作为证据</h3>
+<p>验证方式是直接的：同一命令行运行两次，对输出 JSON 做字节级比较，diff
+为空即通过。第三十六章记录的结果即由这条控制面保证：Z3 固定声明序、种子
+7、资源上限 2×10⁷，两次完整编译逐字节一致；生成器同种子两次生成的 MLIR
+哈希相同；全部旋钮关断时产物与默认配置逐字节等价（27 份 payload、18 个
+cubin）。输出 JSON 同时是它自己确定性配置的说明书——z3 字段落盘
+seed、rlimit、last_check、rlimit_retry_uncapped 与 enum_stats（403-406
+行），复核者拿到一份排名文件，就同时拿到了产出它的全部确定性参数。</p>
+<p>求解器只是编译端确定性工程的一环，同一原则在两侧延伸。编译端上游：生成器产物走
+MLIR 哈希比对；PTX
+后处理的缓存键取全部旋钮环境变量加源码指纹的哈希，键不匹配时缓存自动失效——缓存命中与重新计算不产生分歧。运行端：同一
+cubin、同一输入、同一发射几何下输出逐位一致，跨进程（全新 CUDA
+上下文与模块加载）验证五次全过方为通过；该协议抓到过五个真实竞态，全部在数值容差之内——数值验证对这类缺陷无感，逐位一致性是唯一能抓到它们的尺子（第三十六章）。两侧合起来，"确定性"在本项目里是一个可检验的合同，从求解器的种子一路贯穿到设备上的输出字节。</p>
+<p>排名文件由此获得三重身份。可存档：它是文本，随证据树归档，第几次运行、哪年哪月产出都以字节固定。可
+diff：两次运行逐字节一致，约束或成本模型的任何改动都会表现为排名文件里的可见行——哪个配置升了、哪个降了、空间尺寸变没变，一目了然。CI
+可断言：持续集成重跑求解并比对输出哈希，"调度决策漂移"从一句担忧变成一个红绿灯；排序质量门槛（Spearman
+不低于 0.7）同样可以从 validate 报告直接断言。</p>
+<p>这正对应第一章表 1
+的第二支柱（编译期确定性调度）：从约束模型、枚举清单、排名到 transform
+工件，调度决策的全链由文本中介。一份调度决策因此可以像源代码一样被引用、评审、质疑与回滚——第四章的两问（凭什么排序、凭什么相信）最终落在这份可复现的证据文件上。</p>
+<h2
+id="十一次性标定六个微基准与标定表">十、一次性标定：六个微基准与标定表</h2>
+<p>编译期调度把配置排序整个搬到编译时刻，排序的依据是解析成本模型（第十一章）；模型的每一项都是"指令计数除以硬件速率"，速率这个分母必须有一个可信来源。候选来源有三：厂商数据手册、公开的第三方基准、自己测。对
+sm_120a
+这块消费级笔记本芯片，第一条路给不出完整的逐指令吞吐表，第二条路给的是桌面卡数值；更实质的困难在于部署窗口的
+GPU
+常与其它计算任务共载，可用带宽与时钟都偏离标称。项目因此设立一次性标定（calibration）：六个微基准
+kernel 在一个 GPU
+窗口内测出模型需要的全部速率，构成标定表。术语约定：标定指用专用微基准测量硬件速率常数的一次性动作；微基准指只测一种速率、其余因素压到最小的最小
+kernel；共载指测量窗口内 GPU
+上同时驻留其它计算任务。标定的全部代价是单次沉没成本：一个约一分钟的窗口、低于
+2GB 的显存，此后每个新形状的调度只消费这张表。</p>
+<h3 id="1-为什么编译期排序必须有自己的速率来源">1.
+为什么编译期排序必须有自己的速率来源</h3>
+<p>成本模型的契约禁止逐配置拟合（第十一章第一节），速率因此必须整批来自某处。占位速率表与实测的对照说明问题有多大。加载器内置的
+FALLBACK
+表（注释明写为数据手册级估计、非测量，仅在标定文件缺键时启用并逐键点名）与实测对照：全局内存读带宽占位
+1792 GB/s，实测 824.6 GB/s，占位值是实测的 2.2 倍；共享内存读带宽占位 20
+TB/s，实测 113.1 TB/s，占位值不足实测的五分之一；bar.sync 占位 30
+ns，实测 7.707 ns，占位值是实测的 3.9
+倍［tools/gdn_costmodel.py:142-153；evidence/G3/calibration.json］。误差方向不一、幅度跨数倍——时间项等于计数除以速率，分母这样失真会把各资源项的权重关系整个搅乱，排序随之失真。</p>
+<p>规范带宽同样不可用：这块卡的 GDDR7 规范带宽约 1.8 TB/s，实测共载窗口
+824.6 GB/s、干净窗口 851.4 GB/s［evidence/G3/calib_report.md
+§1］。调度要预测的恰是实际窗口里的执行，标称数字对它没有约束力。反方向的要求又有限度：第十二章的扰动实验表明全部结构常数正负两倍缩放时秩相关仍稳定在
+0.882–0.902。标定的设计目标由此定形——速率必须实测，精度达到排序容差即可，测量条件必须随数据一并披露。</p>
+<h3 id="2-六个微基准各测什么怎么写">2. 六个微基准：各测什么、怎么写</h3>
+<p>六个 kernel 全部住在一个 276 行的 CUDA
+源文件里［tools/gdn_calib/calib_bench.cu］，共享三条写作纪律。其一，每个
+kernel
+把累加结果经一条永不成立的分支写出，防止编译器死代码消除删掉整段被测代码（文件头
+12-13 行明写此意图）。其二，计时用 CUDA 事件，5 次以上预热后计 50
+次、取中位数（time_kernel，132-154 行）。其三，网格取 82 个 SM 乘 8
+块以饱和全机（178 行）。</p>
+<p>（a）mma 峰值。k_mma 每线程维护 8 条独立的 mma
+累加链填满指令级并行，一条 warp 指令恰为一个 4096 FLOP 的 m16n8k16
+原子：</p>
+<pre class="cuda"><code>__global__ void __launch_bounds__(128) k_mma(int reps, float* sink) {
+  uint32_t a0 = 0x3f803f80u + threadIdx.x, a1 = a0 ^ 0x00ff00ffu;
+  uint32_t a2 = a0 + 1, a3 = a1 + 1;
+  uint32_t b0 = 0xbf80bf80u + blockIdx.x, b1 = b0 ^ 0x00010001u;
+  float c0 = 0.f, c1 = 0.f, c2 = 0.f, c3 = 0.f;
+  for (int it = 0; it &lt; reps; ++it) {
+#pragma unroll
+    for (int u = 0; u &lt; 8; ++u) {
+      asm volatile(
+          &quot;mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32 &quot;
+          &quot;{%0,%1,%2,%3}, {%4,%5,%6,%7}, {%8,%9}, {%0,%1,%2,%3};\n&quot;
+          : &quot;+f&quot;(c0), &quot;+f&quot;(c1), &quot;+f&quot;(c2), &quot;+f&quot;(c3)
+          : &quot;r&quot;(a0), &quot;r&quot;(a1), &quot;r&quot;(a2), &quot;r&quot;(a3), &quot;r&quot;(b0), &quot;r&quot;(b1));
+    }
+  }
+  if (c0 == 1e30f) sink[blockIdx.x] = c0 + c1 + c2 + c3;
+}</code></pre>
+<p>［tools/gdn_calib/calib_bench.cu:35-51，逐字；末行即防死码消除的永不成立分支］</p>
+<p>（b）共享内存读带宽：k_smem 在 48KB 窗口做 16 字节 uint4 读取加 xor
+归约，带宽等于移动字节除以时间［54-68
+行］。（c）全局读带宽的两种形态共用 k_gread：32MiB 缓冲小于 64MiB
+L2，测得 L2 驻留读带宽；512MiB 缓冲强制走 DRAM，测得 DRAM
+形态；缓冲构造在 186-193 行［71-81 行］。（d）SFU ex2 吞吐：k_ex2 每线程
+4 条独立 ex2.approx.f32 依赖链、8 路展开［84-97 行］。（e）bar.sync
+往返：k_bar 在 128 线程块内连发 20000 次 bar.sync
+0,128，总时间除以次数得单次 7.707 ns［100-104 行］。（f）cp.async
+吞吐：k_cpasync 以 16 字节粒度从 1MiB 的 L2 驻留源窗拷入共享内存，每轮
+commit 加 wait，测得 1388 GB/s［107-125 行］。</p>
+<p>第七个量是 kernel 发射基准，它没有专属微基准：参考核 ref_f16（单个
+m16n8k16 原子的纯发射
+kernel）的实测时间减去其模型内全部非发射项，余项即发射常数 6.073
+µs——这是契约允许的唯一全局发射常数，推导在求解器验证入口完成［tools/gdn_solver.py:433-446；evidence/G3/validation.json
+的 launch_anchor_s］。</p>
+<h3 id="3-运行协议分钟级低显存幂等与共载口径">3.
+运行协议：分钟级、低显存、幂等与共载口径</h3>
+<p>run_calib.sh
+是唯一入口，头部注释声明全部代价：一个窗口约一分钟、显存低于
+2GB、同路径输出直接覆盖——幂等，重跑即用新窗口的新值覆写旧表［scripts/run_calib.sh:1-4］。共载口径的披露协议：脚本在启动前、运行前、结束后抓三次
+nvidia-smi 快照（利用率、显存、SM
+时钟三元组），外加一次计算进程清单，据此置 shared_gpu
+布尔，并把四组观测连同一句口径注记写进 calibration.json：</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">snap()</span> <span class="kw">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">nvidia-smi</span> <span class="at">--query-gpu</span><span class="op">=</span>utilization.gpu,memory.used,clocks.sm <span class="dt">\</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--format</span><span class="op">=</span>csv,noheader,nounits <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="va">COL0</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="ex">snap</span><span class="va">)</span><span class="st">&quot;</span>            <span class="co"># 启动前</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ……编译并运行 calib_bench……</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="va">COL2</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="ex">snap</span><span class="va">)</span><span class="st">&quot;</span>            <span class="co"># 结束后</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="va">APPS</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="ex">nvidia-smi</span> <span class="at">--query-compute-apps</span><span class="op">=</span>pid,used_memory <span class="at">--format</span><span class="op">=</span>csv,noheader <span class="dt">\</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">tr</span> <span class="st">&#39;\n&#39;</span> <span class="st">&#39;;&#39;</span><span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># shared_gpu = bool(APPS)；快照与注记组装为 coload 块落盘</span></span></code></pre></div>
+<p>［scripts/run_calib.sh:19-39、54-66，节选；nvcc
+编译与基准运行两行略］</p>
+<p>这套协议的产出是：每个速率都能追溯到测量当时的 GPU
+状态。本仓有过两种真实口径：初次标定与一个 24–99%
+利用率的共载训练任务同窗，数值按"受挤占下界"记录；其后在干净窗口重跑，DRAM
+读带宽 824.6 升到 851.4 GB/s，两个口径并列进表。时钟口径同理：峰值属性
+1597 MHz 属笔记本保守基值，窗口内观察时钟 2.1–2.8
+GHz；加载器优先采用共载快照的中位观察时钟（本例 2722
+MHz），因为发射类时间项随实际时钟缩放［tools/gdn_costmodel.py:323-341］。</p>
+<h3 id="4-32-计数陷阱warp-级操作按线程计数">4. ×32 计数陷阱：warp
+级操作按线程计数</h3>
+<p>标定文件 mma 段的 flops 字段写着 3.70
+PFLOP/s。这个数物理不可能：它高于修正后真实峰值 32 倍，也远超任何已发布
+GPU。根因在计数口径：峰值计算把每条 mma 指令按线程记数（网格 × 128 线程
+× 次数 × 展开），而 mma.sync 是 warp 级操作——32 条 lane
+共同执行一条指令、共同产出一个 4096 FLOP 的原子；逐线程计数把 FLOP
+放大了 32 倍。诚实峰值等于指令率除以 32 再乘 4096，即 115.5
+TFLOP/s。两条独立证据闭合这个修正。其一，指令率对属性时钟归一为每 SM
+每时钟 6.89 条，换算到观察时钟 2.72 GHz 后约 4.05 条——恰等于每 SM
+四条张量流水线的微架构配置［evidence/G3/calib_report.md §1 行
+(a)］。其二，修正后的峰值进入模型，mma
+路径预测与实测的差距落回可解释区间（第十二章盲区清单给出残余偏差的方向与幅度）。修复放在加载器一侧自动执行并留痕：</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> mma_flops <span class="kw">and</span> mma_instr:</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># G3-A&#39;s flops field multiplies per-THREAD instruction counts</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># by 4096 (m16n8k16 atom FLOPs), but mma.sync is a WARP-level</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># op: the honest peak = warp instructions/s x 4096 =</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># instr_per_s / 32 x 4096. Detect the discrepancy (a &gt;2x gap</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># is physically impossible otherwise) and recompute.</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    warp_flops <span class="op">=</span> mma_instr <span class="op">/</span> <span class="fl">32.0</span> <span class="op">*</span> <span class="fl">4096.0</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> mma_flops <span class="op">&gt;</span> warp_flops <span class="op">*</span> <span class="fl">1.5</span>:</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.m[<span class="st">&quot;mma_flops_field_asbuilt&quot;</span>] <span class="op">=</span> mma_flops</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>        mma_flops <span class="op">=</span> warp_flops</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.m[<span class="st">&quot;mma_flops_corrected&quot;</span>] <span class="op">=</span> <span class="va">True</span></span></code></pre></div>
+<p>［tools/gdn_costmodel.py:346-356，逐字；原值存
+mma_flops_field_asbuilt、修正打 mma_flops_corrected 旗标］</p>
+<p>任何消费 calibration.json
+的程序都必须做这次重算——这条作为硬件与工作流事实记录在案（evidence/G3/solver_report.md
+§6）。一般化守则：凡按线程计数的指标遇到 warp 级指令，先问除没除
+32。</p>
+<h3 id="5-标定值全表">5. 标定值全表</h3>
+<p>标定表是成本模型全部分母的唯一来源（数值沿用主文表 5）：</p>
+<p>表：sm_120 一次性标定表</p>
+<table>
+<thead>
+<tr>
+<th>量</th>
+<th>标定值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mma bf16 峰值</td>
+<td>115.5 TFLOP/s（tf32 按 2:1 折算 57.8）</td>
+</tr>
+<tr>
+<td>共享内存读带宽</td>
+<td>113.1 TB/s</td>
+</tr>
+<tr>
+<td>L2 / DRAM 带宽</td>
+<td>2144.3 / 824.6 GB/s（空闲窗口 851.4）</td>
+</tr>
+<tr>
+<td>SFU ex2 吞吐</td>
+<td>3.23 Telem/s</td>
+</tr>
+<tr>
+<td>bar.sync</td>
+<td>7.707 ns</td>
+</tr>
+<tr>
+<td>cp.async</td>
+<td>1388 GB/s</td>
+</tr>
+<tr>
+<td>kernel 发射基准</td>
+<td>6.073 µs</td>
+</tr>
+</tbody>
+</table>
+<p>表内每个值的测量条件——共载或干净窗口、缓冲规模、预热与迭代次数、块形——都记录在
+evidence/G3/calibration.json 的 method
+与各测量段；复跑用同一条脚本覆写同名文件。分母自此齐备，下一章把计数除上去。</p>
+<h2
+id="十一解析成本模型计数除以速率">十一、解析成本模型：计数除以速率</h2>
+<p>求解器把十维旋钮的合法取值空间整个枚举出来（kkt 阶段 368 个、o 阶段
+465
+个配置），枚举本身不区分好坏；给每个配置一个可信的时延预测、从而排出次序，是成本模型的职责。这个函数有三个硬约束。其一，纯
+CPU
+可算：每个新形状的调度预算是亚秒级。其二，确定性：同一输入必须给出逐字节相同的排序，否则"两次完整编译逐字节一致"的承诺失效。其三，零逐配置拟合：模型里只要有一个对着实测配置时间调参的自由常数，排序就退化为对训练集的记忆，对新形状失去效力。解析成本模型同时满足三者：每一项都写成"分子为编译期可精确知道的计数、分母为第十章标定速率"的除法。术语约定：解析模型指由封闭公式与常数表计算、不含拟合参数的模型；屋顶线（roofline）指以各资源项的最大者为时延估算的粗粒度形式。</p>
+<h3 id="1-零逐配置拟合契约与自证机制">1. 零逐配置拟合契约与自证机制</h3>
+<p>契约原文写在模型文件头：</p>
+<pre><code>every rate is either (a) measured once by the G3-A microbenchmark window
+(evidence/G3/calibration.json) or (b) a documented sm_120-class structural
+constant. There are NO per-config fitted free constants.</code></pre>
+<p>［tools/gdn_costmodel.py:9-11，docstring 逐字］</p>
+<p>契约的执行不靠口头声明：验证程序把"哪些键没有从标定文件取得、退回了占位表"逐键落盘为
+calibration_fallback_keys，任何人可查。本次验证该清单里唯一在列的是
+malloc_ns（设备分配常数，占位 2000 ns）；而 18
+个被计时配置全部经过静态共享内存修复、分配次数归零，T_alloc 一项在全部
+18 行预测里恒为 0.0［evidence/G3/validation.json:37-39 及各配置
+terms_ms；归零逻辑
+tools/gdn_costmodel.py:607-611］——没有任何一个回退速率参与过排序数值。发射常数同样有出处：它由参考核实测推导（第十章第二节），推导完成后从回退清单移除［tools/gdn_solver.py:433-446］。</p>
+<p>结构常数一共五个，全部带文档与出处：标量环每 MAC 10 周期（SASS
+推导，见第三节）、LSU 每时钟每 SM 4 条 warp 指令、tf32 对 bf16
+张量速率折算比 0.5、溢出流量按 L2 每 SM 份额计、张量每 SM 每时钟 1024
+FLOP［tools/gdn_costmodel.py:120-136］。它们全部经过正负两倍的扰动敏感度检验（第十二章第三节）。</p>
+<h3 id="2-三形式递进v1-屋顶线v2-发射项v3-波次">2. 三形式递进：v1
+屋顶线、v2 发射项、v3 波次</h3>
+<p>模型有三个累积的形式，定义文档与代码同文件，以下为 docstring
+真文：</p>
+<pre><code>v1  (contract form, roofline)
+    T = T_launch + overlap(T_compute, T_gmem, T_smem) + T_bar + T_spill + T_ex2
+    overlap = max(...) when the config is software-pipelined
+    (pipeline&gt;0 or warpspec producer/consumer: cp.async double buffering
+    hides the copy behind compute), sum(...) when pipeline=0 (sync copies
+    serialized behind gpu.barrier).
+v2  v1 + T_lsu + T_alloc
+    T_lsu   = issue-bound term for the LSU instruction stream. The
+              generated code issues UNIFORM-ADDRESS (non-distributed)
+              global-&gt;shared copies: every thread executes every
+              16B cp.async of the tile (verified in kernel.ptx: copy
+              indices are block-uniform, no %tid in the address chains).
+              Wire bytes are deduped by L1/L2 sectors, but the ISSUE cost
+              is instructions x threads. Fragment ld.shared loads are
+              CSE&#39;d unique-per-iteration loads (verified: LDS static count
+              = unique fragment loads, not 12x atoms).
+    T_alloc = the memref.alloc lowering calls device malloc() for each
+              tile buffer and cvta.to.shared&#39;s the result (verified in
+              kernel.ptx: 2 mallocs per GEMM in the mma path, 3 allocs in
+              the nomma path, +1 output staging buffer for tma=on).
+              Cost = n_allocs * malloc_ns (single global constant).
+v3  v2 + occupancy/waves + overlap blend
+    waves = ceil(total_ctas / (82 * ctas_per_sm)); ctas_per_sm from
+            regs/smem/warp-slot limits; per-wave time = v2 per-CTA time.
+    overlap becomes alpha*max + (1-alpha)*sum with alpha = 1.0 for
+            pipeline&gt;0 / warpspec, 0.0 for pipeline=0 (same as v1/v2 split,
+            kept explicit for perturbation experiments).</code></pre>
+<p>［tools/gdn_costmodel.py:18-44，逐字］</p>
+<p>v1
+是契约形式：发射常数，加计算、全局访存、共享访存三项的重叠，加栅栏、溢出、ex2
+三项的串联。重叠的取法编码一个调度事实——流水配置（pipeline 大于 0 或
+warp 专化）的双缓冲把复制藏进计算，取最大值；p0
+配置的同步复制被屏障串行化，取和。v2 补上发射视角：导线上的字节会被
+L1/L2
+扇区去重，但发射成本按指令乘线程计，均匀地址复制流的这一项不可忽略；T_alloc
+对修复后的被测 cubin 自动为零。v3 把波次（waves，CTA
+总数除以全机可驻留数的向上取整）乘上 v2 的每 CTA
+时间，驻留数由寄存器、共享内存、warp 槽三重上限的最小者给出［occupancy
+函数，647-657 行］。三形式的递进有完整的效果档案（ρ 为对 18 个实测配置的
+Spearman 秩相关，其含义与门槛在第十二章定义，此处只看相对变化）：</p>
+<p>表：模型形式递进档案</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>变更</th>
+<th>整体 ρ</th>
+<th>kkt ρ / o ρ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>v1 屋顶线；标量环按 CUDA 核屋顶线</td>
+<td>0.7352</td>
+<td>0.644 / 0.486</td>
+</tr>
+<tr>
+<td>2</td>
+<td>加 LSU 发射项与分配项（即上文英文展品里的两个 T 项）</td>
+<td>0.7475</td>
+<td>0.669 / 0.486</td>
+</tr>
+<tr>
+<td>3</td>
+<td>标量环项改为每 MAC 10 周期</td>
+<td>0.8962</td>
+<td>0.936 / 0.829</td>
+</tr>
+<tr>
+<td>4</td>
+<td>发射锚定标（6.12 µs）</td>
+<td>0.8962</td>
+<td>秩不变，定绝对尺度</td>
+</tr>
+<tr>
+<td>5</td>
+<td>v3 波次项</td>
+<td>0.8962</td>
+<td>0.936 / 0.829</td>
+</tr>
+</tbody>
+</table>
+<p>［evidence/G3/solver_report.md §2 的迭代记录，数值逐行转写］</p>
+<h3 id="3-张量核主项与标量环项">3. 张量核主项与标量环项</h3>
+<p>计算项分 mma 与标量环两个分支，各占一段代码（本展品沿用主文）：</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> feats[<span class="st">&quot;mma&quot;</span>]:</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    peak <span class="op">=</span> calib.m[<span class="st">&quot;mma_bf16_peak_flops&quot;</span>] <span class="cf">if</span> esz <span class="op">==</span> <span class="dv">2</span> <span class="cf">else</span> calib.mma_tf32_peak</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    terms[<span class="st">&quot;T_mma&quot;</span>] <span class="op">=</span> feats[<span class="st">&quot;mma_flops_per_cta&quot;</span>] <span class="op">/</span> (peak <span class="op">/</span> calib.sm_count)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:  <span class="co"># 标量环：每 MAC 按发射/延迟受限建模，速率=SASS 推导的 10 cyc/MAC</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    macs <span class="op">=</span> feats[<span class="st">&quot;ffma_flops_per_cta&quot;</span>] <span class="op">/</span> <span class="fl">2.0</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    terms[<span class="st">&quot;T_ffma&quot;</span>] <span class="op">=</span> macs <span class="op">*</span> NOMMA_CYC_PER_MAC <span class="op">/</span> calib.m[<span class="st">&quot;clock_hz&quot;</span>]</span></code></pre></div>
+<p>［tools/gdn_costmodel.py:689-700；分子为封闭公式
+2·bt·bv·K·n_gemm，已对静态 PTX 计数自检］</p>
+<p>分子的封闭公式住在 analytic_features（462 行起）：每 CTA 的 mma FLOP
+数、访存字节、栅栏次数、ex2
+个数全部由旋钮取值与形状经算术得出；分母把全机峰值折成每 SM 份额（除以
+82），tf32 按折算比减半。标量环分支的 10 周期常数有一段值得讲的来历：mma
+关闭时，convert-linalg-to-loops
+下降出一条未分布到线程的标量三重循环，SASS 里每个 MAC 的最内层体是 39
+条指令——10 组 64 位地址加法、循环控制、3 条标量 LDS、1 条 FMA——按每 SM 4
+条发射管道折合约 10 周期每
+MAC；常数从反汇编读出、写死并注释出处，从未对实测时间调参［tools/gdn_costmodel.py:128-136；evidence/G3/gen_noargs/kkt_bf16_nomma_p2_t64x64x32_w4/sass.txt
+循环 .L_x_17］。最初的 CUDA 核屋顶线形式把这条路径低估 100–400 倍（实测
+0.5–2.5 ms），因为它把延迟受限的标量环当成吞吐受限的向量乘；递进档案第 3
+步的 ρ 跃升全部来自这一处替换。</p>
+<h3 id="4-溢出项计数来源的三层结构">4. 溢出项：计数来源的三层结构</h3>
+<p>溢出项展示计数来源的分层：能算就算（封闭公式），算不了就读报告（ptxas
+资源报告），报告缺失再数指令（SASS
+静态计数）。第二十九章讲过报告与反汇编如何落盘为每配置的
+meta.json，这里给出消费端（本展品沿用主文并扩出回退行）：</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>spills <span class="op">=</span> ((mm.get(<span class="st">&quot;spill_stores&quot;</span>) <span class="kw">or</span> <span class="dv">0</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>          <span class="op">+</span> (mm.get(<span class="st">&quot;spill_loads&quot;</span>) <span class="kw">or</span> <span class="dv">0</span>))</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> spills <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    spills <span class="op">=</span> (so.get(<span class="st">&quot;LDL&quot;</span>) <span class="kw">or</span> <span class="dv">0</span>) <span class="op">+</span> (so.get(<span class="st">&quot;STL&quot;</span>) <span class="kw">or</span> <span class="dv">0</span>)    <span class="co"># SASS 计数回退</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> spills:</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># undo peeled-body duplication: static ~= body*(1+pipe),</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dynamic ~= body*(trips+pipe)</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    pipe <span class="op">=</span> <span class="bu">max</span>(feats[<span class="st">&quot;pipe&quot;</span>], <span class="dv">0</span>)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    dyn <span class="op">=</span> spills <span class="op">*</span> (feats[<span class="st">&quot;trips&quot;</span>] <span class="op">+</span> pipe) <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> pipe)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    feats[<span class="st">&quot;spill_dyn_ops_per_cta&quot;</span>] <span class="op">=</span> dyn <span class="op">*</span> feats[<span class="st">&quot;threads&quot;</span>]</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>spill_bytes <span class="op">=</span> feats[<span class="st">&quot;spill_dyn_ops_per_cta&quot;</span>] <span class="op">*</span> <span class="fl">4.0</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>terms[<span class="st">&quot;T_spill&quot;</span>] <span class="op">=</span> spill_bytes <span class="op">/</span> (calib.per_sm(<span class="st">&quot;l2_bw&quot;</span>) <span class="op">*</span> SPILL_BW_FRAC)</span></code></pre></div>
+<p>［tools/gdn_costmodel.py:616-625、711-712，节选；SASS 回退即 618-619
+行］</p>
+<p>两个细节值得教学。其一，静态计数到动态次数的换算：软件流水把循环体复制出
+peel 副本，静态计数约等于体乘（1 加 pipe），动态次数约等于体乘（trips 加
+pipe），比值把复制抵消。其二，取数优先级：加载器优先采用 G3 重建（被计时
+cubin）的 meta，G2
+编译索引只作回退——两次编译的寄存器分配可以合法地不同（一边 65–96
+寄存器零溢出，另一边 255
+寄存器万级溢出），给错版本的计数等于给错分子［tools/gdn_solver.py:449-452；tools/gdn_costmodel.py:597-606；第二十九章双遍陷阱］。</p>
+<h3 id="5-分子的精确性自检">5. 分子的精确性自检</h3>
+<p>"分子在编译期精确"是一个被验证的命题。验证办法：把封闭公式对 18
+个配置的静态 PTX 计数逐一对照——mma.sync 计数 18/18 精确，ld.shared 18/18
+精确，bar.sync 18/18 精确，cp.async 偏差正 0.4% 至正 1.6%（prologue
+与参数收尾的松弛）［evidence/G3/solver_report.md §2；自检入口
+tools/gdn_solver.py:525-528 起］。ld.shared
+的精确命中依赖一个生成器事实：公共子表达式消除把片段装载去重成每迭代唯一装载，静态计数恰等于公式值；流水的
+peel
+复制因子也经同一路径验证。至此模型的误差只剩物理来源——重叠的幅度、依赖链的长度——它们不触碰计数与速率的契约，其影响留在秩层面度量（第十二章）。</p>
+<h2
+id="十二排序质量的度量spearman-与搜索成本">十二、排序质量的度量：Spearman
+与搜索成本</h2>
+<p>一个排序模型交货时必须回答两个问题：排出的次序有多准；用它在编译期完成排序，比把候选搬上
+GPU
+逐个实测便宜多少。前者是模型的质检（本章前半），后者是它存在的经济理由（本章后半），合起来构成编译期调度的完整收益陈述——便宜，且准到够用。术语先行：秩指一组数按大小排序后各自的名次；Spearman
+秩相关（下文记
+ρ）先把预测值与实测值各自换成名次，再对名次做普通相关，度量两组数在排序意义下的一致程度。</p>
+<h3 id="1-为什么度量停在秩这一层">1. 为什么度量停在秩这一层</h3>
+<p>三条理由各自独立成立。其一，消费方式是次序：求解器枚举全部合法配置后按预测时延排序、取头部送编译与实测，绝对数值从不直接使用。其二，绝对时延在测量学上不可靠：同一
+cubin 在分离进程、零负载下仍随时钟状态漂移，两个进程可相差
+47%，测量纪律因此只信任同窗交错的成对比值，把绝对毫秒数降为工程参考（主文第十节）。其三，模型有已记录的均匀缩放偏差（mma
+路径整体低估 3–5 倍，见第三节盲区清单），保序缩放不伤次序。Spearman
+对任何严格单调增的变换不变，恰好同时容纳这三条：它度量的正是保序性，且仅是保序性。</p>
+<p>实现不引入统计库依赖：纯算术、无随机数、平局取平均秩且平局规则固定——这是确定性契约的一部分，排序可复现，验证同样可复现：</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> spearman(xs, ys):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Pearson correlation of average ranks (tie-safe).&quot;&quot;&quot;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(xs)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">2</span>:</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">float</span>(<span class="st">&quot;nan&quot;</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    rx, ry <span class="op">=</span> _ranks(xs), _ranks(ys)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    mx, my <span class="op">=</span> <span class="bu">sum</span>(rx) <span class="op">/</span> n, <span class="bu">sum</span>(ry) <span class="op">/</span> n</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> <span class="bu">sum</span>((a <span class="op">-</span> mx) <span class="op">*</span> (b <span class="op">-</span> my) <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(rx, ry))</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    den <span class="op">=</span> math.sqrt(<span class="bu">sum</span>((a <span class="op">-</span> mx) <span class="op">**</span> <span class="dv">2</span> <span class="cf">for</span> a <span class="kw">in</span> rx)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>                    <span class="op">*</span> <span class="bu">sum</span>((b <span class="op">-</span> my) <span class="op">**</span> <span class="dv">2</span> <span class="cf">for</span> b <span class="kw">in</span> ry))</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> num <span class="op">/</span> den <span class="cf">if</span> den <span class="cf">else</span> <span class="bu">float</span>(<span class="st">&quot;nan&quot;</span>)</span></code></pre></div>
+<p>［tools/gdn_costmodel.py:763-773，逐字；_ranks 的平均秩实现 748-760
+行］</p>
+<p>配套一个运维口径 topk_overlap：预测与实测各自最快的 k
+个配置的交集占比（k 取
+5，tools/gdn_costmodel.py:776-781）。秩相关回答整体次序，重叠度回答头部是否可用——排序系统的下游只消费头部。</p>
+<h3 id="2-验证设计n18-的构成分阶段与门槛">2. 验证设计：n=18
+的构成、分阶段与门槛</h3>
+<p>被测集合的构成决定结论的效力。20 个编译配置中 18
+个取得有效实测，两个被状态过滤器排除且原因落盘：warpspec 配置在硬件上
+mbarrier 死锁（TIMEOUT），tma 配置的 cubin
+不含数据全局（NOT_TIMED，CUtensorMap
+接线属运行时契约）［evidence/G3/validation.json:6-15］。18 个的构成：kkt
+阶段 10 个——mma 7 个，覆盖流水深度 p0/p2/p3、warp 数 2/4/8、三种
+tile；nomma 3 个——外加 o 阶段 6 个（bf16 与 f32、mma 与 nomma、两组 K/V
+维度）和 2 个参考锚（单 m16n8k16 原子核与 ldmatrix
+版）。实测口径：静态共享内存修复后的零参 cubin，CUDA 事件 50
+次取中位。验证程序逐形式计算整体与分阶段 ρ 及 top-5
+重叠，并对门槛给出裁决：</p>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> forms:</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    rho <span class="op">=</span> cm.spearman(preds[f], measured)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    per_stage[st] <span class="op">=</span> (cm.spearman(xs, ys) <span class="cf">if</span> <span class="bu">len</span>(xs) <span class="op">&gt;=</span> <span class="dv">3</span> <span class="cf">else</span> <span class="va">None</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    report[<span class="st">&quot;forms&quot;</span>][f] <span class="op">=</span> {<span class="st">&quot;spearman&quot;</span>: rho,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                          <span class="st">&quot;spearman_per_stage&quot;</span>: per_stage,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>                          <span class="st">&quot;top5_overlap&quot;</span>: cm.topk_overlap(preds[f], measured, <span class="dv">5</span>)}</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>best <span class="op">=</span> <span class="bu">max</span>(forms, key<span class="op">=</span><span class="kw">lambda</span> f: report[<span class="st">&quot;forms&quot;</span>][f][<span class="st">&quot;spearman&quot;</span>])</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>report[<span class="st">&quot;verdict&quot;</span>] <span class="op">=</span> (<span class="st">&quot;PASS&quot;</span> <span class="cf">if</span> report[<span class="st">&quot;forms&quot;</span>][best][<span class="st">&quot;spearman&quot;</span>] <span class="op">&gt;=</span> gate</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>                     <span class="cf">else</span> <span class="st">&quot;FAIL&quot;</span>)</span></code></pre></div>
+<p>［tools/gdn_solver.py:487-502，节选；门槛 gate=0.7 为契约值，样本少于
+3 的阶段不单独打分］</p>
+<p>结果：v2 整体 ρ 0.8962，kkt 阶段 0.936（n=10），o 阶段
+0.829（n=6），top-5 重叠 0.8（五分之四），门槛 0.7，裁决
+PASS［evidence/G3/validation.json:41-72］。分阶段单独报告的用意：kkt 与
+o 是两个独立的 kernel
+家族，合并报告会让一个家族的强势掩盖另一个的弱点。门槛本身留了容差——排序系统的职责是把好配置送进头部，最终选择另有逐配置
+GPU 对照兜底，门槛无须逼近 1。另一条如实记录：v3 在单 chunk 基准上与 v2
+秩相同（波次为 1，数值一致），全形状下 v2 与 v3 的头部翻转（小 tile 对大
+tile）是占用项起作用的模型预测，属待上机抽查项，单 chunk
+验证数据区分不了两者。</p>
+<h3 id="3-稳健性与已知盲区">3. 稳健性与已知盲区</h3>
+<p>门槛通过之后还要回答：结论对测量噪声与常数误差有多敏感。两组扰动实验各
+200 次注入。其一，全部结构常数（每 MAC 周期数、tf32 折算比、LSU
+发射率、溢出带宽份额、张量每时钟吞吐）各正负两倍缩放：ρ 稳定在 0.882 至
+0.902。其二，对实测时间加均匀噪声正负 5/10/20/30%：ρ 中位依次
+0.896、0.890、0.885、0.885，最差的第五百分位
+0.856——比观测到的运行间散布（kkt p2 w4 为 21.0±0.3
+µs）大近一个量级的噪声下门槛仍通过［evidence/G3/solver_report.md
+§4］。结论：PASS 裁决并非共载窗口的伪影。</p>
+<p>盲区清单逐条文档化，共同特征为方向正确、幅度未建模：</p>
+<p>其一，mma 路径绝对值系统性低估 3–5 倍（片段装载依赖链、超出 7.707 ns
+边际成本的栅栏往返等延迟主导效应）——对所有 mma
+配置近似均匀缩放，秩不受影响。其二，p0 的 .ca 串行化幅度：同 tile 同
+warp 数下实测 kkt p0 为 105 µs、p2 为 21 µs（5 倍差），模型只预测 7.4
+µs；排序方向正确（p0 在流水变体中垫底），幅度未建模——编译期推不出 .ca
+惩罚常数，对着实测时间拟合一个常数被零拟合契约否决。其三，共享内存带宽可能被广播膨胀（均匀地址基准的固有风险），只影响占比不超过
+1% 的 T_smem 项。其四，o 阶段 strided-B 变体每 MAC 实付代价约为模型的 2
+倍（簇内不精确，方向一致，已接受）［evidence/G3/solver_report.md §2
+盲区一节］。</p>
+<h3 id="4-搜索成本08-秒纯-cpu-对-3981-秒上机">4. 搜索成本：0.8 秒纯 CPU
+对 39.81 秒上机</h3>
+<p>编译期排序的经济账在同一证据树里测齐。本方：kkt 空间 368
+个合法配置，Z3 枚举 0.307 秒、含全排序的完整求解 0.378 秒；o 空间 465
+个配置 0.444 秒；两阶段合计约 0.8 秒，全部在 CPU 上，GPU
+秒为零——首选候选上机之前，GPU
+未被搜索触碰［evidence/G6/scratch/solver_timing_summary.json］。fla（Triton
+运行时 autotune）：首次调用前向 16.55 秒（25 个候选配置跨 5 个 kernel
+逐个编译、上机、计时），反向 23.26 秒（23 个候选跨 4 个 kernel），合计
+39.81 秒设备时间、48 个配置；其磁盘配置缓存默认关闭（FLA_CACHE_MODE
+未设即
+DISABLED），代价按进程与按形状键重复支付［evidence/G6/search_cost.md
+§b；fla_autotune_cost.json］。</p>
+<p>表：搜索成本对比（单形状，前向加反向）</p>
+<table>
+<thead>
+<tr>
+<th>对比维度</th>
+<th>本方（编译期排序）</th>
+<th>fla/Triton（上机 autotune）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>搜索耗时</td>
+<td>约 0.8 秒，纯 CPU</td>
+<td>39.81 秒设备时间，48 个配置上机</td>
+</tr>
+<tr>
+<td>首搜口径倍数</td>
+<td>约 50 倍</td>
+<td>—</td>
+</tr>
+<tr>
+<td>缓存摊销口径</td>
+<td>—</td>
+<td>缓存命中后首调 0.65–5.67 秒，摊销 7.7–67 倍</td>
+</tr>
+<tr>
+<td>GPU 占用</td>
+<td>零 GPU 秒</td>
+<td>首调阻塞部署 GPU</td>
+</tr>
+<tr>
+<td>可复现性</td>
+<td>固定种子，重跑逐字节一致</td>
+<td>随测量顺序与时序变化，对共载敏感</td>
+</tr>
+<tr>
+<td>可迁移性</td>
+<td>标定表与模型跨形状复用</td>
+<td>按进程按形状重付（除非填充可选缓存）</td>
+</tr>
+</tbody>
+</table>
+<p>两个口径并列报告：首搜约 50 倍、摊销 7.7–67
+倍。测量的同构性有暖态锚点背书：fla 暖态中位 0.491 ms（前向）与 1.349
+ms（反向）恰落 G5
+基线带，说明对比双方处于同一部署形态［evidence/G6/search_cost.md
+§b］。本方的部署形态再低一档：AOT cubin 新进程冷启动约 27
+µs。范围注记与证据同源：0.8
+秒是对本方旋钮空间排序的成本；出货配置的最终裁定另有逐杠杆 GPU
+对照（工程归因），与搜索分属两件事。</p>
+<figure>
+<svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">新形状的调度/调优时间（秒，对数刻度）</text>
+  <line x1="40" y1="180" x2="720" y2="180" stroke="#1c2733"/>
+  <g stroke="#b8c2cc">
+    <line x1="40" y1="180" x2="40" y2="45"/><line x1="134" y1="180" x2="134" y2="45"/><line x1="229" y1="180" x2="229" y2="45"/><line x1="323" y1="180" x2="323" y2="45"/><line x1="417" y1="180" x2="417" y2="45"/><line x1="511" y1="180" x2="511" y2="45"/><line x1="606" y1="180" x2="606" y2="45"/><line x1="700" y1="180" x2="700" y2="45"/>
+  </g>
+  <g font-size="10.5" fill="#5b6b7a" text-anchor="middle">
+    <text x="40" y="196">10⁻⁴</text><text x="134" y="196">10⁻³</text><text x="229" y="196">10⁻²</text><text x="323" y="196">10⁻¹</text><text x="417" y="196">1</text><text x="511" y="196">10</text><text x="606" y="196">10²</text>
+  </g>
+  <rect x="40" y="58" width="41" height="26" fill="#0f5a8a"/>
+  <text x="90" y="76" font-size="12" fill="#10222f">本方冷启动发射 27 µs（AOT cubin，无调优）</text>
+  <rect x="40" y="98" width="463" height="26" fill="#0f5a8a"/>
+  <text x="512" y="116" font-size="12" fill="#10222f">本方新形状调度 0.8 s（纯 CPU，GPU 时间为零）</text>
+  <rect x="40" y="138" width="543" height="26" fill="#c89492"/>
+  <text x="592" y="156" font-size="12" fill="#10222f">fla 缓存摊销后 0.65–5.67 s</text>
+  <rect x="40" y="205" width="622" height="26" fill="#c0504d"/>
+  <text x="670" y="223" font-size="12" fill="#10222f">fla 首次搜索 39.8 s（48 配置上机）</text>
+</svg>
+<figcaption>图 3：调度成本对比（B1·T2048·H16 实测，对数刻度）。fla 首搜 39.8 秒由 48 个 Triton 配置逐个上机构成。</figcaption>
+</figure>
+<p>三章合起来回答主文第二支柱的凭什么：分母来自一次性标定（第十章），分子来自编译期精确计数（第十一章），质量与成本在本章度量和记账——秩相关
+0.8962
+说明排序准到够用，扰动实验说明这个数不依赖窗口运气，盲区清单标明它的边界，搜索成本账说明同样的排序在编译期完成比上机便宜约
+50 倍。</p>
+<h2 id="十三用-tablegen-定义领域方言">十三、用 TableGen
+定义领域方言</h2>
 <p>编译器的一切改写都作用于 IR，而 IR 里的每个 op
 都需要一个定义：它叫什么名字、吃哪些操作数、吐哪些结果、满足什么约束。MLIR
 允许用纯 C++
@@ -630,7 +1686,7 @@ class="math inline">$名字。AnyRankedTensor
 verifier（第 4 小节），这里刻意放宽，使 L0 声明对 B·T·H
 各维保持通用。`Optional&lt;AnyRankedTensor&gt;`:$</span>h0
 声明一个可选操作数：生成的访问器 op.getH0() 返回可空的 Value，调用方以
-if (op.getH0()) 判断有无——第六章的 pass
+if (op.getH0()) 判断有无——第十五章的 pass
 正是靠这个判断决定调用参数表的长度。Variadic
 形式（同一约束匹配零个或多个连续操作数）在 gdn 方言的硬件直通 op
 里也有实例：gdn.tma.async.load 的坐标参数写作
@@ -665,7 +1721,7 @@ dht。当解析器读到一串具体操作数时，仅凭个数无法断定每�
 这个 trait 解决歧义：它要求 op 携带一个 operand_segment_sizes
 整数数组属性，逐槽记录该槽捕获的操作数个数，访问器按段切分操作数表。打印成文本时该属性随
 generic 形式一起输出，解析时据此还原槽边界；C++ 侧
-getH0()、getA()、getDht() 的返回值因此无歧义。trait 同时让第六章的下降
+getH0()、getA()、getDht() 的返回值因此无歧义。trait 同时让第十五章的下降
 pass 能按"槽有无"而非"位置"组装 L1 调用参数。</p>
 <h3 id="4-verifier用-c-hook-检查合法域">4. verifier：用 C++ hook
 检查合法域</h3>
@@ -733,19 +1789,19 @@ mlir_tablegen(GdnOps.cpp.inc -gen-op-defs)
 mlir_tablegen(GdnHatchEnums.h.inc -gen-enum-decls)
 mlir_tablegen(GdnHatchEnums.cpp.inc -gen-enum-defs)</code></pre>
 <p>［dialect/include/CMakeLists.txt:7-15，节选；完整清单（含 GdnDialect
-与 GdnAttrDefs 段、GdnIncGen 公共目标）见第七章第 2 节的全文展品］</p>
+与 GdnAttrDefs 段、GdnIncGen 公共目标）见第十六章第 2 节的全文展品］</p>
 <p>-gen-op-decls 生成 op
 类的声明：每个命名操作数与结果的访问器（getQ、getConfig）、builder、verifier
 钩子声明，以及 AttrSizedOperandSegments 所需的段切分逻辑；-gen-op-defs
 生成对应实现。-gen-enum-decls 为 GdnRegDir 这类枚举属性生成 C++
 枚举与字符串往返。这些 .inc 汇入公共目标
-GdnIncGen，方言库将其列为依赖，保证生成先于编译（第七章展开工程细节）。手工验证生成物是否如预期，可直接在构建目录上运行
+GdnIncGen，方言库将其列为依赖，保证生成先于编译（第十六章展开工程细节）。手工验证生成物是否如预期，可直接在构建目录上运行
 mlir-tblgen -gen-op-decls 查看 stdout——这也是调试 ODS
 写法的常规手段。效果归结为一句话：方言作者写下的约 60 行 op
 声明，换出的是带全量访问器、类型检查与文本往返能力的 C++ 类，而所有后续
-pass（第六章）只需面向这些类编程。</p>
+pass（第十五章）只需面向这些类编程。</p>
 <h2
-id="五把配置做成属性gdnconfigattr">五、把配置做成属性：GdnConfigAttr</h2>
+id="十四把配置做成属性gdnconfigattr">十四、把配置做成属性：GdnConfigAttr</h2>
 <p>一个算子家族通常包含许多合法变体：分块多大、门控走标量还是逐通道、要不要初始状态。这些选择有三种安放方式——做成不同的
 op 名、做成额外操作数、或做成 op 的属性。gdn
 方言选择第三种，定义了参数化属性 GdnConfigAttr：op
@@ -848,7 +1904,7 @@ false&gt;，七个值的顺序永远与参数表一致，diff 两份配置只需
 </tbody>
 </table>
 <p>［docs/L0_SEMANTICS.md:31-39 旋钮表；合法域 {16,32,64} 另见 Gdn.h:32
-与第四章 verifier］</p>
+与第十三章 verifier］</p>
 <p>逐项说清"数学形态"的含义。chunk_size 是 chunk 化递推的块长 C：一个
 chunk 内 C 步递推联立成的三角线性系统是 C 阶的，跨 chunk
 状态递推的步数随 T/C 变化——它改变的是 L1 算法结构的粒度，verifier
@@ -874,7 +1930,7 @@ transform 工件</h3>
 共十维。它们的定义性区别在于：改变语义旋钮会改变计算结果，改变调度旋钮只改变性能与资源占用，数值结果在容差合同内不变。这决定了两者必须放在不同的载体、归属不同的层。</p>
 <p>载体上，语义旋钮是 GdnConfigAttr，挂在 L0 op 上、随 IR
 的值流一起被打印与改写；调度旋钮是 transform dialect 的参数化工件，L2
-层每份内核对应一份工件文本加一组旋钮取值（第四章总览的 transform.mlir
+层每份内核对应一份工件文本加一组旋钮取值（第十三章总览的 transform.mlir
 工件即其形态），旋钮值由求解器注入工件的参数槽。两层各自的验证合同不同：语义层的任何改动要回到
 JAX fp64 规约做三方交叉；调度层的改动走 ptxas 静态资源复核与逐配置 fp64
 参考对照。分层带来直接的工程收益——Z3 求解器在调度空间做全枚举（kkt 阶段
@@ -884,7 +1940,7 @@ JAX fp64 规约做三方交叉；调度层的改动走 ptxas 静态资源复核�
 <p>若把两层混进同一袋旋钮，代价是复合的：枚举空间把语义维也卷进排序问题，而排序对语义维没有意义（语义没有优劣，只有取值）；每个调度候选都要全量数值重验，验证成本乘上空间规模。分属两层之后，"哪些改动必须触发语义重验"有了机械判据——看改动落在属性还是工件。</p>
 <h3 id="5-透传链从-l0-op-到-l1-消费方">5. 透传链：从 L0 op 到 L1
 消费方</h3>
-<p>属性定义好后还要在层间搬运。第六章将展开的 gdn-to-chunk pass
+<p>属性定义好后还要在层间搬运。第十五章将展开的 gdn-to-chunk pass
 里，搬运是一行代码：</p>
 <pre><code>    // 语义属性原样透传（L1 消费方按此选择算法变体）
     call-&gt;setAttr(&quot;gdn.config&quot;, op.getConfig());
@@ -905,14 +1961,14 @@ stdout，类型串有删节标记；输入为 dialect/test/smoke_l0.mlir］</p>
 展开的选择逻辑）读取 call
 上的属性决定算法变体。全程只有一个事实源，中间层不重述、不翻译配置。属性驻留机制保证了"原样"的强度——setAttr
 搬动的是同一驻留对象，逐字节比较必然相等。这条链在确定性上闭合：属性取值连同全部调度旋钮环境变量进入缓存键，两次完整编译逐字节一致，全部旋钮关断时产物与默认配置逐字节等价（27/27
-payload，第二十六章第四节）——配置既可组合，也可作为证据存档与 diff。</p>
+payload，第九章第四节）——配置既可组合，也可作为证据存档与 diff。</p>
 <h3 id="6-小结">6. 小结</h3>
 <p>GdnConfigAttr 展示了属性参数化的完整做法：AttrDef
 声明参数表与打印格式，生成强类型访问器；七个旋钮各自对应算子数学的一处形态变化，由
 verifier 与语义文档双重把守；它与 transform
 工件分属两层，使语义验证与调度枚举互不拖累；透传链保证配置从声明点到消费点单一事实源。下一章进入改写本身：第一个下降
 pass 如何写成。</p>
-<h2 id="六写第一个重写-pass">六、写第一个重写 pass</h2>
+<h2 id="十五写第一个重写-pass">十五、写第一个重写 pass</h2>
 <p>方言声明了 op 的形态，编译器的本体却是改写：把 IR
 从一层的形态变换为下一层的形态，每次变换封装为一个 pass。MLIR 把单个 op
 的局部改写抽象为 OpRewritePattern（op 重写模式），把模式的批量执行抽象为
@@ -964,7 +2020,7 @@ success()；判断不适用时返回 failure()，IR
 修饰，模式必须无状态——所有上下文通过参数 op 与 rewriter
 传递，这是模式可被多线程驱动器并发复用的前提。函数体的读法顺下来就是一张翻译表：组装调用参数（五个必备操作数依序放入，可选的
 h0 按有无追加），从参数与结果类型推导函数签名，确保被调符号存在，创建
-call，透传属性，最后整体替换。第四章讲过的 Optional 访问器（if
+call，透传属性，最后整体替换。第十三章讲过的 Optional 访问器（if
 (op.getH0())）在这里兑现为参数表的条件延长——AttrSizedOperandSegments
 消解的槽歧义，在改写侧表现为按槽有无组装实参。</p>
 <h3 id="3-patternrewriter-的使用规则createreplaceoperaseop">3.
@@ -1039,7 +2095,7 @@ setInsertionPointToStart
 有无改变签名元数，前向与反向各自持有独立符号（kL1FwdSym 与
 kL1BwdSym，GdnPasses.cpp:23-24）。</p>
 <h3 id="5-改写前后的真实-ir">5. 改写前后的真实 IR</h3>
-<p>输入是第四章与第五章用过的冒烟文件（dialect/test/smoke_l0.mlir:9-13
+<p>输入是第十三章与第十四章用过的冒烟文件（dialect/test/smoke_l0.mlir:9-13
 的 generic 形式 gdn.fwd，携带 #gdn.config&lt;64, true, false, true,
 true, true, false&gt;）。对它实际运行 gdn-opt
 --gdn-to-chunk，真实输出：</p>
@@ -1117,12 +2173,13 @@ gdn-opt.cpp:11-13 就地声明，供注册入口共用。</p>
 }</code></pre>
 <p>［dialect/tools/gdn-opt/gdn-opt.cpp:15-30］</p>
 <p>registerPass 把工厂挂入全局注册表，registerAllPasses 先行装入全部树内
-pass——gdn-opt 因此同时拥有树内重武器与自有 pass（工程细节见第七章）。与
-TableGen 路线（写 Passes.td、由 PASS_DEF 生成类骨架）相比，纯 C++
+pass——gdn-opt 因此同时拥有树内重武器与自有
+pass（工程细节见第十六章）。与 TableGen 路线（写 Passes.td、由 PASS_DEF
+生成类骨架）相比，纯 C++
 直写少一层代码生成，代价是手写类型标识等样板；两条路线生成的 pass
 在注册后行为无差别，选择属于工程口味，本仓全部自有 pass 走的都是纯 C++
 这一种。</p>
-<h2 id="七外建方言项目让-gdn-opt-装上树内-pass">七、外建方言项目：让
+<h2 id="十六外建方言项目让-gdn-opt-装上树内-pass">十六、外建方言项目：让
 gdn-opt 装上树内 pass</h2>
 <p>前两章把方言与 pass
 写成了源码，本章解决最后一公里：这些源码如何组织成一个可构建的工程，如何链接到一份预构建的
@@ -1178,7 +2235,7 @@ evidence/G0/GATE_REPORT.md 判据
 独立重编，改动范围互不传染。其三，体量相称：方言库只有一个，增量重建以秒计，与上游动辄小时级的全量构建解耦。</p>
 <h3 id="2-生成层mlir_tablegen-与公共生成目标">2. 生成层：mlir_tablegen
 与公共生成目标</h3>
-<p>include 目录的 CMakeLists 只做一件事——把第四章讲过的三个 .td 变成
+<p>include 目录的 CMakeLists 只做一件事——把第十三章讲过的三个 .td 变成
 .inc：</p>
 <pre><code>set(LLVM_TARGET_DEFINITIONS Gdn/GdnDialect.td)
 mlir_tablegen(GdnDialect.h.inc -gen-dialect-decls)
@@ -1279,7 +2336,7 @@ mlir_check_all_link_libraries(gdn-opt)</code></pre>
 <p>add_llvm_executable 带入 LLVM
 的编译旗标纪律，llvm_update_compile_flags 追加异常与 RTTI
 的统一设置，mlir_check_all_link_libraries
-做链接自检。工具源文件第六章已完整展品（dialect/tools/gdn-opt/gdn-opt.cpp:15-30），这里补齐机制视角：MlirOptMain
+做链接自检。工具源文件第十五章已完整展品（dialect/tools/gdn-opt/gdn-opt.cpp:15-30），这里补齐机制视角：MlirOptMain
 是 mlir-opt 的通用驱动框架——旗标解析、文件遍历、pass
 流水线组装、每步之后的 verify
 与打印全部由它提供；调用方只交出两样东西，一是 DialectRegistry（本例先
@@ -1350,12 +2407,13 @@ PATH 时 configure 阶段即报错，故脚本头部统一 export（上节展品
 认识，普通 ptxas 13.3 只认到 8.8——sm_120a
 管线末端必须选对汇编器。这四条规则的共同形态是：错误信息不指向真因（版本被拒、缓存残留、PATH
 缺失、汇编器配套），定位成本高而规避成本低，因此值得写进脚本与文档，让任何一次环境重建都自动绕开。</p>
-<p>至此，从 .td 声明到 pass 再到可执行工具的完整链条闭合：第四章的
-TableGen 定义经本章的生成层变成 C++，第五章的属性与第六章的 pass 编进
-GdnDialect 库，gdn-opt 把它们与全部树内 pass
+<p>至此，从 .td 声明到 pass 再到可执行工具的完整链条闭合：第十三章的
+TableGen 定义经本章的生成层变成 C++，第十四章的属性与第十五章的 pass
+编进 GdnDialect 库，gdn-opt 把它们与全部树内 pass
 装进同一个命令行。方言工程的全部源码加起来不足千行，承载的却是 L0
 语义层的全部表达与验证入口。</p>
-<h2 id="八观察-ir调试与验证工具箱">八、观察 IR：调试与验证工具箱</h2>
+<h2 id="十七观察-ir调试与验证工具箱">十七、观察
+IR：调试与验证工具箱</h2>
 <p>渐进式下降的每一层都可能出错，而 MLIR
 相比于黑盒编译器最大的工程优势在于：每一层的产物都是可观察、可验证的文本。这一章把本项目在调试与验证环节实际使用的工具集合起来讲——它们大多不出现在最终论文的贡献清单里，但没有它们，五层下降中的任何一个环节出错都无法定位。</p>
 <h3 id="1-gdn-opt-与-mlir-opt观察每一步的-ir">1. gdn-opt 与
@@ -1372,7 +2430,7 @@ pass 开发最常见的静默失败）；<code>--verify-diagnostics</code>
 拒绝"变成可回归的测试。本项目方言仓库里的冒烟文件就是按这个思路组织的：</p>
 <pre><code>// dialect/test/smoke_l0.mlir —— gdn-opt 冒烟：parse + verify + gdn-to-chunk 改写</code></pre>
 <p>一条命令完成"能解析、能过 verifier、能被入口 pass
-改写"三级验证，这是第六章那段前后 IR 对照的来源。更细粒度的调试用
+改写"三级验证，这是第十五章那段前后 IR 对照的来源。更细粒度的调试用
 <code>--debug-only</code> 加源码里的 DEBUG_TYPE 标签，把日志打开到单个
 pass 内部；日常开发主要依赖前三个旗标。</p>
 <h3 id="2-期望输出测试让-ir-回归可自动化">2. 期望输出测试：让 IR
@@ -1384,7 +2442,7 @@ pass 内部；日常开发主要依赖前三个旗标。</p>
 smoke 文件加脚本断言（parse/verify/改写三级），管线层直接以树内的 sm_80
 transform-mma 集成测试做冒烟——文件名沿用上游目录名，chip 重定向为
 sm_120a 后在 5090 上编译运行；sm_120 的张量核即 Ampere 风格
-mma.sync，同指令族故该测试有效（第十五章展开）。它编译一个真实的 mma
+mma.sync，同指令族故该测试有效（第二十四章展开）。它编译一个真实的 mma
 kernel 走完 transform 解释器与 NVVM
 下译，能在不涉及自定义方言的情况下确认本机 LLVM
 构建的这条主干链路完好。</p>
@@ -1396,9 +2454,10 @@ dump（第五、九、十章引用的真实 IR 即来自 evidence/G1
 transform.mlir（evidence/G2/gen/）、每个 kernel 的 PTX 前后对与 ptxas
 资源报告（第十八、十九章引用的 kernel.ptx /
 kernel_smemfix.ptx）。这个习惯的回报在两处立刻兑现：其一，正文引用的每一件展品都能回溯到具体文件与行号；其二，任何一轮性能或数值变更想要回退对照，直接取存档文件重放即可，不依赖当时的内存状态。生成器侧的配合机制是内容寻址：同种子两次生成的
-MLIR 哈希相同（第十四章），存档文件因此可以作为长期有效的对照基准。</p>
+MLIR
+哈希相同（第二十三章），存档文件因此可以作为长期有效的对照基准。</p>
 <h3 id="4-工具链上的三个观察点">4. 工具链上的三个观察点</h3>
-<p>下降到目标代码之后还有三个观察工具，详细用法在第十五章与第二十章展开，这里给出定位：ptxas
+<p>下降到目标代码之后还有三个观察工具，详细用法在第二十四章与第二十九章展开，这里给出定位：ptxas
 的 <code>-v</code> 旗标输出每个 kernel
 的寄存器数、共享内存字节数与溢出计数，是 L2
 层静态资源复核的数据源；nvdisasm 把 cubin 反汇编成
@@ -1408,7 +2467,7 @@ SASS，用于指令级计数（成本模型的分子）与 bug
 在真机上捕获越界访问与共享内存越界写。三者覆盖了"文本 IR
 看不到的层"的全部观察需求。</p>
 <h2
-id="九linalg以控制流表达数学约束">九、linalg：以控制流表达数学约束</h2>
+id="十八linalg以控制流表达数学约束">十八、linalg：以控制流表达数学约束</h2>
 <p>算法层需要一种两头都成立的表示：对验证者，它要像数学一样可以逐行核对；对编译器，它要像程序一样可以逐层改写。linalg（linear
 algebra，MLIR
 的结构化线性代数方言）正是为此存在的中间层。它的核心主张是：一个数学对象——矩阵乘、逐元素映射、带区域约束的复合运算——可以表达为一个结构化
@@ -1518,13 +2577,13 @@ ins(bf16,bf16) outs(f32) 的累加精度，做法就是运行该 pass
 管线里，这条下降紧随 bufferize 之后执行［scripts/run_l1.sh:25］。</p>
 <h3 id="5-效果">5. 效果</h3>
 <p>用 linalg 表达算法层的收益由验证结果度量：整条 L1
-反向链（含本章全部展品）经第十一章的 11 pass 管线在 CPU 上可执行，对 JAX
+反向链（含本章全部展品）经第二十章的 11 pass 管线在 CPU 上可执行，对 JAX
 fp64 规约前向约 6e-7、反向六梯度最差
 6.4e-6，三方闭合。数学约束——下三角、衰减因子、行尺度——全部以 IR
 可见的形式存在；任何下层改写破坏语义时，都能回到这份 CPU
 可执行的文本重新对照。下一章讲循环本身：scf.for
 的数据流如何承载前代换。</p>
-<h2 id="十scf循环携带状态与-iter_args">十、scf：循环携带状态与
+<h2 id="十九scf循环携带状态与-iter_args">十九、scf：循环携带状态与
 iter_args</h2>
 <p>linalg 声明"算什么"，scf（structured control
 flow，结构化控制流方言）声明"按什么顺序算"。顺序在 GDN
@@ -1592,11 +2651,11 @@ IR 形态：按时间顺序逐行求解，无主元选取、无除法。</p>
 <p>前代换、三角掩蔽、状态递推全部以基础 op
 写出：memref.load、arith.mulf、scf.yield。全链没有库调用、没有不透明的黑盒
 op，任何一步的数值行为都可以从文本直接读出。两个直接后果。其一，可执行：这份
-IR 经第十一章的 11 pass 管线下降后在 CPU 上跑出数字，与 JAX fp64
+IR 经第二十章的 11 pass 管线下降后在 CPU 上跑出数字，与 JAX fp64
 规约对拍闭合——算法层自带一条独立于 GPU
-的验证路径，下层任何环节可疑时都能回退到这里重新对照。其二，可搬运：同一份文本是第十四章生成器的输出格式，未来
+的验证路径，下层任何环节可疑时都能回退到这里重新对照。其二，可搬运：同一份文本是第二十三章生成器的输出格式，未来
 L1 展开 pass
-的输出与之逐行同构，规格与实现不会漂移——生成器侧的发射序列与产物逐行对应［tools/gdn_l1_gen.py:433-473，发射序列与第九章展品逐行同构；dialect/lib/GdnPasses.cpp:1-9，头注声明这一同构关系］。</p>
+的输出与之逐行同构，规格与实现不会漂移——生成器侧的发射序列与产物逐行对应［tools/gdn_l1_gen.py:433-473，发射序列与第十八章展品逐行同构；dialect/lib/GdnPasses.cpp:1-9，头注声明这一同构关系］。</p>
 <p>顺带一个语义细节：反向链的第二遍前向重算里另有一处同构的前代换三重循环（2725-2738
 行），两处形状相同、操作数不同——同一段发射代码参数化地服务两个调用点，这也是生成器形态的直接收益。</p>
 <h3 id="4-scf-到-cf-的下降">4. scf 到 cf 的下降</h3>
@@ -1607,8 +2666,8 @@ flow）方言的显式分支：每个 scf.for
 IR
 里只剩线性排列的基本块与跳转，结构信息（哪些跳转构成循环、循环携带什么）从
 op 类型沉入块的拓扑。值得强调结构化形态在下降前的价值：scf.for
-的上界、步长与携带变量都是操作数与类型系统里的显式事实，验证器保证单入口单出口，上层改写（第九章的
-linalg 展开、第十二章的循环流水）可以依赖这些不变量做匹配；降成 cf
+的上界、步长与携带变量都是操作数与类型系统里的显式事实，验证器保证单入口单出口，上层改写（第十八章的
+linalg 展开、第二十一章的循环流水）可以依赖这些不变量做匹配；降成 cf
 之后这类结构匹配就得靠模式识别块拓扑了。下降本身是机械的：L1
 模块经全管线产出的 LLVM 方言文本 2088 行，可由 mlir-runner 直接 JIT
 执行［scripts/run_l1.sh:26；evidence/G1/l1_harness_report.md:72-73］。</p>
@@ -1617,7 +2676,7 @@ convert-linalg-to-loops 之后，所以 linalg 先展开成 scf.for、scf 再降
 cf——每个方言只在直接下层停留一次，两次下降合起来就是从声明式数学到可执行循环的完整路径。下一章讲这两个循环世界之下的内存世界：bufferize
 如何把张量换成 memref。</p>
 <h2
-id="十一bufferize从张量世界到-memref-世界">十一、bufferize：从张量世界到
+id="二十bufferize从张量世界到-memref-世界">二十、bufferize：从张量世界到
 memref 世界</h2>
 <p>MLIR 的上层方言以 tensor 为通货。tensor 是值语义的类型：一个 op
 的输出是一整个不可变的值，函数边界传值，别名这个概念不存在——写第 i
@@ -1711,11 +2770,11 @@ evidence/G5/gen_fwd/B4T2048_mono/smem_alias.json）。此处只需记住因果�
 </tr>
 <tr>
 <td>convert-linalg-to-loops</td>
-<td>结构化 op 实体化为循环（第九章第 4 小节）</td>
+<td>结构化 op 实体化为循环（第十八章第 4 小节）</td>
 </tr>
 <tr>
 <td>convert-scf-to-cf</td>
-<td>结构化循环降为显式分支（第十章第 4 小节）</td>
+<td>结构化循环降为显式分支（第十九章第 4 小节）</td>
 </tr>
 <tr>
 <td>expand-strided-metadata</td>
@@ -1772,7 +2831,7 @@ memref 打印原语（printMemrefF32）与 libm 链接：</p>
 量级，七个用例全过——至此"数学即 IR"在 CPU
 上闭环：第九、十章的掩蔽与前代换在普通处理器上跑出与 JAX fp64
 规约一致的数字，算法层的正确性不再依赖任何 GPU 工具链。</p>
-<h2 id="十二transform-dialect调度作为可编程工件">十二、transform
+<h2 id="二十一transform-dialect调度作为可编程工件">二十一、transform
 dialect：调度作为可编程工件</h2>
 <p>传统编译器里，调度决策（怎么切块、哪级缓冲、流水多深）住在 pass 的
 C++ 实现里，使用者能动的只有命令行旗标。transform dialect
@@ -1858,7 +2917,253 @@ cp.async.ca。pipeline_shared_memory_copies 对句柄循环做软件流水：dep
 已更名）、multibuffer 的尖括号参数表、pipeline 的 failures 子句，拼错即
 verifier
 拒绝［evidence/G2/GATE_REPORT.md:33；evidence/G2/gen_report.md:109-123］。</p>
-<h3 id="4-执行模型解释器与调度擦除">4. 执行模型：解释器与调度擦除</h3>
+<h3 id="4-十维旋钮到-ir-的逐维落点">4. 十维旋钮到 IR 的逐维落点</h3>
+<p>第 3 节回答了工件能做什么；本节回答旋钮怎么进工件。生成器
+tools/gdn_l2_gen.py 是旋钮值到 IR 文本的唯一通道：配置字典先过
+validate() 核对取值域［tools/gdn_l2_gen.py:70-138］，再流入两组 f-string
+模板——载荷模板发射 payload，工件模板发射 transform
+脚本。十维的规范清单来自求解器的变量声明：dtype、prec、tile
+三维、warps、pipeline、mma、warpspec、tma，进算术的用整数、纯开关用布尔［tools/gdn_solver.py:99-110；域常量
+70-74］。生成器文档串对这组旋钮的可观测性有一条自我声明：每个旋钮都可验证地改变发射的
+PTX［tools/gdn_l2_gen.py:15-28］。逐维落点如下表（payload 行号均出自第 5
+节走查的目录 evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/）。</p>
+<table>
+<thead>
+<tr>
+<th>旋钮</th>
+<th>取值域</th>
+<th>落在 IR 的位置</th>
+<th>例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dtype</td>
+<td>bf16、f32</td>
+<td>载荷全链类型：函数参数与全局、共享 memref
+的元素类型，拷贝向量宽度，mma fragment 向量形状</td>
+<td>bf16 发 memref&lt;64x128xbf16&gt; 与
+vector&lt;8xbf16&gt;［gdn_l2_gen.py:156-157、425；payload.mlir:2、261］</td>
+</tr>
+<tr>
+<td>prec</td>
+<td>bf16、tf32（仅 f32 加 mma 时独立）</td>
+<td>mma 原子的 K 边与 nvgpu.mma.sync 的 tf32Enabled 属性</td>
+<td>bf16 发 mmaShape [16,8,16]，tf32 发 [16,8,4] 加
+tf32Enabled［gdn_l2_gen.py:160-161、303-305］</td>
+</tr>
+<tr>
+<td>tile.M</td>
+<td>32、64、128</td>
+<td>gpu.launch 网格 x 维（64 行按 M 分块）、A tile 行数、mma 行组数</td>
+<td>M=64 时网格 x 维为
+1［gdn_l2_gen.py:1011-1013；payload.mlir:69］</td>
+</tr>
+<tr>
+<td>tile.N</td>
+<td>32、64、128</td>
+<td>网格 y 维、B tile 的 N 边、每 warp 分得的 N 份额</td>
+<td>N=64 时 B tile 两条边为 64 与
+32［gdn_l2_gen.py:423-424；payload.mlir:215］</td>
+</tr>
+<tr>
+<td>tile.K</td>
+<td>32、64、128</td>
+<td>K 循环步长、smem tile 的 K 边、每趟展开的 mma 原子数</td>
+<td>步长 32 即 tile.K［gdn_l2_gen.py:438-439；payload.mlir:256］</td>
+</tr>
+<tr>
+<td>warps</td>
+<td>2、4、8</td>
+<td>gpu.launch 线程 x 维（warp 数、每 warp 32 线）、每 warp N
+份额、累加器个数与 warp 列偏移</td>
+<td>4 warp 时线程 x 维 128、warp 列偏移步进
+16［gdn_l2_gen.py:997、1013、1076；payload.mlir:70、85］</td>
+</tr>
+<tr>
+<td>pipeline</td>
+<td>0、2、3</td>
+<td>工件模板参数：multibuffer 的 factor 与 pipeline_shared_memory_copies
+的 depth；取 0 时工件降级为无 bypass_l1 的单缓冲
+create_async_groups</td>
+<td>factor = 2 与 depth = 2［gdn_l2_gen.py:1123-1124、1133-1135］</td>
+</tr>
+<tr>
+<td>mma</td>
+<td>真、假</td>
+<td>载荷分支（mma fragment 载荷或 linalg.matmul
+载荷）与工件分支（流水工件或 tile_using_for 工件）</td>
+<td>假路径发 tile_using_for tile_sizes
+[16,16]［gdn_l2_gen.py:1085-1090、1141-1148］</td>
+</tr>
+<tr>
+<td>warpspec</td>
+<td>off、producer_consumer</td>
+<td>载荷分支 gen_payload_ws：warp 谓词、setmaxnreg 分档、mbarrier
+环；工件退化为 identity</td>
+<td>gdn.setmaxnreg dec 96 与 inc
+224［gdn_l2_gen.py:565-568、585、624、1108-1112］</td>
+</tr>
+<tr>
+<td>tma</td>
+<td>off、on（须 warpspec 开）</td>
+<td>4d、5d 共享 tile 类型，gdn.tma.async.load 与 store，host 侧
+descriptor 与 tensormap_spec.json</td>
+<td>descA 的 box 维界随 tile
+走［gdn_l2_gen.py:552-556、589-594、1035-1041］</td>
+</tr>
+</tbody>
+</table>
+<p>tile 三维的生成器合法域更宽（M 可到 16，N、K 取 8
+的倍数即可），求解器按旋钮空间合同收窄到
+32、64、128［tools/gdn_solver.py:70-74
+的域常量注释；gdn_l2_gen.py:106-138］。两个发射点足以说明注入的含义。dtype
+与 prec 在 fragment 构造处换成的就是类型串与属性串：</p>
+<div class="sourceCode" id="cb61"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>av <span class="op">=</span> <span class="st">&quot;vector&lt;4x2xbf16&gt;&quot;</span> <span class="cf">if</span> dt <span class="op">==</span> <span class="st">&quot;bf16&quot;</span> <span class="cf">else</span> <span class="st">&quot;vector&lt;2x1xf32&gt;&quot;</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>bv_ <span class="op">=</span> <span class="st">&quot;vector&lt;2x2xbf16&gt;&quot;</span> <span class="cf">if</span> dt <span class="op">==</span> <span class="st">&quot;bf16&quot;</span> <span class="cf">else</span> <span class="st">&quot;vector&lt;1x1xf32&gt;&quot;</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>tf <span class="op">=</span> <span class="st">&quot; tf32Enabled&quot;</span> <span class="cf">if</span> dt <span class="op">==</span> <span class="st">&quot;f32&quot;</span> <span class="cf">else</span> <span class="st">&quot;&quot;</span></span></code></pre></div>
+<p>［tools/gdn_l2_gen.py:303-305，逐字］</p>
+<p>这三个局部变量随后原样进入 mma.sync 的发射串，mmaShape 的 K 位取自
+atom_k 的同维分支［tools/gdn_l2_gen.py:316-318］。warps 与 tile
+则汇于发射几何的同一行 f-string：</p>
+<div class="sourceCode" id="cb62"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>d_gx, d_gy, d_one, d_btx <span class="op">=</span> (<span class="ss">f&quot;%c</span><span class="sc">{</span><span class="dv">64</span> <span class="op">//</span> bt<span class="sc">}</span><span class="ss">&quot;</span>, <span class="ss">f&quot;%c</span><span class="sc">{</span>n_glob <span class="op">//</span> bv<span class="sc">}</span><span class="ss">&quot;</span>,</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>                            <span class="st">&quot;</span><span class="sc">%c</span><span class="st">1&quot;</span>,</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>                            <span class="ss">f&quot;%c</span><span class="sc">{</span><span class="dv">32</span> <span class="op">*</span> (warps <span class="op">+</span> <span class="dv">1</span>) <span class="cf">if</span> ws <span class="cf">else</span> <span class="dv">32</span> <span class="op">*</span> warps<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<p>［tools/gdn_l2_gen.py:1011-1013，逐字］</p>
+<p>四个局部名再填进 gpu.launch 的 blocks 与 threads
+槽位［tools/gdn_l2_gen.py:1043-1046］，落到 payload 即第 5 节将走查的
+%bxx = %c128。表中全部落点有一个公共形态：旋钮值在生成期烧进 IR
+文本，成为操作数类型、循环边界、launch
+维度或工件模板参数，编译期之后无处可调。这是调度即 IR
+最直白的证据——旋钮值即工件参数本身，改一个值等于重发一份文本，运行时没有任何等价入口。</p>
+<h3 id="5-一个配置的端到端实例化走查">5. 一个配置的端到端实例化走查</h3>
+<p>把十维落点放进一个真实目录。evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/
+的目录名即旋钮编码：kkt 阶段、bf16、mma 路径、流水深度 2、块 tile
+64x64x32、4 个 warp；warpspec 与 tma 关闭时不入名，开启时以 ws、tma
+段进入（对照同目录层的 kkt_bf16_mma_tma_ws）。经 ls
+核实，目录内存放八个文件：payload.mlir、transform.mlir、config.json、kernel.ptx、kernel.cubin、ptxas_v.txt、sass.txt、meta.json——前三个由生成器写出，后五个由编译链产出。</p>
+<p>走查从求解器一端开始。Z3 模型读出的旋钮向量经 to_config
+翻译为配置字典，再经 config_name
+拼成规范名：阶段、dtype、mma、流水、tile 三维、warps 依次入名，warpspec
+开启时追加 ws 后缀，tma
+再追加一段［tools/gdn_solver.py:261-275、278-290］。目录名、config.json
+与 payload
+首行注释因此是同一份字典的三个视图，任取其一都能还原全部旋钮值。</p>
+<p>payload
+里的旋钮值肉眼可读。首行注释把整份配置字典原样嵌进文件头：</p>
+<pre><code>// GDN L2 stage &#39;kkt&#39;: C = tril(k @ k^T) * exp2decay  knobs={&quot;name&quot;:&quot;kkt_bf16_mma_p2_t64x64x32_w4&quot;,&quot;stage&quot;:&quot;kkt&quot;,&quot;dtype&quot;:&quot;bf16&quot;,...,&quot;warps&quot;:4,&quot;mma&quot;:true,&quot;pipeline&quot;:2,&quot;prec&quot;:&quot;bf16&quot;}</code></pre>
+<p>［evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/payload.mlir:1，节选］</p>
+<p>往下每一维各占其位：launch 的线程 x 维 %bxx = %c128 承载 warps=4（第
+70 行）；共享 tile memref&lt;64x32xbf16&gt; 的两条边承载 tile.M 与
+tile.K（第 214 行）；K 循环从 0 到 128、步长 32，携带 8 个
+vector&lt;2x2xf32&gt; 累加器，步长承载 tile.K、累加器个数承载 warps 对 N
+侧的切分（第 256 行）；nvgpu.mma.sync 的 mmaShape = [16, 8, 16] 与 bf16
+操作数承载 dtype 与 prec（第 1310 行）。工件侧，factor = 2 与 depth = 2
+分别落在第 5 行与第 12 行（第 3 节已全文引用这份工件）。config.json
+存同一字典的机器可读形态，供脚本对账。</p>
+<p>编译命令是单参数的：scripts/run_l2.sh <config-dir>，目录由
+tools/gdn_l2_gen.py --gen 名称 --out
+预先生成［scripts/run_l2.sh:4-6］。脚本合并两份
+IR、过解释器与调度擦除（机制见第 8 节），末一步把 ptxas
+的资源报告原样落盘：</p>
+<pre><code>&quot;$PTXAS&quot; -v -arch=sm_120a kernel.ptx -o kernel.cubin &gt; ptxas_v.txt 2&gt;&amp;1</code></pre>
+<p>［scripts/run_l2.sh:81，逐字］</p>
+<p>该配置的报告存档为：栈帧 3808 字节、溢出写 5708 字节、溢出读 6920
+字节、255 寄存器、1 个
+barrier［evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/ptxas_v.txt:4-5］。meta.json
+再把报告与 PTX 直方图合并归档：mma.sync 48 条、cp.async 1542 条，SASS 侧
+HMMA 48、LDGSTS 1536，PTX 文本 282907 字节。从 Z3 解出的旋钮向量到 cubin
+与资源数字，全链只经过两份 IR
+文件与一份脚本。复现这个配置等于重放这两个文件：配置的全部自由度已烧进两份文本，同一工具链下它们唯一决定全部产物，无需任何运行时搜索。</p>
+<h3 id="6-参考实现作为旋钮空间坐标">6. 参考实现作为旋钮空间坐标</h3>
+<p>覆盖工程把 fla 与 FlashQLA 的参考 kernel 放进同一坐标系：对每个参考
+kernel 抓取 PTX 与 SASS 结构画像，在生成配置里按指令家族 Jaccard
+距离找最近邻，再按寄存器与共享内存档位判分（容差约三成）。四张对照卡合排如下（最近配置列只写报告记录的配置名，未记录的维度不补写）：</p>
+<table>
+<thead>
+<tr>
+<th>参考 kernel</th>
+<th>我侧最近配置</th>
+<th>参考侧结构要素</th>
+<th>判分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fla chunk_fwd_o（BK64_BV64_warps4_stages3）</td>
+<td>ref_ldmatrix</td>
+<td>多级 ld.global 装载；255 寄存器、smem 24576 B、溢出 96/96 B；mma 96
+条</td>
+<td>寄存器 72 对 255，OUT（0.28 倍）；mma 1 对 96</td>
+</tr>
+<tr>
+<td>fla dhu（blockdim64、BV64、warps2、stages3）</td>
+<td>kkt_bf16_mma_p2_t64x64x32_w2</td>
+<td>经典 cp.async 流水；255 寄存器、smem 33288 B、溢出 3236/3788 B；mma
+512 条，bf16 与 tf32 签名各半</td>
+<td>寄存器 255 对 255，PASS；smem 无静态量，n/a；mma 96 对 512</td>
+</tr>
+<tr>
+<td>FlashQLA fused_fwd</td>
+<td>kkt_bf16_mma_tma_ws</td>
+<td>TMA 装载 31 条、mbarrier 74、elect.sync 18、setmaxnreg 4；128
+寄存器封顶、smem 2048 B</td>
+<td>寄存器 255 对 128，OUT（1.99 倍）；smem 8 对 2048，OUT</td>
+</tr>
+<tr>
+<td>FlashQLA fused_bwd</td>
+<td>kkt_bf16_mma_tma_ws</td>
+<td>TMA 41、mbarrier 194、elect.sync 21、setmaxnreg 4；循环体复用（bra
+422）、mma 1600 条</td>
+<td>寄存器 255 对 128，OUT（1.99 倍）；smem 8 对 2048，OUT</td>
+</tr>
+</tbody>
+</table>
+<p>［evidence/G2/coverage_matrix.md:71-114，四卡摘录；结构要素照抄卡片已记录项］</p>
+<p>两极的对位结论由终局汇总给出。fla 极（多级 cp.async、255
+寄存器、展开循环）由基础 mma 配置族承载：寄存器钉在 255 上限，栈帧覆盖 0
+到 26.8 KB，pipeline 取 0、2、3 三档时 mma 条数为 16、48、64，LDGSTS 为
+512、1536、2048。FlashQLA 极（warp 专化、TMA、128 寄存器档）由
+kkt_bf16_mma_p2_t64x64x64_w4_ws 与 kkt_bf16_mma_tma_ws 承载：setmaxnreg
+dec96 与 inc224 把溢出从 22,844 B 压到 48 B，5 条 TMA 指令替换 1026
+条经典拷贝，两者经 G4
+修到硬件正确［evidence/G6/coverage_hatch_summary.md:63-77］。这套对位给出调度即
+IR
+的外部读法：一个参考实现落进本框架，坐标就是一组旋钮取值加一份工件，匹配与判分全部在配置名与归档产物上完成。复现一个参考实现，在这套语言里即选中一组旋钮取值。</p>
+<h3 id="7-树内没有的调度原语">7. 树内没有的调度原语</h3>
+<p>边界同样要说清。有三类调度决策，树内 transform 方言今天没有对应
+op，本仓把它们放在生成器与后处理层实现。</p>
+<p>其一，warp 专化。工件里没有 warp
+专化这个动作；生产者-消费者形态由载荷模板直接手写：nvvm.shfl.sync 广播
+warp 编号，两条 arith.cmpi 谓词分出生产者与消费者分支，gdn.setmaxnreg
+dec 96 与 inc 224 分档寄存器预算，mbarrier
+环手工布好［tools/gdn_l2_gen.py:565-568、585、624］。工件侧相应退化为
+identity（只含
+yield），无动作可施加［tools/gdn_l2_gen.py:1108-1112］；覆盖矩阵的结构维度表把
+warp 专化记为参考侧 setmaxnreg 加 elect.sync、我侧的 G2-C
+交付项［evidence/G2/coverage_matrix.md:62］。</p>
+<p>其二，staging 纪律。全局到共享的搬运形态由载荷模板决定，transform
+层无从表达每线程按线程号跨步认领 16
+字节块这类纪律；全算子规模下全员发射的 block-uniform staging 造成 256
+倍冗余搬运，教训与 thread-strided 对策完整记录在第二十二章第 2 条。</p>
+<p>其三，寄存器上限的逐入口注入。多入口 cubin 需要逐 kernel 的 .maxnreg
+指令，注入发生在 PTX
+文本层：工具按环境变量表对入口名做子串匹配，命中后紧随 .maxntid
+追加指令［tools/gdn_smem_fix.py:683-712］，前后对照与双遍编译的对账陷阱见第二十八章第
+3 节。</p>
+<p>三类决策的表达介质各异——载荷 op、模板纪律、PTX
+后处理——但开关都落在同一套旋钮机制里。warpspec 与 tma
+是求解器声明表里的两个布尔变量，与 dtype、tile
+同列，耦合约束照常施加（tma 蕴含 warpspec，warpspec 形态下 pipeline
+固定为
+2）［tools/gdn_solver.py:99-110、70-74］；寄存器预算表是环境旋钮，构建缓存的键把每个
+GDN
+前缀环境变量连同生成器源码一并哈希，换一组环境值即换一个缓存槽，旧产物不会被新旋钮组合误用［tools/gdn_full_rt.py:28-40］。调度即
+IR 的准确边界由此可述：能以 transform op
+表达的调度（切块、多缓冲、异步组、软件流水）住在工件里；其余调度决策以载荷文本与环境旋钮表达。全部决策共用一个旋钮空间、一个求解域与一份证据命名法，介质差异只反映树内方言的覆盖现状，旋钮模型本身贯通始终。</p>
+<h3 id="8-执行模型解释器与调度擦除">8. 执行模型：解释器与调度擦除</h3>
 <p>工件与 payload 的合体是物理的：脚本把两份文件首尾相接成
 combined.mlir，再交给解释器——</p>
 <pre><code>cat &quot;$TMP/payload.gdn.mlir&quot; transform.mlir &gt; &quot;$TMP/combined.mlir&quot;
@@ -1877,19 +3182,19 @@ combined.mlir，再交给解释器——</p>
 <p>两处防御值得记录。其一，identity 工件（只含 yield、payload 直接发射
 op 的配置）整步跳过解释器——解释器会把裸顶层函数包进一层
 module{}，这层额外嵌套让后续 NVVM 管线在 workgroup memref
-上转换失败，运行脚本按工件内容探测后绕行［scripts/run_l2.sh:48-58；该行为的完整分析见第十三章第
+上转换失败，运行脚本按工件内容探测后绕行［scripts/run_l2.sh:48-58；该行为的完整分析见第二十二章第
 7 条］。其二，nomma 路径若 linalg.matmul
 在调度后幸存（工件没匹配到或刻意不切），解释器之后补一条
 -convert-linalg-to-loops 兜底［scripts/run_l2.sh:61-67］。</p>
-<h3 id="5-调度即-ir-的意义">5. 调度即 IR 的意义</h3>
+<h3 id="9-调度即-ir-的意义">9. 调度即 IR 的意义</h3>
 <p>工件是纯文本：同一 payload
 换一份工件即换一套调度，两套调度的差别可以逐行
 diff。工件由生成器按旋钮值模板化发射——multibuffer 的 factor 与 pipeline
 的 depth
 正是求解器解出的流水旋钮，注入点即模板参数［tools/gdn_l2_gen.py:1121-1135］。复现一个配置等于复现一份工件加一组旋钮值：调度知识可存档、可在
 CI
-里断言、可在两家参考实现之间对位比较。第十三章将展示这套机制的真实代价——树内调度动作在文档语义与实际行为之间存在缝隙，工件作者的对策全部以证据记录在案。</p>
-<h2 id="十三树内-pass-的反直觉行为实录">十三、树内 pass
+里断言、可在两家参考实现之间对位比较。第二十二章将展示这套机制的真实代价——树内调度动作在文档语义与实际行为之间存在缝隙，工件作者的对策全部以证据记录在案。</p>
+<h2 id="二十二树内-pass-的反直觉行为实录">二十二、树内 pass
 的反直觉行为实录</h2>
 <p>前三章讲了树内机制按文档应当如何工作。本章记录它们在真实构建中实际如何工作：七条被撞上、以探针或源码定位、并已固化为对策的行为。每条按现象、根因、对策三段陈述，出处指向仓库证据文件。这些记录的价值超出排错史——它们直接解释了本编译器若干设计选择的由来：异步
 staging 为什么手动发射、staging 为什么线程跨步、某些循环为什么写成
@@ -1982,10 +3287,11 @@ gdn.setmaxnreg、gdn.tma 等 op 时，先经 gdn-opt --gdn-lower-hatch
 <h3 id="8-七条的公共形态">8. 七条的公共形态</h3>
 <p>树内机制在文档语义与实际行为之间留有缝隙：等待的位置、发射的冗余度、循环改写的边界条件、格式的接受域。这些缝隙无法从文档推知，只能以真实构建加探针测绘。对策在本编译器里全部沉淀为生成器纪律或管线分支——下一章讲的正是承载这些纪律的工程载体。</p>
 <h2
-id="十四生成器即发射器用-python-写-ir-的工程学">十四、生成器即发射器：用
+id="二十三生成器即发射器用-python-写-ir-的工程学">二十三、生成器即发射器：用
 Python 写 IR 的工程学</h2>
 <p>到本章为止，L1 与 L2 的全部 IR 都出自 Python
-生成器：第九到十一章的算法文本来自 gdn_l1_gen.py，第十二章的调度工件来自
+生成器：第九到十一章的算法文本来自
+gdn_l1_gen.py，第二十一章的调度工件来自
 gdn_l2_gen.py。为什么用逐行发射文本的方式生产 IR，而不写成 C++
 pass？因为生成器在这里承担双重角色：它今天是产物——输出的 .mlir
 文件直接进编译管线；它同时是规格——未来 L1 展开 pass
@@ -2002,10 +3308,10 @@ memref.global
 的每次修改要重编方言、重链工具，回路以分钟计。当算法层还在演化（chunk
 形态、掩蔽谓词、前代换结构都要反复试错）时，回路长度直接决定探索面积。第二是可审查性：产物是普通文本文件，进证据目录、进版本控制，review
 与 CI 对它的处理和对源码完全一致。第三是零编译依赖：生成器只依赖
-numpy，语义验证（第九章的三方对拍）在纯 CPU 环境即可完整复现。C++ pass
+numpy，语义验证（第十八章的三方对拍）在纯 CPU 环境即可完整复现。C++ pass
 并未缺席——L0 到 L1 的入口改写是真正的
-pass（第六章）——但算法本体的展开留在生成器里，直到形态稳定才冻结为 pass
-的规格。</p>
+pass（第十五章）——但算法本体的展开留在生成器里，直到形态稳定才冻结为
+pass 的规格。</p>
 <h3 id="2-发射器骨架e-类">2. 发射器骨架：E 类</h3>
 <p>生成器的核心是一个二十四行的发射器类，管三件事：行缓冲、深度缩进、全新
 SSA 名。</p>
@@ -2040,7 +3346,7 @@ SSA 名。</p>
 收域；e.v("sum") 发一个未占用的 SSA 名（%sum
 加序号），名字冲突在构造上不可能。嵌套结构的缩进由调用序列唯一决定，不存在手写对齐这种可漂移的东西。linalg.generic
 的双层花括号（属性体与块体）无法用 block/end 表达，就用显式的 e.depth
-加一减一夹住块体——第九章展品里那两行深度操作正是它。</p>
+加一减一夹住块体——第十八章展品里那两行深度操作正是它。</p>
 <h3 id="3-f-string-模板与旋钮注入">3. f-string 模板与旋钮注入</h3>
 <p>形状、chunk、类型串等旋钮经函数参数进入 f-string 模板。A 矩阵 generic
 的发射序列与产物逐行同构：</p>
@@ -2090,10 +3396,11 @@ cubin"的真实漏洞［evidence/G5/fwd_report.md:2292-2298、2785-2787］。</p
 生成器逐配置落盘这组文件［evidence/G2/gen_report.md:4-5，Deliverables
 一节］。编译链在其上继续产出
 kernel.ptx、kernel.cubin、ptxas_v.txt、sass.txt 与
-meta.json（资源指标加指令直方图），文件清单与用途注释在脚本头部［scripts/run_l2.sh:8-14］。三件套的分离是第十二章"调度即
+meta.json（资源指标加指令直方图），文件清单与用途注释在脚本头部［scripts/run_l2.sh:8-14］。三件套的分离是第二十一章"调度即
 IR"的物理形式：payload
 不动、换一份工件即得新调度；哈希键控保证任何一份缓存都能对回它的旋钮环境。生成器、工件、缓存三者合起来，把"编译器怎么调度"从一次性的构建事件变成可归档、可复查、可再生的数据资产。</p>
-<h2 id="十五下译到-nvvmgpu-lower-to-nvvm-pipeline-的旋钮">十五、下译到
+<h2
+id="二十四下译到-nvvmgpu-lower-to-nvvm-pipeline-的旋钮">二十四、下译到
 NVVM：gpu-lower-to-nvvm-pipeline 的旋钮</h2>
 <p>调度好的 IR 离硬件还有最后一层距离。L2 的 transform
 工件解释完毕后，IR 里是 linalg、scf、nvgpu、nvvm 混合的 gpu.func；这些
@@ -2108,7 +3415,7 @@ gpu.launch_func 调用点，最后交给 LLVM 的 NVPTX
 声明哪一级指令集、format
 决定产物以什么形态交出。三个旋钮拼成一行选项，位于整条命令链的最末端，也是
 PTX
-文本被抽出的位置——后处理层（第十八章）的入口。本章讲清这行选项的每个字段、七步命令链的每一步分工，以及为什么用它冒烟整条管线的测试来自
+文本被抽出的位置——后处理层（第二十七章）的入口。本章讲清这行选项的每个字段、七步命令链的每一步分工，以及为什么用它冒烟整条管线的测试来自
 sm_80（文件名沿用上游目录名，chip 重定向为 sm_120a 在 5090
 上运行，见本章第 3 节）。</p>
 <h3 id="1-完整命令链从-payload-到-sass">1. 完整命令链：从 payload 到
@@ -2156,7 +3463,7 @@ sm_120a，旋钮照抄设备事实。</p>
 是三旋钮中承担架构决策的一个。该管线默认直接产出 cubin 二进制；assembly
 改为产出 PTX 文本并挂在 gpu.binary 的 #gpu.object assembly
 属性上。原因：本编译器在 PTX
-定案之前还有一层后处理（第十八章的四个变换全部发生在 NVVM
+定案之前还有一层后处理（第二十七章的四个变换全部发生在 NVVM
 下译之后、ptxas 之前），必须以文本形态拿到 PTX；若走默认 cubin
 路线，四个变换的介入点就不存在了。附带两个收益。其一，编译器版本可控——仓库统一选用
 PTX ISA 9.3 能力的 ptxas-blackwell（scripts/run_l2.sh:34-36
@@ -2198,8 +3505,8 @@ LLVM
 等）都保存着同一条链的完整产物：payload.mlir、transform.mlir、asmobj.mlir、kernel.ptx、kernel_smemfix.ptx、ptxas
 报告与 sass.txt。命令链本身零分支——分支（hatch
 有无、工件恒等与否、linalg
-残留与否）全部由对输入的显式检查承担并打印日志，保证同一目录重跑得到逐字节相同的产物，与第二十六章的确定性纪律衔接。</p>
-<h2 id="十六nvgpu-与-nvvm-op-地图verifier-规则与陷阱">十六、nvgpu 与
+残留与否）全部由对输入的显式检查承担并打印日志，保证同一目录重跑得到逐字节相同的产物，与第九章的确定性纪律衔接。</p>
+<h2 id="二十五nvgpu-与-nvvm-op-地图verifier-规则与陷阱">二十五、nvgpu 与
 nvvm op 地图：verifier 规则与陷阱</h2>
 <p>L3 生成器直接把机器层 op 写进
 IR：nvgpu.mma.sync、nvgpu.ldmatrix、nvgpu.device_async_copy、mbarrier
@@ -2226,7 +3533,7 @@ nvgpu.mma.sync：8×8×128b 基本片与片段类型</h3>
 bf16（4 对 k 相邻元素 × 2 行半），B 片段 vector&lt;2x2xbf16&gt; 每 lane
 4 个，累加器 vector&lt;2x2xf32&gt; 每 lane 4 个 fp32——16×8 输出共 128
 元素除以 32 lane 恰为 4；prev→o 的 SSA 链就是同累加器跨 k 段累积。tf32
-的 K=4 封顶正是第十七章逃生舱的必要性之一：反向需要的 m16n8k8
+的 K=4 封顶正是第二十六章逃生舱的必要性之一：反向需要的 m16n8k8
 拼写在此路线结构上不可达。</p>
 <h3 id="2-nvgpuldmatrix行广播陷阱与象限地址">2.
 nvgpu.ldmatrix：行广播陷阱与象限地址</h3>
@@ -2261,7 +3568,7 @@ nvgpu.device_async_copy：token、组与每线程语义</h3>
 完成是每线程语义——本线程的 wait 只保证本线程发起的拷贝就绪，跨 warp
 可见性必须补显式 gpu.barrier（第四十章发现 10）。其二，树内 transform 的
 create_async_groups 会在每组后立即插 wait_group
-0，异步复制结构性无法与计算重叠（第四章），所以本仓全部手动发射。同步落盘的封装：</p>
+0，异步复制结构性无法与计算重叠（第十三章），所以本仓全部手动发射。同步落盘的封装：</p>
 <pre><code>def agroup(e, toks):
     e.l(f&quot;{g} = nvgpu.device_async_create_group {&#39;, &#39;.join(toks)}&quot;)
 def await_all(e, g):
@@ -2334,7 +3641,7 @@ NVVM::ElectSyncOp（dialect/lib/GdnHatch.cpp:43-51）；mbarrier 族与 TMA
 专化词汇（setmaxnreg 配对 dec 96/inc 224）由此保持"语义在 gdn
 方言、机制在树内"的分层。</p>
 <h2
-id="十七当表内没有你要的指令inline_asm-逃生舱工程">十七、当表内没有你要的指令：inline_asm
+id="二十六当表内没有你要的指令inline_asm-逃生舱工程">二十六、当表内没有你要的指令：inline_asm
 逃生舱工程</h2>
 <p>任何编译器的指令词表都有边界。MLIR 的 NVVM 方言由 TableGen
 表驱动生成，表里没有的 PTX
@@ -2352,7 +3659,7 @@ asm（内联汇编）：在 IR 里嵌一段原始 PTX
 bf16 mma 会在读取时破坏精度，而 tf32 保留 f32 的指数域、只把尾数降到 10
 位，是张量核三档精度里唯一既走硬件乘加又保住指数范围的档位。stock
 路线一（nvgpu.mma.sync）：verifier 的 8×8×128b 基本片把 tf32 封顶在
-K=4（第十六章），本方 stock 路径实际只能发出 m16n8k4——真实存证：</p>
+K=4（第二十五章），本方 stock 路径实际只能发出 m16n8k4——真实存证：</p>
 <pre><code>mma.sync.aligned.m16n8k4.row.col.f32.tf32.tf32.f32
     {%r6, %r7, %r8, %r9},
     {%r2, %r3},
@@ -2442,7 +3749,7 @@ hatch 调用：</p>
 路线封死）、缺陷定位（=f 的读写重叠与 118/128
 指纹）、硬件探针（row-half-outer 序与 N(0,1)
 语义确认）——构成"逃生舱工程"的全部要素。</p>
-<h2 id="十八ptx-文本后处理的架构与原则">十八、PTX
+<h2 id="二十七ptx-文本后处理的架构与原则">二十七、PTX
 文本后处理的架构与原则</h2>
 <p>NVVM 下译结束后、ptxas 定案之前，本编译器插入一层自己的东西：一个 856
 行的 Python 文本改写器
@@ -2459,7 +3766,7 @@ MLIR，每条都要走完整的提案周期；本项目选在 PTX
 MLIR
 已有的习惯用法、每步改写要么逐位相同要么回退到正确形态、失败必须响亮。</p>
 <h3 id="1-定位修在-ptx-层的三条纪律">1. 定位：修在 PTX 层的三条纪律</h3>
-<p>第一条纪律是复刻。静态共享内存的修复（第十九章第一节）复刻 MLIR
+<p>第一条纪律是复刻。静态共享内存的修复（第二十八章第一节）复刻 MLIR
 自身为 warp 专化配置已经发射的 .shared 声明习惯用法——修复后的 PTX
 与树内某条路径的既有写法同构，不发明新语法。这把"改写器写出的 PTX
 是否合法"的问题转化为"MLIR
@@ -2542,7 +3849,7 @@ __gdn_smem0，尺寸不同；ptxas 把它们并成一个，mono 的 f3 kernel �
 行记录越界写事故］</p>
 <p>这一层是全编译器里最接近"胶水"的部分，但它的每个组件都按编译器部件的标准建造：契约写进
 docstring、匹配锚定行首、模板逐字可查、缓存键覆盖全部输入、合并防御已知工具链缺陷。四个变换的具体前后对照是下一章的内容。</p>
-<h2 id="十九四个变换的前后对照">十九、四个变换的前后对照</h2>
+<h2 id="二十八四个变换的前后对照">二十八、四个变换的前后对照</h2>
 <p>上一章讲了 PTX
 后处理层的架构，本章把它产出的四个变换逐个展开：机制、真实 PTX
 前后对照、工程细节。证据树里保存着六十余对 kernel.ptx 与
@@ -2642,10 +3949,10 @@ kernel_smemfix.ptx:49-52］</p>
 <p>工程细节有二。注入发生在 mono 合并之后，逐入口追加在 .maxntid
 旁，环境变量表因此对合并后的全部入口一次生效。对账必须读第二次编译的报告：ptxas
 报告文件只对应第一次编译，最终 cubin
-出自改写后的第二次编译，两次的寄存器分配可能不同——第二十章展开这个双遍陷阱的完整案例（168
+出自改写后的第二次编译，两次的寄存器分配可能不同——第二十九章展开这个双遍陷阱的完整案例（168
 寄存器倒退）。注入后占用从 15.02% 升到 29.17%、每 SM warp 数从 8.00 升到
 14.23，代价是换出的少量溢出（dqkwg 注入后 84B spill stores、120B spill
-loads，第二十章样例可见）。</p>
+loads，第二十九章样例可见）。</p>
 <h3 id="4-wst-宽存融合216-位到-132-位">4. WST 宽存融合：2×16 位到 1×32
 位</h3>
 <p>问题：smem 到 global 的逐 cell 16 位搬运，WST 旋钮下应配对成 32
@@ -2670,11 +3977,11 @@ ptxas 拒绝区间声明，工具把新寄存器写成显式逗号清单（549-5
 状态表，第 3 节吃 mono 合并后的入口流，第 4
 节是独立的行级配对器；全部挂在同一个键控缓存与同一份双遍报告之下。每个变换的验收口径一致——PTX
 逐行可 diff、产物 cubin 跨进程逐位复现、失败路径要么回退要么响亮。</p>
-<h2 id="二十ptxas-与-sass-审计">二十、ptxas 与 SASS 审计</h2>
+<h2 id="二十九ptxas-与-sass-审计">二十九、ptxas 与 SASS 审计</h2>
 <p>cubin 交给 GPU 之前，编译器还能做最后一类工作：审计。ptxas（NVIDIA 的
 PTX 汇编器）每次编译都打印一份资源报告，nvdisasm 能把 cubin 反汇编成
 SASS（硬件真实执行的指令序），compute-sanitizer
-能在真机上拦截越界与竞态。这三样东西构成本编译器的资源审计方法学：调度器的成本模型从静态计数取数（第二十八章），配置门从资源包络复核（第三十六章塔总览表），缺陷定位从报告与反汇编差分取证。本章讲四个审计手法，每个配真实输出或真实案例。</p>
+能在真机上拦截越界与竞态。这三样东西构成本编译器的资源审计方法学：调度器的成本模型从静态计数取数（第十一章），配置门从资源包络复核（第三十六章塔总览表），缺陷定位从报告与反汇编差分取证。本章讲四个审计手法，每个配真实输出或真实案例。</p>
 <h3 id="1-ptxas--v资源报告的读法">1. ptxas -v：资源报告的读法</h3>
 <p>ptxas 加 -v 编译时输出逐入口资源报告，字段含义固定。一份真实输出（G4
 时代 kkt 配置，scripts/run_l2.sh 第 81 行把 stdout/stderr 落盘为
@@ -2702,7 +4009,7 @@ meta.json——每个配置目录自带一份机器可读的资源档案。</p>
 <p>本编译器每个 kernel 被同一 ptxas 编译两次：run_l2.sh
 的第一遍（kernel.ptx 到 kernel.cubin，报告落 ptxas_v.txt），与
 gdn_smem_fix.py 改写后的第二遍（kernel_smemfix.ptx 到出货
-cubin）。两遍的 PTX 文本不同（第十九章的变换全部生效），ptxas
+cubin）。两遍的 PTX 文本不同（第二十八章的变换全部生效），ptxas
 的调度自由度不同，寄存器分配可以合法地不同——所以 ptxas_v.txt
 的数字对出货 cubin 没有对账效力。这个陷阱有一个完整案例。一次双 CTA
 构建按 ptxas_v.txt 记录了 128 寄存器并据此判定驻留合法；实测该 kernel
@@ -2710,7 +4017,7 @@ cubin）。两遍的 PTX 文本不同（第十九章的变换全部生效），p
 实际占用 168 寄存器，2×256×168 超过 65,536，每 SM 只剩 8 个
 warp。复盘确认：第一遍报告 128，第二遍的改写后 PTX 给了 ptxas
 不同的调度空间，落到 168 寄存器、零溢出。修复是 PTX 源内注入 .maxnreg
-128（第十九章第三节），注入后的第二遍重新对齐：</p>
+128（第二十八章第三节），注入后的第二遍重新对齐：</p>
 <pre><code>ptxas-blackwell info    : Used 174 registers, used 1 barriers, 47616 bytes smem
 ptxas-blackwell info    : Used 128 registers, used 1 barriers, 88 bytes cumulative stack size, 47616 bytes smem
 ptxas-blackwell info    : Function properties for gdn_dqkwg_kernel_kernel
@@ -2733,7 +4040,7 @@ HMMA（张量核）、LDGSTS（cp.async）、LDS/STS（共享读写）、LDL/STL
 签名清单与 ex2 变体清单（120-122 行），直接供第三十八章 T1
 覆盖矩阵作输入。计数的验证口径：18 个配置的静态 PTX 计数与生成器预测
 18/18 精确一致（mma.sync、ld.shared、bar.sync 全对，cp.async 偏差不超过
-1.6%，第二十八章）。成本模型消费端的一个细节：溢出项的计数在 ptxas
+1.6%，第十一章）。成本模型消费端的一个细节：溢出项的计数在 ptxas
 报告缺失时回退到 SASS 的 LDL 加 STL 静态计数，并除掉流水 peel
 造成的函数体复制，换算成动态次数再除以带宽速率（tools/gdn_costmodel.py:616-625、711-712）。SASS
 侧的计数因此直接进了排序公式——审计产物与调度器之间有一条真实数据流。</p>
@@ -2743,11 +4050,11 @@ compute-sanitizer：越界与竞态的定位器</h3>
 在真机上拦截原始访问。两个本仓真实案例。其一，TMA 对齐缺陷：静态 .shared
 以 .align 16 声明时 ptxas 把 tile 摆到 16B 而非 128B 边界，运行以
 CUDA_ERROR_MISALIGNED_ADDRESS 陷入，sanitizer 把故障点定位到 UTMALDG.4D
-这一条装载指令（evidence/G4/GATE_REPORT.md:139-142）——从"哪条指令"反推"对齐要求"，第十九章的
+这一条装载指令（evidence/G4/GATE_REPORT.md:139-142）——从"哪条指令"反推"对齐要求"，第二十八章的
 .align 128 由此立规。其二，重名 .shared 合并缺陷：ptxas
 跨入口静默合并重名符号后，mono 的 f3 kernel 经 f1
 的更小符号越界写共享内存，sanitizer 报出 0xa800 处的 shared
-write（evidence/G5/fwd_report.md:238）——第十八章合并时的逐 kernel
+write（evidence/G5/fwd_report.md:238）——第二十七章合并时的逐 kernel
 改名由此立规。racecheck 工具同样在册：跨 warp
 扫描原语的同步缺陷即由它配合逐位一致性协议定位（evidence/G5/scratch/r17f/racecheck_f1ks.py）。</p>
 <h3 id="5-sass-差分一条指令定案一个缺陷">5. SASS
@@ -2771,1056 +4078,6 @@ CTA 共驻时读到同 SM 另一 CTA
 差分把"数值错误"翻译成"驻留依赖"，tile
 转储再把"驻留依赖"翻译成"具体循环的具体跨步"——两级证据把一个只在共驻时显形的缺陷变成一条可指认的代码行。这个案例也解释了为什么逐位一致性协议（第三十六章）在此类缺陷上不可或缺：损坏值多在
 1e-14 量级，数值容差永远抓不住它们。</p>
-<h2 id="二十一把-autotune-变成求解器动机与总体设计">二十一、把 autotune
-变成求解器：动机与总体设计</h2>
-<p>本章与后续五章讲同一份源码：tools/gdn_solver.py，661
-行，含命令行与自检。它的职责在编译器总览里只占一句话——为给定形状求出全部合法的旋钮组合并按预测时间排序——但这一句是整个
-L2
-调度层的心脏。先说清它为什么存在。手写内核把调度决策固化在源码里（FlashQLA
-的 warp 专化调度即手写成果），Triton 系把决策推迟到运行时（fla
-每形状首次搜索需 39.8 秒设备时间，48
-个配置逐个上机）。两条路线各有代价：前者每换一个形状、每加一个算子都要重新手写，后者的搜索开销与冷启动由每个部署进程反复支付。第三条路线把"哪些旋钮组合合法"表述为一个约束可满足性问题，在编译期求解、在编译期排序、在编译期产出工件。本章讲这条路线的动机与总体设计，第二十二到二十六章按建模、约束、枚举、防御、复现五个侧面把源码读完；读完的标准是读者能照写一个自己的调度求解器。</p>
-<p>术语先立三条。Z3 是一个 SMT 求解器；SMT（Satisfiability Modulo
-Theories，模理论可满足性）在布尔可满足性问题（SAT）之上叠加整数算术、布尔量等理论的可满足判定，z3py
-是它的 Python 前端。旋钮向量指十维离散决策变量——数据类型、精度、tile
-三个维度、warp 数、流水深度、mma 开关、warp 专化、TMA——即第十二章
-transform
-工件的参数化自由度。合法指同时满足耦合、结构与资源三类约束（第二十三章）。</p>
-<h3 id="1-哲学的移植与两问">1. 哲学的移植与两问</h3>
-<p>第一章表 1 对标的哲学是 XLA 在 TPU
-上的调度组织：调度决策全部在编译期做出、编译产物不携带运行时搜索、每层
-IR 独立可验证。把这套哲学移植到原生 MLIR、消费级
-Blackwell、单算子族上，在写任何求解代码之前必须先回答两问，且两问都不关于求解器本身。</p>
-<p>第一问，凭什么排序。求解器只判定合法性，"哪个合法配置更快"由成本模型回答；若成本模型不可靠，全空间枚举只是把错误的排序做得更全面。本项目的答案先行验证：零自由常数的校准解析成本模型，对
-18 个实测配置的 Spearman 秩相关 0.8962（门槛
-0.7），全部结构常数扰动正负两倍后秩相关仍在
-0.882–0.902（第二十九章）。第二问，凭什么相信。求解出的配置要真的编译、真的装载、真的算对，这由验证塔把关：L2
-出口有 ptxas 静态资源复核（第二十章），L3 逐配置对 fp64 参考，L4
-交错终判（第三十七章）。</p>
-<p>两问的答案塑造了求解器的形态：职责三分——合法性归
-Z3，优劣归成本模型，正确性归验证塔。求解器因此可以很小且全部可读，它的每个输出在下游都有一道独立关卡复核。</p>
-<h3 id="2-为什么是-z3">2. 为什么是 Z3</h3>
-<p>合法性问题的形状决定工具。约束是异构的：整除性（tile
-对齐写成整除断言）、布尔蕴涵（TMA 的启用蕴含 warp
-专化）、资源不等式（共享内存字节数不超过容量），并且资源项本身按布尔旋钮分岔——mma
-开关在两套字节公式中选一套。这类整数、布尔与条件算术的混合组合约束正是
-SMT
-求解器的原生工作负载：约束写成符号断言交给求解器，可满足性的判定与满足指派的提取都由它完成。若以嵌套循环手写合法性过滤，耦合与资源约束会摊进多层循环条件里，每加一条约束都要改动循环结构；写成断言列表后，加一条约束只是加一行
-s.add，且每行与文档逐条对应（第一章章节地图所称的"约束即代码"）。Z3
-还自带枚举机制：对已产出的解追加一条阻塞子句，下一次判定即给出新解，全空间穷尽有现成的循环写法（第二十四章）。</p>
-<h3 id="3-上移一层从指令时槽到旋钮向量">3.
-上移一层：从指令时槽到旋钮向量</h3>
-<p>这套机制的血统来自 TileLang。TileLang 自带一个 z3
-调度器，但它只存在于 Ascend 后端，CUDA
-侧退化为运行时搜索。它的机制是模调度（modulo
-scheduling，软件流水的经典构造）：决策变量是每条指令的发射时槽，求解器在依赖与资源约束下最小化启动间距（II，initiation
-interval），由延迟估计引导对 II
-做二分搜索。本项目移植该机制并上移一层：决策变量从"每条指令何时发射"改为"这份内核用哪组旋钮"。源码头部的自述：</p>
-<pre><code>GDN Z3 knob solver (G3-B): TileLang z3_scheduler mechanism ported to
-CUDA/sm_120 - v1 form: SMT enumeration/ordering of the DISCRETE KNOB
-SPACE (not instruction start-time scheduling yet).
-
-  objective   : minimize the calibrated analytical cost model
-    (tools/gdn_costmodel.py). The cost model is non-linear
-    (max/blend, divisions), so v1 enumerates every legal knob
-    assignment with Z3 (SAT + blocking clauses) and ranks
-    outside the solver - same role as TileLang&#39;s
-    estimate_latency-guided II binary search, one level up.</code></pre>
-<p>［tools/gdn_solver.py:1-4、14-19，模块 docstring
-节选，机制与目标两段］</p>
-<p>上移一层带来两个直接后果。其一，解即工件参数：旋钮向量经一次字典翻译即成
-transform 工件的 factor、depth、tile_sizes
-与发射几何（第十二、二十二章），流水线里没有指令调度器这个部件，指令级编排由
-NVVM
-管线与生成器模板承担。其二，问题规模塌缩：变量十个、每维取值个位数，合法空间只有数百个点，穷尽枚举在亚秒级完成，"求解"从搜索问题变成枚举问题。</p>
-<h3 id="4-总体数据流">4. 总体数据流</h3>
-<p>求解器坐在一条单向流水的中段，源码 docstring
-把下游记作回环（loopback）：solve 之后，Top-K 配置交 gdn_l2_gen.py
-生成并编译（scripts/run_l2.sh 驱动），ptxas -v
-做静态资源复核，再用实测的编译期特征重排，幸存者进窗口计时（23-26
-行）。各站与承载：</p>
-<p>表 21-1：求解回环 | 站 | 做什么 | 承载 | |---|---|---| | 建模 |
-声明十维变量与域 | KnobSpace 构造器（第二十二章） | | 约束 |
-耦合、结构、资源三类断言 | 同上（第二十三章） | | 枚举 |
-全空间穷尽、记录结束态 | enumerate（第二十四章） | | 排序 |
-成本模型预测、终排序键定序 | gdn_costmodel 与
-solve（第二十四章、第二十八章） | | 实例化 | Top-K 配置生成工件与 cubin
-| gdn_l2_gen.py 与 run_l2.sh | | 复核与计时 | 资源包络对账、窗口裁决 |
-ptxas -v（第二十章）、交错终判（第三十七章） |</p>
-<p>数字放进语境。kkt 阶段合法空间 368 个配置，枚举 0.29 秒；o 阶段 465
-个配置，0.33 秒。两个数字的含义分开读：368 与 465
-说明空间小到可以穷尽——穷尽给出完备性，排名覆盖每一个合法点；0.29 与 0.33
-说明穷尽快到可以放在编译期——合进标定读取与成本模型计算，整条新形状调度
-0.8 秒纯 CPU、GPU 时间为零，对照 fla 首搜 39.8
-秒设备时间。穷尽的收尾是一个可机查的凭证：最后一次判定返回
-unsat，即"再无未枚举的合法点"（第二十四章）；这份凭证随输出落盘（第二十六章）。</p>
-<h2 id="二十二旋钮空间的建模">二十二、旋钮空间的建模</h2>
-<p>求解器读到的世界由建模决定。建模回答两个问题：哪些自由度交给求解器（决策变量），每个自由度允许取哪些值（域）。这份建模的质量决定下游一切——约束引用变量、枚举读取模型、补全遍历域、阻塞子句按声明序构造，全部挂在这份十维声明上。本章逐段读源码的变量声明与域定义两段，最后讲"决策变量选在旋钮层"这条设计决策的含义。</p>
-<p>术语先立。决策变量（decision
-variable）指求解器自由指派的符号量；z3.Int 声明整数符号常量、z3.Bool
-声明布尔符号常量，求解之前它们没有值，只是约束里的名字。域（domain）指一个变量的全部候选取值集合。</p>
-<h3 id="1-十维决策变量与固定声明序">1. 十维决策变量与固定声明序</h3>
-<p>七个整数变量加三个布尔变量，按一个写死的顺序声明：</p>
-<pre><code># -- decision variables (fixed declaration order =&gt; determinism) --
-dtype = z3.Int(&quot;dtype&quot;)            # 0 = bf16, 1 = f32
-prec = z3.Int(&quot;prec&quot;)              # 0 = bf16, 1 = tf32
-bt = z3.Int(&quot;tile_M&quot;)
-bv = z3.Int(&quot;tile_N&quot;)
-bk = z3.Int(&quot;tile_K&quot;)
-warps = z3.Int(&quot;warps&quot;)
-pipe = z3.Int(&quot;pipeline&quot;)
-mma = z3.Bool(&quot;mma&quot;)
-ws = z3.Bool(&quot;warpspec&quot;)
-tma = z3.Bool(&quot;tma&quot;)
-self.v = dict(dtype=dtype, prec=prec, bt=bt, bv=bv, bk=bk,
-              warps=warps, pipe=pipe, mma=mma, ws=ws, tma=tma)</code></pre>
-<p>［tools/gdn_solver.py:98-110，逐字］</p>
-<p>整数承载"从几个候选里选一个数"的维度：dtype 与 prec 各两个候选，tile
-三维、warp 数、流水深度从各自域里选。布尔承载开关：mma、warp
-专化、TMA。整数与布尔的分工本身是一个编码决策。dtype 只有 0 与 1
-两个候选，表面上看布尔也装得下；用整数的理由有两条。其一，它要进入算术：共享内存字节模型按
-dtype 选元素宽度（第二十三章的 esz 项），条件写法是 If(dtype == 0, 2,
-4)，整数比较是最直接的载体。其二，统一的整数编码让多数读回路径走同一条
-as_long
-转换。布尔用在纯开关上，代价是三处代码都要做类型分派——阻塞子句对布尔维用
-BoolVal、对整数维用 IntVal（254-256 行），域登记要分别写 (False, True)
-与整数元组。编码的原则可以提炼成一句：进算术的用整数，纯开关的用布尔，两类的分派集中在一处处理。</p>
-<p>self.v
-这份字典是变量的唯一登记处，声明序即字典序——注释把意图写明：固定声明序服务于确定性。这个顺序被三处消费：枚举循环按它读取模型（for
-k, zv in
-self.v.items()，第二十四章）、补全按它遍历缺失键（第二十五章）、阻塞子句按它逐项构造。声明序因此是确定性控制面的第一根支柱（第二十六章）。</p>
-<h3 id="2-域从全局维与硬件宽度推导">2. 域：从全局维与硬件宽度推导</h3>
-<p>域不硬写在求解断言里，先经三份模块级常量给出基域：</p>
-<pre><code>TILE_DOMAIN = (32, 64, 128)      # G3 knob-space definition (see report:
-# gdn_l2_gen also admits M=16 and 8-multiples below 32; excluded here per
-# the G3 knob-space contract)
-WARPS_DOMAIN = (2, 4, 8)
-PIPE_DOMAIN = (0, 2, 3)</code></pre>
-<p>［tools/gdn_solver.py:70-74，逐字（注释并入）］</p>
-<p>tile 三档候选来自切块的常用粒度；warp 数三档对应 64/128/256
-线程的发射几何；流水深度 0、2、三档覆盖关闭与两级软件流水。深度 0
-的语义是关闭流水：字节模型里缓冲版本数写作 If(pipe &gt; 0, pipe,
-1)（第二十三章），0 与 1
-折叠为同一份单缓冲。基域再按当前阶段与形状过滤——tile
-必须整除对应的全局维，否则切块铺不满边界：</p>
-<pre><code>m_dom = [t for t in tile_domain if 64 % t == 0]
-n_dom = [t for t in tile_domain
-         if self.n_glob % t == 0 and t &gt;= 8]
-k_dom = [t for t in tile_domain if K % t == 0 and t &gt;= 8]
-s.add(z3.Or([dtype == d for d in (0, 1)]))
-s.add(z3.Or([bt == t for t in m_dom]))
-s.add(z3.Or([bv == t for t in n_dom]))
-s.add(z3.Or([bk == t for t in k_dom]))
-s.add(z3.Or([warps == w for w in WARPS_DOMAIN]))
-s.add(z3.Or([pipe == p for p in PIPE_DOMAIN]))</code></pre>
-<p>［tools/gdn_solver.py:112-121，逐字；n_glob 与 n_gemm 的阶段分岔在
-90-91 行（kkt 阶段 64、o 阶段 V）］</p>
-<p>域的约束来源有三。其一，整除全局维：M 维的整除对象是常量 64，即 chunk
-尺寸；N 维整除 n_glob（kkt 阶段 64、o 阶段 V）；K 维整除归约长度 K。tile
-不整除全局维时边界产生残块，生成器不处理残块，因此直接从域里剔除。其二，宽度下限：N、K
-两维加了 t &gt;= 8 的下限，低于 8 的取值不构成有效的 tile
-划分。其三，合同裁剪：生成器 gdn_l2_gen 本身允许 M=16 与 32 以下的 8
-倍数，G3
-旋钮空间合同显式把它们排除，把研究空间钉在报告口径上——注释里专门留了这段交代，防止后人把"求解器域"误读为"生成器能力"。</p>
-<p>域登记两次。第一次作为约束：z3.Or
-的成员断言告诉求解器每个变量只许取域内值。第二次作为 Python
-数据：self.domains 字典把十个变量的候选存成元组（bt、bv、bk 三项直接复用
-m_dom/n_dom/k_dom 的过滤结果，168-173
-行），供补全算法按序探测。同一份过滤结果供两个消费方，约束与数据不会漂移。</p>
-<h3 id="3-决策变量是旋钮解即工件参数">3.
-决策变量是旋钮：解即工件参数</h3>
-<p>决策变量选在旋钮层，带来的简化贯穿全链。枚举产出的向量经 to_config
-翻译为配置字典（261-275 行），再经 config_name 拼成规范名（278-289
-行）——kkt_bf16_mma_p2_t64x64x32_w4
-这样一段字符串。规范名既是证据文件里的键，也是第三十八章 T2
-结构匹配的检索键。向量到工件的映射是直接的：pipe 同时供
-transform.memref.multibuffer 的 factor 与 pipeline_shared_memory_copies
-的 depth 取参（第十二章），tile 三维给 tile_sizes，warps
-给发射几何，dtype、prec、mma、ws、tma 选择生成器路径与载荷形态。</p>
-<p>这条设计的深层含义：求解器的解无需经过任何指令级翻译即可执行。变量是旋钮时，一个满足全部约束的指派本身就是
-transform 工件的参数表；合法性已在求解层断言（第二十三章），实例化后的
-ptxas
-静态复核（第二十章）作为第二道对账存在。求解器因此不包含任何指令调度逻辑——它解出的每个值都直接是生成器的一个参数。对照
-TileLang
-的做法（第二十一章）：变量落在指令时槽时，求解器之后还需要一套从时槽到代码的展开机制；变量落在旋钮层时，展开机制由既有的工件模板承担，求解器与生成器之间只剩一份字典翻译。</p>
-<p>翻译本身值得看一眼，它是解与工件之间的全部黏合：</p>
-<pre><code>def to_config(self, kv):
-    cfg = {
-        &quot;stage&quot;: self.stage,
-        &quot;dtype&quot;: &quot;bf16&quot; if kv[&quot;dtype&quot;] == 0 else &quot;f32&quot;,
-        &quot;prec&quot;: &quot;bf16&quot; if kv[&quot;prec&quot;] == 0 else &quot;tf32&quot;,
-        &quot;dims&quot;: {&quot;K&quot;: self.K, &quot;V&quot;: self.V if self.stage == &quot;o&quot; else 64},
-        &quot;tile&quot;: {&quot;M&quot;: kv[&quot;bt&quot;], &quot;N&quot;: kv[&quot;bv&quot;], &quot;K&quot;: kv[&quot;bk&quot;]},
-        &quot;warps&quot;: kv[&quot;warps&quot;],
-        &quot;mma&quot;: kv[&quot;mma&quot;],
-        &quot;pipeline&quot;: kv[&quot;pipe&quot;],
-        &quot;warpspec&quot;: &quot;producer_consumer&quot; if kv[&quot;ws&quot;] else &quot;off&quot;,
-        &quot;tma&quot;: &quot;on&quot; if kv[&quot;tma&quot;] else &quot;off&quot;,
-    }
-    cfg[&quot;name&quot;] = config_name(cfg)
-    return cfg</code></pre>
-<p>［tools/gdn_solver.py:261-275，逐字］</p>
-<p>翻译是逐维一一对应的：整数码转回字符串枚举（0 转 bf16、1 转
-f32），布尔转回开关语义，dims 按阶段补齐形状参数。名字由 config_name
-按固定模板拼出（278-289 行）——阶段、类型、mma 路径、流水深度、tile
-三维、warp 数，warp 专化与 TMA
-作后缀。同一向量永远拼出同一名字，排名文件、证据目录与第八章 T2
-结构卡因此共享同一套键；回读方向同理，knob_vector
-把配置字典还原为向量（292-298 行），供枚举结果与生成器 INDEX
-对账。解、配置、名字、工件四层之间的映射全部是纯函数式的字典翻译——这正是"决策变量是旋钮"在工程上的兑现：没有隐藏状态，没有需要解释的中间表示。</p>
-<h2 id="二十三约束工程">二十三、约束工程</h2>
-<p>约束是领域知识进入求解器的唯一通道。每条约束对应一条可以独立陈述的合法性事实——旋钮之间的语义依赖、工件拼写的对齐要求、硬件资源的容量上限。约束工程的目标是让这份知识可审计：断言列表与文档一一对应，任何一条可以被单独质疑、删除、验证。本章把
-KnobSpace
-构造器里的约束按耦合、结构、资源三类展开；前两类决定"拼写上存在的东西是否语义成立"，第三类决定"语义成立的东西是否装得进硬件"。</p>
-<p>术语先立。断言（assertion）指加入求解器的 z3 表达式；Implies
-是布尔蕴涵（前件成立则后件必须成立）；z3.If
-是条件项（按布尔条件在两个表达式里选一个的符号写法）。</p>
-<h3 id="1-耦合约束旋钮间的语义依赖">1. 耦合约束：旋钮间的语义依赖</h3>
-<p>某些旋钮只在另一些旋钮的取值下才有独立含义。精度旋钮 prec
-是典型：tf32 只对 f32 数据配 mma 的组合存在——</p>
-<pre><code># precision is a real knob only for dtype=f32+mma (tf32); bf16 mma
-# is bf16-only, f32 is tf32-only, and mma=off removes the knob.
-s.add(z3.Implies(dtype == 0, prec == 0))
-s.add(z3.Implies(dtype == 1, prec == 1))
-s.add(z3.Implies(z3.Not(mma), prec == dtype))</code></pre>
-<p>［tools/gdn_solver.py:123-128，逐字（注释并入）］</p>
-<p>三条断言的净效果：prec 拥有独立自由度当且仅当 dtype 为 f32 且 mma
-为真；其余组合下 prec 被固定，枚举不会产出"bf16 数据配 tf32
-精度"这类拼写上存在、语义上无意义的配置。warp 专化与 TMA
-的耦合同理（139-145 行）：ws 只对 kkt 阶段的 bf16 加 mma
-开放——注意这里的阶段条件是编码期就坍缩的 Python 布尔（stage
-是构造器参数，构建 kkt 空间时该项直接为真，构建 o
-空间时整条蕴涵的前件永假）；tma 蕴含 ws；ws 形态下 pipe 被固定为
-2——warpspec 载荷用 identity
-工件（第十二章），流水在该形态下不可观测，固定到内建约定是为了避免枚举出行为相同、名字不同的重复配置。耦合约束消灭的是冗余坐标：它们缩小的是编码的膨胀，语义空间本身没有变化。</p>
-<h3 id="2-结构合法性约束继承展品">2. 结构合法性约束（继承展品）</h3>
-<p>结构约束守住工件拼写的硬性要求——mma fragment
-的对齐与流水深度的上限：</p>
-<pre><code>s.add(z3.Implies(mma, bt % 16 == 0))                     # M 对齐
-s.add(z3.Implies(z3.And(mma, dtype == 0), bk % 16 == 0)) # bf16 K 对齐
-s.add(z3.Implies(z3.And(mma, dtype == 1), bk % 4 == 0))  # tf32 K 对齐
-s.add(z3.Implies(mma, bv % (8 * warps) == 0))            # N 对齐
-s.add(z3.Implies(z3.And(mma, pipe &gt; 0), K &gt;= bk * pipe)) # 流水深度 ≤ K 趟数</code></pre>
-<p>［tools/gdn_solver.py:131-137（继承展品）；紧随的 137 行给 nomma
-路径单设 K &gt;= bk］</p>
-<p>五条断言对应五个物理事实：M 维按 16 对齐，源自 mma fragment 的 M
-高度；K 维按数据宽度打包对齐，bf16 每 16 个元素一组、tf32 每 4
-个一组，来自 mma 指令的操作数布局；N 维按 8 乘 warps 对齐，每个 warp
-至少分得一个完整的 N 侧 fragment 份额；流水深度乘 tile K
-不能超过归约长度，multibuffer 的每份缓冲都要有对应的装载趟次；nomma
-路径若开流水，同样要求 K 装得下一次
-tile。注意这些断言全部带条件前件——Implies(mma, …)——因为 fragment
-布局只对 mma 路径存在；前件让约束在无关分支上自动失效，mma 与 nomma
-两条路径在同一约束集里互不挤占。这些约束把第十二章工件拼写的合法性（factor
-超过趟数、fragment
-尺寸错位）从"编译器报错时才发现"提前到求解阶段——被拒绝的组合根本不进入实例化，错误信息从
-ptxas 的回溯变成一行可指认的断言。</p>
-<h3 id="3-资源约束寄存器预算与-smem-字节模型">3. 资源约束：寄存器预算与
-smem 字节模型</h3>
-<p>资源约束把硬件容量写成不等式。寄存器一条，先看展品：</p>
-<pre><code>esz = z3.If(dtype == 0, 2, 4)
-threads = 32 * (warps + z3.If(ws, 1, 0))
-# regs: &lt;=255/thread is a ptxas given (all family members hit the
-# cap); the SM-level budget is threads*255 &lt;= 65536
-s.add(threads * 255 &lt;= 65536)</code></pre>
-<p>［tools/gdn_solver.py:148-152，逐字（注释并入）；esz 供下文 smem
-模型复用］</p>
-<p>不等式的三个成分各有出处。每线程 255 的上限来自 ptxas
-的分配事实——源码注释记录该算子家族的 kernel 全员顶格，保守按上限记账。每
-SM 65,536 个 32 位寄存器是 sm_120 的结构常数（gdn_costmodel.py 的
-REGS_PER_SM）。线程数按 32 乘 warp 数计算，ws 为真时多计一支——warp
-专化把一个 warp
-让渡给生产者角色，驻留与寄存器预算照付。这条断言的直接效果写在模块头部：warps=8
-加生产者 warp 即 288 线程，乘 255 超出 64K
-预算，该组合在求解阶段即被剔除，无需等编译失败（docstring 40-41
-行）。</p>
-<p>共享内存按字节模型记账（继承展品）：</p>
-<pre><code>pair = (bt * bk + bk * bv) * esz                    # tile 对字节
-smem_mma = z3.If(ws,
-                 pair + z3.If(tma, 64*64*esz, 0) + 8,  # ws：单缓冲+TMA staging+mbarrier
-                 pair * z3.If(pipe &gt; 0, pipe, 1) * n_gemm)  # 流水=多缓冲版本数
-smem_nomma = (bt * K + K * bv + bt * bv) * esz        # nomma：整 K 驻留
-smem = z3.If(mma, smem_mma, smem_nomma)
-s.add(smem &lt;= cap)                                   # strict 100,352B / generator 220KB</code></pre>
-<p>［tools/gdn_solver.py:153-161（继承展品）；n_gemm：kkt 阶段 1 个
-GEMM、o 阶段 2 个（90-91 行）］</p>
-<p>三种形态各有推导。其一，mma 无 warp 专化：共享内存放 A 与 B 两个
-tile（pair 字节，esz 随 dtype 取 2 或
-4）；流水的每个版本各要一套缓冲（multibuffer factor 等于 pipe，pipe 为 0
-视作 1）；o 阶段两个 GEMM 各配一对
-tile——三项相乘即该形态的字节数。其二，ws
-形态：生产者与消费者单缓冲，pair 一份即够；TMA 开启时加 64 乘 64 乘 esz
-的输出 staging，再加 8 字节的 mbarrier
-固定开销。其三，nomma：标量路径没有 tile 流水，K 维整段驻留，三个 tile
-的并集照全尺寸记账。容量分两档：strict 档 100,352 字节——sm_120 每块 99KB
-的 opt-in 上限减 1KB 驱动保留（gdn_costmodel.py 的 SMEM_TOTAL_B 减
-SMEM_RESERVED_B，112-114 行）——守住真机可装载；generator 档
-220KB，镜像生成器自身 validate() 的上限，用于与生成器口径对账。</p>
-<h3 id="4-写成-if-与-implies-的教学意义">4. 写成 If 与 Implies
-的教学意义</h3>
-<p>先把三类约束的清单摆在一起，便于对账：</p>
-<p>表 23-1：KnobSpace 构造器的断言清单 | 类别 | 条数 | 守护的对象 | 行号
-| |---|---|---|---| | 域成员 | 6 | 各变量只取域内值（第二十二章） |
-116-121 | | 耦合 | 6 | prec 对 dtype 与 mma 的从属；ws、tma、pipe
-之间的从属 | 126-128、140-145 | | 结构 | 6 | fragment 对齐、流水深度上限
-| 131-137 | | 资源 | 2 | 寄存器预算、共享内存容量 | 152、160 |</p>
-<p>二十条断言定义了第二十四章要穷尽的全部合法性。它们只用三个 z3py
-构造写成：Implies（蕴涵）、And 与
-Or（合取、析取）、If（条件项）。共同点是符号表达式：在没有具体取值时也成立，求解器对整张断言集做一次全局判定。这正是与
-Python if-else 的分野——if-else
-在编码期对具体值执行分支，而写约束时旋钮尚无值，分支无从执行；z3.If
-把分岔留进公式，求解器在搜索中对每个候选指派分别求值。教学上的收益有三条。约束即断言：每条
-s.add 可被单独验证——临时加一条假设再
-check，空间的空与非空就是对该假设的裁决。约束即文档：断言列表与字节模型的文字推导逐行对齐，审阅者对照阅读即可。约束即测试：删除任一条重新枚举，合法空间尺寸的变化就是该条约束的独立贡献量——这张清单同时也是一张可逐条做差分的实验设计表。</p>
-<h2 id="二十四sat-与阻塞子句全空间确定性枚举">二十四、SAT
-与阻塞子句：全空间确定性枚举</h2>
-<p>建模与约束定义了合法空间，枚举把它物化成一张完整清单。本章讲这台引擎的原理：z3py
-判定接口的三态语义、阻塞子句如何强制求解器给出新解、以及为什么对数百个点的空间穷尽枚举优于任何启发式。枚举的目标在函数
-docstring
-里写死：确定性顺序、完整覆盖、结束态可查。三个目标分别由三段机制承担——固定声明序（第二十二章）、阻塞子句循环、last_check
-记录。</p>
-<p>术语先立。可满足（satisfiable，sat）指存在一组变量指派使全部断言成立；不可满足（unsat）指证明不存在这样的指派；求解模型（model）指一个具体的满足指派，注意它与成本模型是两个词。</p>
-<h3 id="1-checkmodel-与三态语义">1. check、model 与三态语义</h3>
-<p>z3py 交互的核心是两个调用。Solver.check()
-对当前断言集做一次可满足性判定，返回三个值之一：sat，存在满足全部断派的指派；unsat，已证明不存在；unknown，求解器放弃——资源限额耗尽、问题落入判定能力之外的片段等。三态的认识论地位并不对等：sat
-与 unsat 是证明，unknown 只是承认。一个返回 unsat
-的求解器等于出具了"无解"的数学凭证；一个返回 unknown
-的求解器什么都没证明。这个不对称在第二十五章变成一整章的防御性设计——unknown
-绝不能与 unsat 混同处理。</p>
-<p>check 返回 sat 后，Solver.model() 取出一个满足指派。model 里的变量经
-m[var] 读回取值，但 model 的契约只保证"足以证明 sat
-的那部分指派"，被其余指派唯一决定的变量可能缺席——读回 None。这是 partial
-model
-现象，第二十五章展开其成因与补全。枚举循环先把这两件事做成一台引擎。</p>
-<h3 id="2-为什么把排序放在求解器外">2. 为什么把排序放在求解器外</h3>
-<p>z3 提供优化接口
-Optimize，可对目标函数求最小值，表面上正合"挑最快配置"的需求。本方案放弃它，理由记录在模块头部：成本模型是非线性的——项间取最大值、做混合、做除法（docstring
-15-16 行）。把这样的目标压进 SMT
-优化器，等于在非线性目标上做优化搜索，其完备性与行为可预期性都弱于纯判定问题。何况约束侧的字节模型本身已含变量乘变量（bt
-乘 bk），这类非线性整数算术 z3 只能不完全地处理，判定尚有返回 unknown
-的风险（第二十五章的防御正为此设），优化问题在此之上更甚。枚举加外排序的分工因此干净：求解器只回答"哪些合法"——每次一个纯判定问题；排序留在
-Python
-里逐项可审计，且每个配置的分解项（terms_ms）本来就要作为证据随排名输出。求解器与成本模型各司其职，中间的接口是一张完整清单。</p>
-<h3 id="3-阻塞子句强制新解">3. 阻塞子句：强制新解</h3>
-<p>枚举循环（继承展品）：</p>
-<pre><code>while len(out) &lt; limit:
-    r = s.check()
-    if r != z3.sat:
-        self.last_check = str(r)      # &quot;unsat&quot; = 空间干净穷尽
-        break
-    m = s.model()
-    # ……读取/补全各旋钮值……
-    out.append(vals)
-    block = [self.v[k] != z3.IntVal(v) for k, v in vals.items()]
-    s.add(z3.Or(block))               # 阻塞子句：下一解必须不同</code></pre>
-<p>［tools/gdn_solver.py:230-235、253-257，中间为模型读取与补全（继承展品，两段合排）；真实代码对布尔旋钮用
-z3.BoolVal 构造不等项，254-256 行］</p>
-<p>阻塞子句（blocking clause）的含义：对刚产出的向量 vals
-的每一维写一个"不等于当前值"，再把全部不等项用 Or
-连接后加入断言集。它的语义是"下一个解至少有一维与这个不同"——已产出的向量被整体排除，任何仍满足原约束加全部阻塞子句的指派必然是没见过的新向量。循环体每轮做三件事：check
-判定、model 取解加读取补全、block
-排除刚产出的解。同一向量不可能重复出现，因为它的阻塞子句永远在场；当全部合法向量都被阻塞后，check
-返回 unsat，循环以穷尽告终。limit
-参数（默认十万）是防御性护栏：清单长度超限时循环退出，此时结束态既非穷尽也非限额中断，由调用方检视。</p>
-<p>模型读取段（236-252 行）按声明序逐维读值：整数维经 val.as_long() 转
-Python 整数，布尔维经 is_true/is_false
-判定，缺席的维度进入补全路径（第二十五章）。读取与补全的次序也是固定的：先用一遍循环收集全部缺席键，再按声明序逐个补全（250-252
-行）——即使多个维度同时缺席，补全的先后也不依赖字典遍历的任何偶然。读取与补全全部结束后才构造阻塞子句——子句从补全后的
-Python 值构造，绝无直接使用读回的
-None；每轮的模型数、缺席数、补全数都累进 enum_stats（228-229
-行），防御路径的触发量随输出可查。</p>
-<h3 id="4-穷尽优于启发式unsat-作为穷尽凭证">4. 穷尽优于启发式，unsat
-作为穷尽凭证</h3>
-<p>这个空间只有数百个点——kkt 阶段 368 个、o 阶段 465
-个——穷尽枚举分别用时 0.29 与 0.33
-秒。在这个量级上，穷尽对启发式有压倒优势。启发式采样（挑一部分候选评估）省下的时间不足一秒，付出的代价是完备性：排名只覆盖样本，"更优配置落在未采样处"的可能性无法排除，且没有任何事后手段能区分"采样足够"与"恰好漏掉最优"。穷尽枚举的排名覆盖每一个合法点，完备性由求解器的返回值背书。</p>
-<p>这个背书是机器可查的。枚举如何结束被记录在 last_check 字段：循环因 r
-!= sat 退出时，str(r)
-存入——"unsat"意味着在全部约束加全部阻塞子句之下不存在任何指派，即空间已干净穷尽，这是求解器出具的证明；"unknown"则意味着判定被资源限额中断，空间只是被截断（第二十五章）。输出
-JSON 把 last_check 随 seed、rlimit、enum_stats（模型数、partial model
-数、补全次数）一并落盘（403-406
-行）：复核者不重跑就能看到穷尽凭证，重跑则应当得到逐字节相同的结果（第二十六章）。</p>
-<p>枚举清单的最终顺序由排序键定（新展品）：</p>
-<pre><code>ranked.sort(key=lambda r: (round(r[&quot;predicted_ms&quot;], 12), r[&quot;name&quot;]))
-for i, r in enumerate(ranked):
-    r[&quot;rank&quot;] = i + 1</code></pre>
-<p>［tools/gdn_solver.py:393-395，逐字；predicted_ms
-为成本模型预测的毫秒数（388 行）］</p>
-<p>排序键是一个两元组：预测毫秒先四舍五入到 12
-位小数——两个预测值相差一千万分之一毫秒纯属浮点尾噪，视为并列；并列者按配置规范名的字母序决胜。排序因此构成全序且确定：输出顺序与求解器给出模型的顺序完全解耦，即使枚举顺序有变，排名文件不变。这行代码是第二十六章确定性总账的收口一环。</p>
-<h2 id="二十五防御性求解补全与拒绝">二十五、防御性求解：补全与拒绝</h2>
-<p>求解器的输出直接喂给编译与计时，一个非法值或一份残缺清单都会污染整条证据链——下游的排序、Top-K、实例化与裁决全部建立在它之上。防御性求解因此把求解器库自身的产物当作不可信输入：求解模型可能缺维（partial
-model 现象），判定可能被资源限额中断（unknown
-截断）。本章讲两套防御——逐候选探测的补全，与解除限额后的重试加拒绝——以及它们背后的工程立场：宁可拒绝产出，绝不出具残缺空间。</p>
-<p>术语先立。partial model
-指缺少部分变量指派的求解模型；见证（witness）指足以证明可满足性的那份部分指派；补全（completion）指为缺席变量确定取值的过程。</p>
-<h3 id="1-partial-model-现象与成因">1. partial model 现象与成因</h3>
-<p>z3
-返回的求解模型只包含它认为需要指派的变量。当某个变量的取值被其余指派唯一决定——比如
-prec 在 dtype 与 mma
-的组合下只剩一个合法值（第二十三章的耦合约束）——求解器可以不把它写进模型。z3py
-的读回接口此时返回 None：一个空值，一个不抛异常的空值（docstring
-特意注明这是 z3py 的 get_interp 行为，218-219 行）。该行为符合 z3
-的契约：模型是可满足性的见证，只要它指派的变量足以验证 sat
-即可，没有义务为每个声明过的变量给出取值。现象在读回代码里的形态很朴素：m[zv]
-不抛错、不返回哨兵字符串，安静地给 None——若读回处直接
-as_long()，崩溃点是下游某行类型错误，与病因隔着一层。源码注释把这段历史记录在案：G6
-搜索成本测量中发现 enumerate 在 None 上崩溃（163-166
-行引文档记录）。防御的前提是承认现象会再来：补全逻辑是读回协议的一部分，每次读模型都要走。</p>
-<h3 id="2-补全算法逐候选-sat-探测继承展品">2. 补全算法：逐候选 SAT
-探测（继承展品）</h3>
-<pre><code>pin = [self.v[k] == z3.IntVal(v) for k, v in fixed.items()]
-s.add(z3.And(pin))
-for cand in self.domains[key]:
-    s.push()
-    s.add(self.v[key] == z3.IntVal(cand))
-    ok = s.check() == z3.sat          # 第一个保持可满足的候选即补全值
-    s.pop()
-    if ok: return cand</code></pre>
-<p>［tools/gdn_solver.py:192-204（继承展品）；外层先解除
-rlimit，避免探测被限额中断误判］</p>
-<p>算法四步：把已读回的值全部钉住（pin 断言，And
-连接）；按域的固定顺序逐个候选试探；每次试探 push
-保存求解器状态、断言该变量等于候选、check 判定、pop
-撤销；第一个保持整体可满足的候选即补全值。</p>
-<p>这个构造的安全性来自判定对象本身：候选被接受的条件是"钉住的指派加该候选在全部约束下可满足"，而判定的约束集正是定义合法性的那一份——非法候选在
-check
-处即被否决，补全不可能向清单注入任何非法值。换一个说法，合法性无需在补全处重复实现，它被委托给同一个求解器的同一条
-check。确定性有双重来源：域元组顺序固定，返回第一个合法候选；枚举遍历缺失键也按声明序进行（第二十二章）。存在性同样有保证：求解器返回的模型本身是
-sat 的，缺席变量在其余值钉住后至少还有一个合法取值（函数 docstring
-记录了这条论证，184-185 行）；万一全部候选被否决，RuntimeError
-把它当作求解器契约违例上报，异常文本带完整的阶段、K、V 与钉住值（205-209
-行），绝不静默返回。</p>
-<h3 id="3-探测前解除限额与-pushpop-卫生">3. 探测前解除限额与 push/pop
-卫生</h3>
-<p>补全的探测运行在限额解除的求解器上：进入 _complete 先把 rlimit
-置零，退出时在 finally 里恢复原值（187-189、210-212
-行）。原因在探测的判定语义：探测的 check 若被 rlimit 中断，返回的是
-unknown；代码把返回值与 z3.sat 比较，unknown 落在"非
-sat"一侧，会被误读成"候选被否决"——一个其实合法的候选被限额误杀，补全可能跳到后面的候选甚至误报无解。解除限额让探测的每次判定都是完备判定，"非
-sat"才严格等于"该候选确实非法"。</p>
-<p>push/pop 的配对同样严格：外层一个 push 包住全部 pin
-断言，每个候选一个 push/pop 对，finally
-保证异常路径也恢复现场。补全结束后求解器回到枚举离开时的状态——约束集与限额都复原，阻塞子句照常在其上叠加。还有一个次序细节：补全发生在本轮阻塞子句加入之前，所以被钉住的当前解此刻仍满足全部约束，"至少一个候选合法"的存在性论证才成立。</p>
-<h3 id="4-unknown-截断重试一次然后拒绝新展品">4. unknown
-截断：重试一次，然后拒绝（新展品）</h3>
-<p>枚举的另一个出口是 unknown。rlimit 耗尽时 check 返回 unknown，循环以
-last_check 记为 unknown
-结束——此时清单只是空间的截断，绝不能当作完整空间输出。solve 的处置：</p>
-<pre><code>if getattr(space, &quot;last_check&quot;, &quot;unsat&quot;) == &quot;unknown&quot;:
-    # rlimit abort BEFORE the space was exhausted: silently accepting
-    # it would return a truncated space as if complete (the G6 flake
-    # class).  Retry once with the cap lifted -- these spaces are
-    # small (&lt;= 1e3 configs), the uncapped pass costs well under a
-    # second, and the retry is deterministic.
-    rl_retry = True
-    space = KnobSpace(stage, K, V=V, mode=mode, rlimit=0)
-    combos = space.enumerate(limit=limit)
-    if getattr(space, &quot;last_check&quot;, &quot;unsat&quot;) == &quot;unknown&quot;:
-        raise RuntimeError(
-            f&quot;solver returned unknown even without the rlimit cap &quot;
-            f&quot;({stage} K={K} V={V}); refusing to emit a truncated &quot;
-            f&quot;space of {len(combos)} configs&quot;)</code></pre>
-<p>［tools/gdn_solver.py:360-373，逐字（注释并入）］</p>
-<p>三级处置。正常路径以 unsat 结束，空间干净穷尽。unknown 则整体重建：用
-rlimit 为零的参数新建一个 KnobSpace
-从头枚举——空间至多千级配置，无上限一遍远低于一秒（源码注释的原话：well
-under a
-second），且重试本身的确定性有保障（同种子同声明序，第二十六章）。重试仍
-unknown 则抛异常，异常文本明写 refusing to emit a truncated
-space——拒绝产出。重试的代价核算也写在注释里：这些空间极小，无上限一遍对
-0.8
-秒的新形状调度预算（第二十一章）没有实质威胁——防御没有以牺牲编译期调度的速度承诺为代价。</p>
-<p>工程立场在此一句话可以说尽：残缺空间里的排序没有意义。截断可能恰好截掉最优配置，其上的排名、Top-K、后续实例化与计时全部建立在一个看不见的洞上；把这样的清单交出去，失败要到几小时后的裁决环节才显形，且无法定位到"清单本来就残缺"这个根因。对照第二十四章的两态凭证：unsat
-是穷尽的证明，unknown
-什么都不证明——防御层做的事就是把这两态的差别从"实现细节"提升为"输出协议"。拒绝把一个不可见的失败变成一个立即的、带完整上下文的失败。防御路径的触发本身也被记账：enum_stats
-记录模型数、partial model 数、补全次数三个计数（228-229 行），随输出
-JSON 的 z3 字段落盘（403-406
-行）——补全是否触发、触发多少次、重试是否发生（rlimit_retry_uncapped），复核者逐项可查。</p>
-<h2
-id="二十六可复现性的工程学种子限额与逐字节一致">二十六、可复现性的工程学：种子、限额与逐字节一致</h2>
-<p>编译期调度拿走了运行时 autotune 的工作，就必须提供 autotune
-给不了的东西：决策过程可重放、决策产物可存档。运行时搜索的每一次结果都取决于当时的机器状态与竞争负载；编译期求解的每一次结果都应当取决于且仅取决于输入。本章讲求解器的确定性控制面——种子、资源限额与四道顺序纪律——以及它们如何让两次运行逐字节一致、让排名文件成为可存档、可
-diff、可在持续集成里断言的证据。</p>
-<p>术语先立。随机种子（seed）固定伪随机数序列的起点；rlimit 是 z3
-的资源计量上限；逐字节一致指两次运行的全部输出文件在字节层面完全相同，diff
-为空。</p>
-<h3 id="1-控制面种子与限额的设置">1. 控制面：种子与限额的设置</h3>
-<p>z3 求解器内部有启发式分支决策，两个参数把它钉成确定状态：</p>
-<pre><code>DEFAULT_SEED = 7                 # fixed (determinism)
-DEFAULT_RLIMIT = 20_000_000      # cap solver effort (determinism)
-...
-s = z3.Solver()
-# z3 5.1.0: the solver seed parameter is `random_seed`
-s.set(&quot;random_seed&quot;, seed)
-s.set(&quot;rlimit&quot;, rlimit)</code></pre>
-<p>［tools/gdn_solver.py:67-68、93-96，两段合排（注释逐字保留）］</p>
-<p>random_seed 固定分支启发式的伪随机源；源码注释专门记录了 z3 5.1.0
-的参数名拼写，这类版本细节正是复现时的暗礁。rlimit
-给求解工作量设上限，它的语义见第三节。两个默认值作为模块常量存在，调用方不改。docstring
-的确定性条款还有一句总纲：No RNG anywhere else（22
-行）——求解器之外的代码不存在任何随机源，整条链上没有第二个需要固定的随机状态。</p>
-<h3 id="2-rlimit-的语义确定性的资源计量">2. rlimit
-的语义：确定性的资源计量</h3>
-<p>rlimit
-计量求解器内部的资源单位——分支、传播等操作的加权计数，同一问题每执行一次消耗同样的单位。这使它与墙钟超时有本质差别：墙钟随机器与负载漂移，同一问题在不同机器上可能一次穷尽一次截断；rlimit
-与机器无关，同一问题、同一种子、同一限额，两次运行要么都干净穷尽，要么在同一决策点停下。限额因此同时兑现两件事。</p>
-<p>其一，截断可检测。限额耗尽时 check 返回 unknown，与"证明无解"的 unsat
-是不同的返回值——第二十五章的防御正是靠这个区分，把截断空间拦在产出之前；输出里的
-last_check
-字段让复核者看到枚举究竟以哪种方式结束。其二，截断可复现。即使截断发生，两次运行也截在同一处；解除限额重试的结果同样确定（重试标志
-rlimit_retry_uncapped 随输出落盘）。限额值取
-2×10⁷，对这两个空间绰绰有余（0.29 与 0.33 秒穷尽 368 与 465
-个配置），无上限重试路径作为保险丝存在。一句话概括设计意图：限额是一道确定性的闸，关上时行为可预期，必要时可整体拆除重跑。</p>
-<h3 id="3-四道顺序纪律">3. 四道顺序纪律</h3>
-<p>种子只固定求解器内部的随机性，输出的顺序还依赖四道显式纪律。</p>
-<p>表 26-1：确定性控制面的四道顺序纪律 | 纪律 | 固定的对象 |
-出处与消费处 | |---|---|---| | 变量声明序 | self.v 字典十个键的登记顺序
-| 98-110 行声明；模型读取、补全遍历、阻塞子句构造都按它 | | 域序 |
-domains 各元组的候选排列 | 168-173 行；补全探测按序取第一个合法候选 | |
-阻塞子句序 | 每轮阻塞项的构造与叠加顺序 | 254-257
-行；求解器行为依赖断言集内容与顺序 | | 终排序键 |
-预测毫秒四舍五入到十二位小数，并列按配置名 | 393
-行；输出清单与模型产出顺序解耦 |</p>
-<p>四道纪律的合力可以这样读：求解器每次 check
-面对同一棵搜索树（种子加断言序固定），产出的解序列一致；解序列再经固定的补全顺序与固定的排序键重排，输出清单逐项一致。任何一个环境变量、任何一个字典遍历顺序的偶然变化，都会在第一时间表现为两次运行输出文件的
-diff——可复现性因此本身就是一道回归检测。</p>
-<h3 id="4-逐字节一致的验证与排名作为证据">4.
-逐字节一致的验证与排名作为证据</h3>
-<p>验证方式是直接的：同一命令行运行两次，对输出 JSON 做字节级比较，diff
-为空即通过。第三十六章记录的结果即由这条控制面保证：Z3 固定声明序、种子
-7、资源上限 2×10⁷，两次完整编译逐字节一致；生成器同种子两次生成的 MLIR
-哈希相同；全部旋钮关断时产物与默认配置逐字节等价（27 份 payload、18 个
-cubin）。输出 JSON 同时是它自己确定性配置的说明书——z3 字段落盘
-seed、rlimit、last_check、rlimit_retry_uncapped 与 enum_stats（403-406
-行），复核者拿到一份排名文件，就同时拿到了产出它的全部确定性参数。</p>
-<p>求解器只是编译端确定性工程的一环，同一原则在两侧延伸。编译端上游：生成器产物走
-MLIR 哈希比对；PTX
-后处理的缓存键取全部旋钮环境变量加源码指纹的哈希，键不匹配时缓存自动失效——缓存命中与重新计算不产生分歧。运行端：同一
-cubin、同一输入、同一发射几何下输出逐位一致，跨进程（全新 CUDA
-上下文与模块加载）验证五次全过方为通过；该协议抓到过五个真实竞态，全部在数值容差之内——数值验证对这类缺陷无感，逐位一致性是唯一能抓到它们的尺子（第三十六章）。两侧合起来，"确定性"在本项目里是一个可检验的合同，从求解器的种子一路贯穿到设备上的输出字节。</p>
-<p>排名文件由此获得三重身份。可存档：它是文本，随证据树归档，第几次运行、哪年哪月产出都以字节固定。可
-diff：两次运行逐字节一致，约束或成本模型的任何改动都会表现为排名文件里的可见行——哪个配置升了、哪个降了、空间尺寸变没变，一目了然。CI
-可断言：持续集成重跑求解并比对输出哈希，"调度决策漂移"从一句担忧变成一个红绿灯；排序质量门槛（Spearman
-不低于 0.7）同样可以从 validate 报告直接断言。</p>
-<p>这正对应第一章表 1
-的第二支柱（编译期确定性调度）：从约束模型、枚举清单、排名到 transform
-工件，调度决策的全链由文本中介。一份调度决策因此可以像源代码一样被引用、评审、质疑与回滚——第二十一章的两问（凭什么排序、凭什么相信）最终落在这份可复现的证据文件上。</p>
-<h2
-id="二十七一次性标定六个微基准与标定表">二十七、一次性标定：六个微基准与标定表</h2>
-<p>编译期调度把配置排序整个搬到编译时刻，排序的依据是解析成本模型（第二十八章）；模型的每一项都是"指令计数除以硬件速率"，速率这个分母必须有一个可信来源。候选来源有三：厂商数据手册、公开的第三方基准、自己测。对
-sm_120a
-这块消费级笔记本芯片，第一条路给不出完整的逐指令吞吐表，第二条路给的是桌面卡数值；更实质的困难在于部署窗口的
-GPU
-常与其它计算任务共载，可用带宽与时钟都偏离标称。项目因此设立一次性标定（calibration）：六个微基准
-kernel 在一个 GPU
-窗口内测出模型需要的全部速率，构成标定表。术语约定：标定指用专用微基准测量硬件速率常数的一次性动作；微基准指只测一种速率、其余因素压到最小的最小
-kernel；共载指测量窗口内 GPU
-上同时驻留其它计算任务。标定的全部代价是单次沉没成本：一个约一分钟的窗口、低于
-2GB 的显存，此后每个新形状的调度只消费这张表。</p>
-<h3 id="1-为什么编译期排序必须有自己的速率来源">1.
-为什么编译期排序必须有自己的速率来源</h3>
-<p>成本模型的契约禁止逐配置拟合（第二十八章第一节），速率因此必须整批来自某处。占位速率表与实测的对照说明问题有多大。加载器内置的
-FALLBACK
-表（注释明写为数据手册级估计、非测量，仅在标定文件缺键时启用并逐键点名）与实测对照：全局内存读带宽占位
-1792 GB/s，实测 824.6 GB/s，占位值是实测的 2.2 倍；共享内存读带宽占位 20
-TB/s，实测 113.1 TB/s，占位值不足实测的五分之一；bar.sync 占位 30
-ns，实测 7.707 ns，占位值是实测的 3.9
-倍［tools/gdn_costmodel.py:142-153；evidence/G3/calibration.json］。误差方向不一、幅度跨数倍——时间项等于计数除以速率，分母这样失真会把各资源项的权重关系整个搅乱，排序随之失真。</p>
-<p>规范带宽同样不可用：这块卡的 GDDR7 规范带宽约 1.8 TB/s，实测共载窗口
-824.6 GB/s、干净窗口 851.4 GB/s［evidence/G3/calib_report.md
-§1］。调度要预测的恰是实际窗口里的执行，标称数字对它没有约束力。反方向的要求又有限度：第二十九章的扰动实验表明全部结构常数正负两倍缩放时秩相关仍稳定在
-0.882–0.902。标定的设计目标由此定形——速率必须实测，精度达到排序容差即可，测量条件必须随数据一并披露。</p>
-<h3 id="2-六个微基准各测什么怎么写">2. 六个微基准：各测什么、怎么写</h3>
-<p>六个 kernel 全部住在一个 276 行的 CUDA
-源文件里［tools/gdn_calib/calib_bench.cu］，共享三条写作纪律。其一，每个
-kernel
-把累加结果经一条永不成立的分支写出，防止编译器死代码消除删掉整段被测代码（文件头
-12-13 行明写此意图）。其二，计时用 CUDA 事件，5 次以上预热后计 50
-次、取中位数（time_kernel，132-154 行）。其三，网格取 82 个 SM 乘 8
-块以饱和全机（178 行）。</p>
-<p>（a）mma 峰值。k_mma 每线程维护 8 条独立的 mma
-累加链填满指令级并行，一条 warp 指令恰为一个 4096 FLOP 的 m16n8k16
-原子：</p>
-<pre class="cuda"><code>__global__ void __launch_bounds__(128) k_mma(int reps, float* sink) {
-  uint32_t a0 = 0x3f803f80u + threadIdx.x, a1 = a0 ^ 0x00ff00ffu;
-  uint32_t a2 = a0 + 1, a3 = a1 + 1;
-  uint32_t b0 = 0xbf80bf80u + blockIdx.x, b1 = b0 ^ 0x00010001u;
-  float c0 = 0.f, c1 = 0.f, c2 = 0.f, c3 = 0.f;
-  for (int it = 0; it &lt; reps; ++it) {
-#pragma unroll
-    for (int u = 0; u &lt; 8; ++u) {
-      asm volatile(
-          &quot;mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32 &quot;
-          &quot;{%0,%1,%2,%3}, {%4,%5,%6,%7}, {%8,%9}, {%0,%1,%2,%3};\n&quot;
-          : &quot;+f&quot;(c0), &quot;+f&quot;(c1), &quot;+f&quot;(c2), &quot;+f&quot;(c3)
-          : &quot;r&quot;(a0), &quot;r&quot;(a1), &quot;r&quot;(a2), &quot;r&quot;(a3), &quot;r&quot;(b0), &quot;r&quot;(b1));
-    }
-  }
-  if (c0 == 1e30f) sink[blockIdx.x] = c0 + c1 + c2 + c3;
-}</code></pre>
-<p>［tools/gdn_calib/calib_bench.cu:35-51，逐字；末行即防死码消除的永不成立分支］</p>
-<p>（b）共享内存读带宽：k_smem 在 48KB 窗口做 16 字节 uint4 读取加 xor
-归约，带宽等于移动字节除以时间［54-68
-行］。（c）全局读带宽的两种形态共用 k_gread：32MiB 缓冲小于 64MiB
-L2，测得 L2 驻留读带宽；512MiB 缓冲强制走 DRAM，测得 DRAM
-形态；缓冲构造在 186-193 行［71-81 行］。（d）SFU ex2 吞吐：k_ex2 每线程
-4 条独立 ex2.approx.f32 依赖链、8 路展开［84-97 行］。（e）bar.sync
-往返：k_bar 在 128 线程块内连发 20000 次 bar.sync
-0,128，总时间除以次数得单次 7.707 ns［100-104 行］。（f）cp.async
-吞吐：k_cpasync 以 16 字节粒度从 1MiB 的 L2 驻留源窗拷入共享内存，每轮
-commit 加 wait，测得 1388 GB/s［107-125 行］。</p>
-<p>第七个量是 kernel 发射基准，它没有专属微基准：参考核 ref_f16（单个
-m16n8k16 原子的纯发射
-kernel）的实测时间减去其模型内全部非发射项，余项即发射常数 6.073
-µs——这是契约允许的唯一全局发射常数，推导在求解器验证入口完成［tools/gdn_solver.py:433-446；evidence/G3/validation.json
-的 launch_anchor_s］。</p>
-<h3 id="3-运行协议分钟级低显存幂等与共载口径">3.
-运行协议：分钟级、低显存、幂等与共载口径</h3>
-<p>run_calib.sh
-是唯一入口，头部注释声明全部代价：一个窗口约一分钟、显存低于
-2GB、同路径输出直接覆盖——幂等，重跑即用新窗口的新值覆写旧表［scripts/run_calib.sh:1-4］。共载口径的披露协议：脚本在启动前、运行前、结束后抓三次
-nvidia-smi 快照（利用率、显存、SM
-时钟三元组），外加一次计算进程清单，据此置 shared_gpu
-布尔，并把四组观测连同一句口径注记写进 calibration.json：</p>
-<div class="sourceCode" id="cb81"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">snap()</span> <span class="kw">{</span></span>
-<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">nvidia-smi</span> <span class="at">--query-gpu</span><span class="op">=</span>utilization.gpu,memory.used,clocks.sm <span class="dt">\</span></span>
-<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--format</span><span class="op">=</span>csv,noheader,nounits <span class="kw">|</span> <span class="fu">head</span> <span class="at">-1</span></span>
-<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
-<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a><span class="va">COL0</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="ex">snap</span><span class="va">)</span><span class="st">&quot;</span>            <span class="co"># 启动前</span></span>
-<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ……编译并运行 calib_bench……</span></span>
-<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a><span class="va">COL2</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="ex">snap</span><span class="va">)</span><span class="st">&quot;</span>            <span class="co"># 结束后</span></span>
-<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a><span class="va">APPS</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="ex">nvidia-smi</span> <span class="at">--query-compute-apps</span><span class="op">=</span>pid,used_memory <span class="at">--format</span><span class="op">=</span>csv,noheader <span class="dt">\</span></span>
-<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">|</span> <span class="fu">tr</span> <span class="st">&#39;\n&#39;</span> <span class="st">&#39;;&#39;</span><span class="va">)</span><span class="st">&quot;</span></span>
-<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a><span class="co"># shared_gpu = bool(APPS)；快照与注记组装为 coload 块落盘</span></span></code></pre></div>
-<p>［scripts/run_calib.sh:19-39、54-66，节选；nvcc
-编译与基准运行两行略］</p>
-<p>这套协议的产出是：每个速率都能追溯到测量当时的 GPU
-状态。本仓有过两种真实口径：初次标定与一个 24–99%
-利用率的共载训练任务同窗，数值按"受挤占下界"记录；其后在干净窗口重跑，DRAM
-读带宽 824.6 升到 851.4 GB/s，两个口径并列进表。时钟口径同理：峰值属性
-1597 MHz 属笔记本保守基值，窗口内观察时钟 2.1–2.8
-GHz；加载器优先采用共载快照的中位观察时钟（本例 2722
-MHz），因为发射类时间项随实际时钟缩放［tools/gdn_costmodel.py:323-341］。</p>
-<h3 id="4-32-计数陷阱warp-级操作按线程计数">4. ×32 计数陷阱：warp
-级操作按线程计数</h3>
-<p>标定文件 mma 段的 flops 字段写着 3.70
-PFLOP/s。这个数物理不可能：它高于修正后真实峰值 32 倍，也远超任何已发布
-GPU。根因在计数口径：峰值计算把每条 mma 指令按线程记数（网格 × 128 线程
-× 次数 × 展开），而 mma.sync 是 warp 级操作——32 条 lane
-共同执行一条指令、共同产出一个 4096 FLOP 的原子；逐线程计数把 FLOP
-放大了 32 倍。诚实峰值等于指令率除以 32 再乘 4096，即 115.5
-TFLOP/s。两条独立证据闭合这个修正。其一，指令率对属性时钟归一为每 SM
-每时钟 6.89 条，换算到观察时钟 2.72 GHz 后约 4.05 条——恰等于每 SM
-四条张量流水线的微架构配置［evidence/G3/calib_report.md §1 行
-(a)］。其二，修正后的峰值进入模型，mma
-路径预测与实测的差距落回可解释区间（第二十九章盲区清单给出残余偏差的方向与幅度）。修复放在加载器一侧自动执行并留痕：</p>
-<div class="sourceCode" id="cb82"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> mma_flops <span class="kw">and</span> mma_instr:</span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># G3-A&#39;s flops field multiplies per-THREAD instruction counts</span></span>
-<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># by 4096 (m16n8k16 atom FLOPs), but mma.sync is a WARP-level</span></span>
-<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># op: the honest peak = warp instructions/s x 4096 =</span></span>
-<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># instr_per_s / 32 x 4096. Detect the discrepancy (a &gt;2x gap</span></span>
-<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># is physically impossible otherwise) and recompute.</span></span>
-<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>    warp_flops <span class="op">=</span> mma_instr <span class="op">/</span> <span class="fl">32.0</span> <span class="op">*</span> <span class="fl">4096.0</span></span>
-<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> mma_flops <span class="op">&gt;</span> warp_flops <span class="op">*</span> <span class="fl">1.5</span>:</span>
-<span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.m[<span class="st">&quot;mma_flops_field_asbuilt&quot;</span>] <span class="op">=</span> mma_flops</span>
-<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a>        mma_flops <span class="op">=</span> warp_flops</span>
-<span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.m[<span class="st">&quot;mma_flops_corrected&quot;</span>] <span class="op">=</span> <span class="va">True</span></span></code></pre></div>
-<p>［tools/gdn_costmodel.py:346-356，逐字；原值存
-mma_flops_field_asbuilt、修正打 mma_flops_corrected 旗标］</p>
-<p>任何消费 calibration.json
-的程序都必须做这次重算——这条作为硬件与工作流事实记录在案（evidence/G3/solver_report.md
-§6）。一般化守则：凡按线程计数的指标遇到 warp 级指令，先问除没除
-32。</p>
-<h3 id="5-标定值全表">5. 标定值全表</h3>
-<p>标定表是成本模型全部分母的唯一来源（数值沿用主文表 5）：</p>
-<p>表：sm_120 一次性标定表</p>
-<table>
-<thead>
-<tr>
-<th>量</th>
-<th>标定值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>mma bf16 峰值</td>
-<td>115.5 TFLOP/s（tf32 按 2:1 折算 57.8）</td>
-</tr>
-<tr>
-<td>共享内存读带宽</td>
-<td>113.1 TB/s</td>
-</tr>
-<tr>
-<td>L2 / DRAM 带宽</td>
-<td>2144.3 / 824.6 GB/s（空闲窗口 851.4）</td>
-</tr>
-<tr>
-<td>SFU ex2 吞吐</td>
-<td>3.23 Telem/s</td>
-</tr>
-<tr>
-<td>bar.sync</td>
-<td>7.707 ns</td>
-</tr>
-<tr>
-<td>cp.async</td>
-<td>1388 GB/s</td>
-</tr>
-<tr>
-<td>kernel 发射基准</td>
-<td>6.073 µs</td>
-</tr>
-</tbody>
-</table>
-<p>表内每个值的测量条件——共载或干净窗口、缓冲规模、预热与迭代次数、块形——都记录在
-evidence/G3/calibration.json 的 method
-与各测量段；复跑用同一条脚本覆写同名文件。分母自此齐备，下一章把计数除上去。</p>
-<h2
-id="二十八解析成本模型计数除以速率">二十八、解析成本模型：计数除以速率</h2>
-<p>求解器把十维旋钮的合法取值空间整个枚举出来（kkt 阶段 368 个、o 阶段
-465
-个配置），枚举本身不区分好坏；给每个配置一个可信的时延预测、从而排出次序，是成本模型的职责。这个函数有三个硬约束。其一，纯
-CPU
-可算：每个新形状的调度预算是亚秒级。其二，确定性：同一输入必须给出逐字节相同的排序，否则"两次完整编译逐字节一致"的承诺失效。其三，零逐配置拟合：模型里只要有一个对着实测配置时间调参的自由常数，排序就退化为对训练集的记忆，对新形状失去效力。解析成本模型同时满足三者：每一项都写成"分子为编译期可精确知道的计数、分母为第二十七章标定速率"的除法。术语约定：解析模型指由封闭公式与常数表计算、不含拟合参数的模型；屋顶线（roofline）指以各资源项的最大者为时延估算的粗粒度形式。</p>
-<h3 id="1-零逐配置拟合契约与自证机制">1. 零逐配置拟合契约与自证机制</h3>
-<p>契约原文写在模型文件头：</p>
-<pre><code>every rate is either (a) measured once by the G3-A microbenchmark window
-(evidence/G3/calibration.json) or (b) a documented sm_120-class structural
-constant. There are NO per-config fitted free constants.</code></pre>
-<p>［tools/gdn_costmodel.py:9-11，docstring 逐字］</p>
-<p>契约的执行不靠口头声明：验证程序把"哪些键没有从标定文件取得、退回了占位表"逐键落盘为
-calibration_fallback_keys，任何人可查。本次验证该清单里唯一在列的是
-malloc_ns（设备分配常数，占位 2000 ns）；而 18
-个被计时配置全部经过静态共享内存修复、分配次数归零，T_alloc 一项在全部
-18 行预测里恒为 0.0［evidence/G3/validation.json:37-39 及各配置
-terms_ms；归零逻辑
-tools/gdn_costmodel.py:607-611］——没有任何一个回退速率参与过排序数值。发射常数同样有出处：它由参考核实测推导（第二十七章第二节），推导完成后从回退清单移除［tools/gdn_solver.py:433-446］。</p>
-<p>结构常数一共五个，全部带文档与出处：标量环每 MAC 10 周期（SASS
-推导，见第三节）、LSU 每时钟每 SM 4 条 warp 指令、tf32 对 bf16
-张量速率折算比 0.5、溢出流量按 L2 每 SM 份额计、张量每 SM 每时钟 1024
-FLOP［tools/gdn_costmodel.py:120-136］。它们全部经过正负两倍的扰动敏感度检验（第二十九章第三节）。</p>
-<h3 id="2-三形式递进v1-屋顶线v2-发射项v3-波次">2. 三形式递进：v1
-屋顶线、v2 发射项、v3 波次</h3>
-<p>模型有三个累积的形式，定义文档与代码同文件，以下为 docstring
-真文：</p>
-<pre><code>v1  (contract form, roofline)
-    T = T_launch + overlap(T_compute, T_gmem, T_smem) + T_bar + T_spill + T_ex2
-    overlap = max(...) when the config is software-pipelined
-    (pipeline&gt;0 or warpspec producer/consumer: cp.async double buffering
-    hides the copy behind compute), sum(...) when pipeline=0 (sync copies
-    serialized behind gpu.barrier).
-v2  v1 + T_lsu + T_alloc
-    T_lsu   = issue-bound term for the LSU instruction stream. The
-              generated code issues UNIFORM-ADDRESS (non-distributed)
-              global-&gt;shared copies: every thread executes every
-              16B cp.async of the tile (verified in kernel.ptx: copy
-              indices are block-uniform, no %tid in the address chains).
-              Wire bytes are deduped by L1/L2 sectors, but the ISSUE cost
-              is instructions x threads. Fragment ld.shared loads are
-              CSE&#39;d unique-per-iteration loads (verified: LDS static count
-              = unique fragment loads, not 12x atoms).
-    T_alloc = the memref.alloc lowering calls device malloc() for each
-              tile buffer and cvta.to.shared&#39;s the result (verified in
-              kernel.ptx: 2 mallocs per GEMM in the mma path, 3 allocs in
-              the nomma path, +1 output staging buffer for tma=on).
-              Cost = n_allocs * malloc_ns (single global constant).
-v3  v2 + occupancy/waves + overlap blend
-    waves = ceil(total_ctas / (82 * ctas_per_sm)); ctas_per_sm from
-            regs/smem/warp-slot limits; per-wave time = v2 per-CTA time.
-    overlap becomes alpha*max + (1-alpha)*sum with alpha = 1.0 for
-            pipeline&gt;0 / warpspec, 0.0 for pipeline=0 (same as v1/v2 split,
-            kept explicit for perturbation experiments).</code></pre>
-<p>［tools/gdn_costmodel.py:18-44，逐字］</p>
-<p>v1
-是契约形式：发射常数，加计算、全局访存、共享访存三项的重叠，加栅栏、溢出、ex2
-三项的串联。重叠的取法编码一个调度事实——流水配置（pipeline 大于 0 或
-warp 专化）的双缓冲把复制藏进计算，取最大值；p0
-配置的同步复制被屏障串行化，取和。v2 补上发射视角：导线上的字节会被
-L1/L2
-扇区去重，但发射成本按指令乘线程计，均匀地址复制流的这一项不可忽略；T_alloc
-对修复后的被测 cubin 自动为零。v3 把波次（waves，CTA
-总数除以全机可驻留数的向上取整）乘上 v2 的每 CTA
-时间，驻留数由寄存器、共享内存、warp 槽三重上限的最小者给出［occupancy
-函数，647-657 行］。三形式的递进有完整的效果档案（ρ 为对 18 个实测配置的
-Spearman 秩相关，其含义与门槛在第二十九章定义，此处只看相对变化）：</p>
-<p>表：模型形式递进档案</p>
-<table>
-<thead>
-<tr>
-<th>步骤</th>
-<th>变更</th>
-<th>整体 ρ</th>
-<th>kkt ρ / o ρ</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>v1 屋顶线；标量环按 CUDA 核屋顶线</td>
-<td>0.7352</td>
-<td>0.644 / 0.486</td>
-</tr>
-<tr>
-<td>2</td>
-<td>加 LSU 发射项与分配项（即上文英文展品里的两个 T 项）</td>
-<td>0.7475</td>
-<td>0.669 / 0.486</td>
-</tr>
-<tr>
-<td>3</td>
-<td>标量环项改为每 MAC 10 周期</td>
-<td>0.8962</td>
-<td>0.936 / 0.829</td>
-</tr>
-<tr>
-<td>4</td>
-<td>发射锚定标（6.12 µs）</td>
-<td>0.8962</td>
-<td>秩不变，定绝对尺度</td>
-</tr>
-<tr>
-<td>5</td>
-<td>v3 波次项</td>
-<td>0.8962</td>
-<td>0.936 / 0.829</td>
-</tr>
-</tbody>
-</table>
-<p>［evidence/G3/solver_report.md §2 的迭代记录，数值逐行转写］</p>
-<h3 id="3-张量核主项与标量环项">3. 张量核主项与标量环项</h3>
-<p>计算项分 mma 与标量环两个分支，各占一段代码（本展品沿用主文）：</p>
-<div class="sourceCode" id="cb85"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> feats[<span class="st">&quot;mma&quot;</span>]:</span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>    peak <span class="op">=</span> calib.m[<span class="st">&quot;mma_bf16_peak_flops&quot;</span>] <span class="cf">if</span> esz <span class="op">==</span> <span class="dv">2</span> <span class="cf">else</span> calib.mma_tf32_peak</span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>    terms[<span class="st">&quot;T_mma&quot;</span>] <span class="op">=</span> feats[<span class="st">&quot;mma_flops_per_cta&quot;</span>] <span class="op">/</span> (peak <span class="op">/</span> calib.sm_count)</span>
-<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:  <span class="co"># 标量环：每 MAC 按发射/延迟受限建模，速率=SASS 推导的 10 cyc/MAC</span></span>
-<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>    macs <span class="op">=</span> feats[<span class="st">&quot;ffma_flops_per_cta&quot;</span>] <span class="op">/</span> <span class="fl">2.0</span></span>
-<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>    terms[<span class="st">&quot;T_ffma&quot;</span>] <span class="op">=</span> macs <span class="op">*</span> NOMMA_CYC_PER_MAC <span class="op">/</span> calib.m[<span class="st">&quot;clock_hz&quot;</span>]</span></code></pre></div>
-<p>［tools/gdn_costmodel.py:689-700；分子为封闭公式
-2·bt·bv·K·n_gemm，已对静态 PTX 计数自检］</p>
-<p>分子的封闭公式住在 analytic_features（462 行起）：每 CTA 的 mma FLOP
-数、访存字节、栅栏次数、ex2
-个数全部由旋钮取值与形状经算术得出；分母把全机峰值折成每 SM 份额（除以
-82），tf32 按折算比减半。标量环分支的 10 周期常数有一段值得讲的来历：mma
-关闭时，convert-linalg-to-loops
-下降出一条未分布到线程的标量三重循环，SASS 里每个 MAC 的最内层体是 39
-条指令——10 组 64 位地址加法、循环控制、3 条标量 LDS、1 条 FMA——按每 SM 4
-条发射管道折合约 10 周期每
-MAC；常数从反汇编读出、写死并注释出处，从未对实测时间调参［tools/gdn_costmodel.py:128-136；evidence/G3/gen_noargs/kkt_bf16_nomma_p2_t64x64x32_w4/sass.txt
-循环 .L_x_17］。最初的 CUDA 核屋顶线形式把这条路径低估 100–400 倍（实测
-0.5–2.5 ms），因为它把延迟受限的标量环当成吞吐受限的向量乘；递进档案第 3
-步的 ρ 跃升全部来自这一处替换。</p>
-<h3 id="4-溢出项计数来源的三层结构">4. 溢出项：计数来源的三层结构</h3>
-<p>溢出项展示计数来源的分层：能算就算（封闭公式），算不了就读报告（ptxas
-资源报告），报告缺失再数指令（SASS
-静态计数）。第二十章讲过报告与反汇编如何落盘为每配置的
-meta.json，这里给出消费端（本展品沿用主文并扩出回退行）：</p>
-<div class="sourceCode" id="cb86"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>spills <span class="op">=</span> ((mm.get(<span class="st">&quot;spill_stores&quot;</span>) <span class="kw">or</span> <span class="dv">0</span>)</span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>          <span class="op">+</span> (mm.get(<span class="st">&quot;spill_loads&quot;</span>) <span class="kw">or</span> <span class="dv">0</span>))</span>
-<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> spills <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>    spills <span class="op">=</span> (so.get(<span class="st">&quot;LDL&quot;</span>) <span class="kw">or</span> <span class="dv">0</span>) <span class="op">+</span> (so.get(<span class="st">&quot;STL&quot;</span>) <span class="kw">or</span> <span class="dv">0</span>)    <span class="co"># SASS 计数回退</span></span>
-<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> spills:</span>
-<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># undo peeled-body duplication: static ~= body*(1+pipe),</span></span>
-<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dynamic ~= body*(trips+pipe)</span></span>
-<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>    pipe <span class="op">=</span> <span class="bu">max</span>(feats[<span class="st">&quot;pipe&quot;</span>], <span class="dv">0</span>)</span>
-<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a>    dyn <span class="op">=</span> spills <span class="op">*</span> (feats[<span class="st">&quot;trips&quot;</span>] <span class="op">+</span> pipe) <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> pipe)</span>
-<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a>    feats[<span class="st">&quot;spill_dyn_ops_per_cta&quot;</span>] <span class="op">=</span> dyn <span class="op">*</span> feats[<span class="st">&quot;threads&quot;</span>]</span>
-<span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a>...</span>
-<span id="cb86-12"><a href="#cb86-12" aria-hidden="true" tabindex="-1"></a>spill_bytes <span class="op">=</span> feats[<span class="st">&quot;spill_dyn_ops_per_cta&quot;</span>] <span class="op">*</span> <span class="fl">4.0</span></span>
-<span id="cb86-13"><a href="#cb86-13" aria-hidden="true" tabindex="-1"></a>terms[<span class="st">&quot;T_spill&quot;</span>] <span class="op">=</span> spill_bytes <span class="op">/</span> (calib.per_sm(<span class="st">&quot;l2_bw&quot;</span>) <span class="op">*</span> SPILL_BW_FRAC)</span></code></pre></div>
-<p>［tools/gdn_costmodel.py:616-625、711-712，节选；SASS 回退即 618-619
-行］</p>
-<p>两个细节值得教学。其一，静态计数到动态次数的换算：软件流水把循环体复制出
-peel 副本，静态计数约等于体乘（1 加 pipe），动态次数约等于体乘（trips 加
-pipe），比值把复制抵消。其二，取数优先级：加载器优先采用 G3 重建（被计时
-cubin）的 meta，G2
-编译索引只作回退——两次编译的寄存器分配可以合法地不同（一边 65–96
-寄存器零溢出，另一边 255
-寄存器万级溢出），给错版本的计数等于给错分子［tools/gdn_solver.py:449-452；tools/gdn_costmodel.py:597-606；第二十章双遍陷阱］。</p>
-<h3 id="5-分子的精确性自检">5. 分子的精确性自检</h3>
-<p>"分子在编译期精确"是一个被验证的命题。验证办法：把封闭公式对 18
-个配置的静态 PTX 计数逐一对照——mma.sync 计数 18/18 精确，ld.shared 18/18
-精确，bar.sync 18/18 精确，cp.async 偏差正 0.4% 至正 1.6%（prologue
-与参数收尾的松弛）［evidence/G3/solver_report.md §2；自检入口
-tools/gdn_solver.py:525-528 起］。ld.shared
-的精确命中依赖一个生成器事实：公共子表达式消除把片段装载去重成每迭代唯一装载，静态计数恰等于公式值；流水的
-peel
-复制因子也经同一路径验证。至此模型的误差只剩物理来源——重叠的幅度、依赖链的长度——它们不触碰计数与速率的契约，其影响留在秩层面度量（第二十九章）。</p>
-<h2
-id="二十九排序质量的度量spearman-与搜索成本">二十九、排序质量的度量：Spearman
-与搜索成本</h2>
-<p>一个排序模型交货时必须回答两个问题：排出的次序有多准；用它在编译期完成排序，比把候选搬上
-GPU
-逐个实测便宜多少。前者是模型的质检（本章前半），后者是它存在的经济理由（本章后半），合起来构成编译期调度的完整收益陈述——便宜，且准到够用。术语先行：秩指一组数按大小排序后各自的名次；Spearman
-秩相关（下文记
-ρ）先把预测值与实测值各自换成名次，再对名次做普通相关，度量两组数在排序意义下的一致程度。</p>
-<h3 id="1-为什么度量停在秩这一层">1. 为什么度量停在秩这一层</h3>
-<p>三条理由各自独立成立。其一，消费方式是次序：求解器枚举全部合法配置后按预测时延排序、取头部送编译与实测，绝对数值从不直接使用。其二，绝对时延在测量学上不可靠：同一
-cubin 在分离进程、零负载下仍随时钟状态漂移，两个进程可相差
-47%，测量纪律因此只信任同窗交错的成对比值，把绝对毫秒数降为工程参考（主文第十节）。其三，模型有已记录的均匀缩放偏差（mma
-路径整体低估 3–5 倍，见第三节盲区清单），保序缩放不伤次序。Spearman
-对任何严格单调增的变换不变，恰好同时容纳这三条：它度量的正是保序性，且仅是保序性。</p>
-<p>实现不引入统计库依赖：纯算术、无随机数、平局取平均秩且平局规则固定——这是确定性契约的一部分，排序可复现，验证同样可复现：</p>
-<div class="sourceCode" id="cb87"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> spearman(xs, ys):</span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Pearson correlation of average ranks (tie-safe).&quot;&quot;&quot;</span></span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="bu">len</span>(xs)</span>
-<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">2</span>:</span>
-<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">float</span>(<span class="st">&quot;nan&quot;</span>)</span>
-<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>    rx, ry <span class="op">=</span> _ranks(xs), _ranks(ys)</span>
-<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>    mx, my <span class="op">=</span> <span class="bu">sum</span>(rx) <span class="op">/</span> n, <span class="bu">sum</span>(ry) <span class="op">/</span> n</span>
-<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> <span class="bu">sum</span>((a <span class="op">-</span> mx) <span class="op">*</span> (b <span class="op">-</span> my) <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(rx, ry))</span>
-<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>    den <span class="op">=</span> math.sqrt(<span class="bu">sum</span>((a <span class="op">-</span> mx) <span class="op">**</span> <span class="dv">2</span> <span class="cf">for</span> a <span class="kw">in</span> rx)</span>
-<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a>                    <span class="op">*</span> <span class="bu">sum</span>((b <span class="op">-</span> my) <span class="op">**</span> <span class="dv">2</span> <span class="cf">for</span> b <span class="kw">in</span> ry))</span>
-<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> num <span class="op">/</span> den <span class="cf">if</span> den <span class="cf">else</span> <span class="bu">float</span>(<span class="st">&quot;nan&quot;</span>)</span></code></pre></div>
-<p>［tools/gdn_costmodel.py:763-773，逐字；_ranks 的平均秩实现 748-760
-行］</p>
-<p>配套一个运维口径 topk_overlap：预测与实测各自最快的 k
-个配置的交集占比（k 取
-5，tools/gdn_costmodel.py:776-781）。秩相关回答整体次序，重叠度回答头部是否可用——排序系统的下游只消费头部。</p>
-<h3 id="2-验证设计n18-的构成分阶段与门槛">2. 验证设计：n=18
-的构成、分阶段与门槛</h3>
-<p>被测集合的构成决定结论的效力。20 个编译配置中 18
-个取得有效实测，两个被状态过滤器排除且原因落盘：warpspec 配置在硬件上
-mbarrier 死锁（TIMEOUT），tma 配置的 cubin
-不含数据全局（NOT_TIMED，CUtensorMap
-接线属运行时契约）［evidence/G3/validation.json:6-15］。18 个的构成：kkt
-阶段 10 个——mma 7 个，覆盖流水深度 p0/p2/p3、warp 数 2/4/8、三种
-tile；nomma 3 个——外加 o 阶段 6 个（bf16 与 f32、mma 与 nomma、两组 K/V
-维度）和 2 个参考锚（单 m16n8k16 原子核与 ldmatrix
-版）。实测口径：静态共享内存修复后的零参 cubin，CUDA 事件 50
-次取中位。验证程序逐形式计算整体与分阶段 ρ 及 top-5
-重叠，并对门槛给出裁决：</p>
-<div class="sourceCode" id="cb88"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> forms:</span>
-<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>    rho <span class="op">=</span> cm.spearman(preds[f], measured)</span>
-<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>    ...</span>
-<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>    per_stage[st] <span class="op">=</span> (cm.spearman(xs, ys) <span class="cf">if</span> <span class="bu">len</span>(xs) <span class="op">&gt;=</span> <span class="dv">3</span> <span class="cf">else</span> <span class="va">None</span>)</span>
-<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>    report[<span class="st">&quot;forms&quot;</span>][f] <span class="op">=</span> {<span class="st">&quot;spearman&quot;</span>: rho,</span>
-<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>                          <span class="st">&quot;spearman_per_stage&quot;</span>: per_stage,</span>
-<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>                          <span class="st">&quot;top5_overlap&quot;</span>: cm.topk_overlap(preds[f], measured, <span class="dv">5</span>)}</span>
-<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>best <span class="op">=</span> <span class="bu">max</span>(forms, key<span class="op">=</span><span class="kw">lambda</span> f: report[<span class="st">&quot;forms&quot;</span>][f][<span class="st">&quot;spearman&quot;</span>])</span>
-<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>report[<span class="st">&quot;verdict&quot;</span>] <span class="op">=</span> (<span class="st">&quot;PASS&quot;</span> <span class="cf">if</span> report[<span class="st">&quot;forms&quot;</span>][best][<span class="st">&quot;spearman&quot;</span>] <span class="op">&gt;=</span> gate</span>
-<span id="cb88-10"><a href="#cb88-10" aria-hidden="true" tabindex="-1"></a>                     <span class="cf">else</span> <span class="st">&quot;FAIL&quot;</span>)</span></code></pre></div>
-<p>［tools/gdn_solver.py:487-502，节选；门槛 gate=0.7 为契约值，样本少于
-3 的阶段不单独打分］</p>
-<p>结果：v2 整体 ρ 0.8962，kkt 阶段 0.936（n=10），o 阶段
-0.829（n=6），top-5 重叠 0.8（五分之四），门槛 0.7，裁决
-PASS［evidence/G3/validation.json:41-72］。分阶段单独报告的用意：kkt 与
-o 是两个独立的 kernel
-家族，合并报告会让一个家族的强势掩盖另一个的弱点。门槛本身留了容差——排序系统的职责是把好配置送进头部，最终选择另有逐配置
-GPU 对照兜底，门槛无须逼近 1。另一条如实记录：v3 在单 chunk 基准上与 v2
-秩相同（波次为 1，数值一致），全形状下 v2 与 v3 的头部翻转（小 tile 对大
-tile）是占用项起作用的模型预测，属待上机抽查项，单 chunk
-验证数据区分不了两者。</p>
-<h3 id="3-稳健性与已知盲区">3. 稳健性与已知盲区</h3>
-<p>门槛通过之后还要回答：结论对测量噪声与常数误差有多敏感。两组扰动实验各
-200 次注入。其一，全部结构常数（每 MAC 周期数、tf32 折算比、LSU
-发射率、溢出带宽份额、张量每时钟吞吐）各正负两倍缩放：ρ 稳定在 0.882 至
-0.902。其二，对实测时间加均匀噪声正负 5/10/20/30%：ρ 中位依次
-0.896、0.890、0.885、0.885，最差的第五百分位
-0.856——比观测到的运行间散布（kkt p2 w4 为 21.0±0.3
-µs）大近一个量级的噪声下门槛仍通过［evidence/G3/solver_report.md
-§4］。结论：PASS 裁决并非共载窗口的伪影。</p>
-<p>盲区清单逐条文档化，共同特征为方向正确、幅度未建模：</p>
-<p>其一，mma 路径绝对值系统性低估 3–5 倍（片段装载依赖链、超出 7.707 ns
-边际成本的栅栏往返等延迟主导效应）——对所有 mma
-配置近似均匀缩放，秩不受影响。其二，p0 的 .ca 串行化幅度：同 tile 同
-warp 数下实测 kkt p0 为 105 µs、p2 为 21 µs（5 倍差），模型只预测 7.4
-µs；排序方向正确（p0 在流水变体中垫底），幅度未建模——编译期推不出 .ca
-惩罚常数，对着实测时间拟合一个常数被零拟合契约否决。其三，共享内存带宽可能被广播膨胀（均匀地址基准的固有风险），只影响占比不超过
-1% 的 T_smem 项。其四，o 阶段 strided-B 变体每 MAC 实付代价约为模型的 2
-倍（簇内不精确，方向一致，已接受）［evidence/G3/solver_report.md §2
-盲区一节］。</p>
-<h3 id="4-搜索成本08-秒纯-cpu-对-3981-秒上机">4. 搜索成本：0.8 秒纯 CPU
-对 39.81 秒上机</h3>
-<p>编译期排序的经济账在同一证据树里测齐。本方：kkt 空间 368
-个合法配置，Z3 枚举 0.307 秒、含全排序的完整求解 0.378 秒；o 空间 465
-个配置 0.444 秒；两阶段合计约 0.8 秒，全部在 CPU 上，GPU
-秒为零——首选候选上机之前，GPU
-未被搜索触碰［evidence/G6/scratch/solver_timing_summary.json］。fla（Triton
-运行时 autotune）：首次调用前向 16.55 秒（25 个候选配置跨 5 个 kernel
-逐个编译、上机、计时），反向 23.26 秒（23 个候选跨 4 个 kernel），合计
-39.81 秒设备时间、48 个配置；其磁盘配置缓存默认关闭（FLA_CACHE_MODE
-未设即
-DISABLED），代价按进程与按形状键重复支付［evidence/G6/search_cost.md
-§b；fla_autotune_cost.json］。</p>
-<p>表：搜索成本对比（单形状，前向加反向）</p>
-<table>
-<thead>
-<tr>
-<th>对比维度</th>
-<th>本方（编译期排序）</th>
-<th>fla/Triton（上机 autotune）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>搜索耗时</td>
-<td>约 0.8 秒，纯 CPU</td>
-<td>39.81 秒设备时间，48 个配置上机</td>
-</tr>
-<tr>
-<td>首搜口径倍数</td>
-<td>约 50 倍</td>
-<td>—</td>
-</tr>
-<tr>
-<td>缓存摊销口径</td>
-<td>—</td>
-<td>缓存命中后首调 0.65–5.67 秒，摊销 7.7–67 倍</td>
-</tr>
-<tr>
-<td>GPU 占用</td>
-<td>零 GPU 秒</td>
-<td>首调阻塞部署 GPU</td>
-</tr>
-<tr>
-<td>可复现性</td>
-<td>固定种子，重跑逐字节一致</td>
-<td>随测量顺序与时序变化，对共载敏感</td>
-</tr>
-<tr>
-<td>可迁移性</td>
-<td>标定表与模型跨形状复用</td>
-<td>按进程按形状重付（除非填充可选缓存）</td>
-</tr>
-</tbody>
-</table>
-<p>两个口径并列报告：首搜约 50 倍、摊销 7.7–67
-倍。测量的同构性有暖态锚点背书：fla 暖态中位 0.491 ms（前向）与 1.349
-ms（反向）恰落 G5
-基线带，说明对比双方处于同一部署形态［evidence/G6/search_cost.md
-§b］。本方的部署形态再低一档：AOT cubin 新进程冷启动约 27
-µs。范围注记与证据同源：0.8
-秒是对本方旋钮空间排序的成本；出货配置的最终裁定另有逐杠杆 GPU
-对照（工程归因），与搜索分属两件事。</p>
-<figure>
-<svg viewBox="0 0 740 210" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
-  <text x="30" y="24" font-size="12" fill="#5b6b7a">F1 逐段成本（T8192，删除探针，微秒）</text>
-  <g font-size="12">
-  <text x="118" y="63" text-anchor="end">uw 段</text>
-  <rect x="126" y="50" width="420" height="22" fill="#0f5a8a"/><text x="554" y="66" font-size="12" fill="#10222f" class="num">116.5</text>
-  <text x="118" y="97" text-anchor="end">kkt</text>
-  <rect x="126" y="84" width="215" height="22" fill="#3d7fa8"/><text x="349" y="100" font-size="12" fill="#10222f" class="num">59.5</text>
-  <text x="118" y="131" text-anchor="end">solve</text>
-  <rect x="126" y="118" width="149" height="22" fill="#6a9fbe"/><text x="283" y="134" font-size="12" fill="#10222f" class="num">41.3</text>
-  <text x="118" y="165" text-anchor="end">gc 扫描</text>
-  <rect x="126" y="152" width="64" height="22" fill="#96bfd6"/><text x="198" y="168" font-size="12" fill="#10222f" class="num">17.6</text>
-  <text x="118" y="199" text-anchor="end">phase-0</text>
-  <rect x="126" y="186" width="30" height="22" fill="#c2d9e8"/><text x="164" y="202" font-size="12" fill="#10222f" class="num">8.4</text>
-  </g>
-</svg>
-<figcaption>图 3：F1 在 T8192 下约 227 微秒的逐段成本。优化杠杆集中于 uw 段与驻留。</figcaption>
-</figure>
-<p>三章合起来回答主文第二支柱的凭什么：分母来自一次性标定（第二十七章），分子来自编译期精确计数（第二十八章），质量与成本在本章度量和记账——秩相关
-0.8962
-说明排序准到够用，扰动实验说明这个数不依赖窗口运气，盲区清单标明它的边界，搜索成本账说明同样的排序在编译期完成比上机便宜约
-50 倍。</p>
 <h2 id="三十前向内核族三-kernel-分工与五个杠杆">三十、前向内核族：三
 kernel 分工与五个杠杆</h2>
 <p>前向算子一次调用要完成三件性质迥异的工作：chunk 内的 WY
@@ -3962,21 +4219,22 @@ uw 段，本章五个杠杆的作用点也集中于此。探针同时给后续�
 staging 流实测折合 826GB/s，超过同窗 D2D 拷贝标定的 765GB/s
 器件聚合上限，该段以算法最小流量顶在带宽屋顶线上，作为性能之门关闭。</p>
 <figure>
-<svg viewBox="0 0 740 200" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
-  <text x="30" y="24" font-size="12" fill="#5b6b7a">dkb 位点 dk 输出误差（对 fp64 参考，对数刻度）</text>
-  <line x1="90" y1="150" x2="720" y2="150" stroke="#1c2733"/>
-  <g stroke="#b8c2cc"><line x1="90" y1="150" x2="90" y2="40"/><line x1="377" y1="150" x2="377" y2="40"/><line x1="664" y1="150" x2="664" y2="40"/></g>
-  <g font-size="10.5" fill="#5b6b7a" text-anchor="middle">
-    <text x="90" y="166">10⁻⁴</text><text x="377" y="166">10⁻³</text><text x="664" y="166">10⁻²</text>
+<svg viewBox="0 0 740 210" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">F1 逐段成本（T8192，删除探针，微秒）</text>
+  <g font-size="12">
+  <text x="118" y="63" text-anchor="end">uw 段</text>
+  <rect x="126" y="50" width="420" height="22" fill="#0f5a8a"/><text x="554" y="66" font-size="12" fill="#10222f" class="num">116.5</text>
+  <text x="118" y="97" text-anchor="end">kkt</text>
+  <rect x="126" y="84" width="215" height="22" fill="#3d7fa8"/><text x="349" y="100" font-size="12" fill="#10222f" class="num">59.5</text>
+  <text x="118" y="131" text-anchor="end">solve</text>
+  <rect x="126" y="118" width="149" height="22" fill="#6a9fbe"/><text x="283" y="134" font-size="12" fill="#10222f" class="num">41.3</text>
+  <text x="118" y="165" text-anchor="end">gc 扫描</text>
+  <rect x="126" y="152" width="64" height="22" fill="#96bfd6"/><text x="198" y="168" font-size="12" fill="#10222f" class="num">17.6</text>
+  <text x="118" y="199" text-anchor="end">phase-0</text>
+  <rect x="126" y="186" width="30" height="22" fill="#c2d9e8"/><text x="164" y="202" font-size="12" fill="#10222f" class="num">8.4</text>
   </g>
-  <line x1="636" y1="36" x2="636" y2="150" stroke="#8a1f1c" stroke-dasharray="6 5"/>
-  <text x="628" y="52" text-anchor="end" font-size="11" fill="#8a1f1c">容差 8e-3</text>
-  <rect x="90" y="62" width="579" height="26" fill="#c0504d"/>
-  <text x="680" y="80" font-size="12" fill="#10222f" class="num">tf32 单精度路径 1.04e-2</text>
-  <rect x="90" y="104" width="355" height="26" fill="#0f5a8a"/>
-  <text x="455" y="122" font-size="12" fill="#10222f" class="num">split-bf16 路径 1.73e-3</text>
 </svg>
-<figcaption>图 4：split-bf16 与 tf32 的数值对比（dkb 位点）。tf32 路径超出容差被否决；split-bf16 以三条 mma 的代价把误差压回容差内，乘积残差约 2⁻¹⁷、比 tf32 低约 30 倍，dkb 内核同时从 0.96 提速到 0.25 毫秒。</figcaption>
+<figcaption>图 4：F1 在 T8192 下约 227 微秒的逐段成本。优化杠杆集中于 uw 段与驻留。</figcaption>
 </figure>
 <h2
 id="三十一数值到指令split-bf16-的完整工程">三十一、数值到指令：split-bf16
@@ -4045,7 +4303,7 @@ maccs = mma_gemm(e, &quot;dkBlh&quot;, C, K, BV, 8, vl.name, vl.ty, hh.name, hh.
 hi、{%r334,335} 为 lo；三条恰好构成 hi·hi、hi·lo、lo·hi；三条的 C 操作数
 {%r300-303}、{%r304-307}、{%r308-311} 正是上一 k 段对应三条的
 D——同一组累加器寄存器跨 k
-传递，第十六章的累加器串接原语在目标代码里的形态一目了然。</p>
+传递，第二十五章的累加器串接原语在目标代码里的形态一目了然。</p>
 <pre><code>mma.sync.aligned.m16n8k16.row.col.f32.bf16.bf16.f32
     {%r336, %r337, %r338, %r339}, {%r280, %r281, %r282, %r283},
     {%r332, %r333}, {%r300, %r301, %r302, %r303};        // hi·hi
@@ -4097,29 +4355,21 @@ fp32 乘积的精度、两条恒等式换来的 mma
 截断的初等性质，没有任何一条依赖输入分布；这个"不挑食"的特性使它可以无条件铺满全链，而
 tf32 的逐位点门（24 个位点里 8 个被否决）必须逐个测量放行。</p>
 <figure>
-<svg viewBox="0 0 740 240" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
-  <text x="30" y="24" font-size="12" fill="#5b6b7a">反向三大 kernel 的静态共享内存池（KB）</text>
-  <line x1="423" y1="36" x2="423" y2="212" stroke="#8a1f1c" stroke-dasharray="6 5"/>
-  <text x="415" y="50" text-anchor="end" font-size="11" fill="#8a1f1c">双 CTA 驻留门槛 50.2 KB</text>
-  <text x="180" y="76" text-anchor="end" font-size="12" fill="#10222f">dqkwg</text>
-  <rect x="190" y="62" width="468" height="20" fill="#b8c2cc"/>
-  <rect x="190" y="86" width="221" height="20" fill="#0f5a8a"/>
-  <text x="664" y="77" font-size="11" fill="#5b6b7a" class="num">100.9</text>
-  <text x="417" y="101" font-size="11" fill="#0f5a8a" class="num">47.6</text>
-  <text x="180" y="134" text-anchor="end" font-size="12" fill="#10222f">caryA</text>
-  <rect x="190" y="120" width="381" height="20" fill="#b8c2cc"/>
-  <rect x="190" y="144" width="133" height="20" fill="#0f5a8a"/>
-  <text x="577" y="135" font-size="11" fill="#5b6b7a" class="num">82.2</text>
-  <text x="329" y="159" font-size="11" fill="#0f5a8a" class="num">28.6</text>
-  <text x="180" y="192" text-anchor="end" font-size="12" fill="#10222f">wyb</text>
-  <rect x="190" y="178" width="464" height="20" fill="#b8c2cc"/>
-  <rect x="190" y="202" width="209" height="20" fill="#0f5a8a"/>
-  <text x="660" y="193" font-size="11" fill="#5b6b7a" class="num">100.1</text>
-  <text x="405" y="217" font-size="11" fill="#0f5a8a" class="num">45.1</text>
-  <rect x="190" y="226" width="14" height="10" fill="#b8c2cc"/><text x="210" y="235" font-size="11" fill="#5b6b7a">别名前</text>
-  <rect x="270" y="226" width="14" height="10" fill="#0f5a8a"/><text x="290" y="235" font-size="11" fill="#5b6b7a">别名后</text>
+<svg viewBox="0 0 740 200" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">dkb 位点 dk 输出误差（对 fp64 参考，对数刻度）</text>
+  <line x1="90" y1="150" x2="720" y2="150" stroke="#1c2733"/>
+  <g stroke="#b8c2cc"><line x1="90" y1="150" x2="90" y2="40"/><line x1="377" y1="150" x2="377" y2="40"/><line x1="664" y1="150" x2="664" y2="40"/></g>
+  <g font-size="10.5" fill="#5b6b7a" text-anchor="middle">
+    <text x="90" y="166">10⁻⁴</text><text x="377" y="166">10⁻³</text><text x="664" y="166">10⁻²</text>
+  </g>
+  <line x1="636" y1="36" x2="636" y2="150" stroke="#8a1f1c" stroke-dasharray="6 5"/>
+  <text x="628" y="52" text-anchor="end" font-size="11" fill="#8a1f1c">容差 8e-3</text>
+  <rect x="90" y="62" width="579" height="26" fill="#c0504d"/>
+  <text x="680" y="80" font-size="12" fill="#10222f" class="num">tf32 单精度路径 1.04e-2</text>
+  <rect x="90" y="104" width="355" height="26" fill="#0f5a8a"/>
+  <text x="455" y="122" font-size="12" fill="#10222f" class="num">split-bf16 路径 1.73e-3</text>
 </svg>
-<figcaption>图 5：生存期别名将三个最大 kernel 的静态池压过双 CTA 驻留门槛。</figcaption>
+<figcaption>图 5：split-bf16 与 tf32 的数值对比（dkb 位点）。tf32 路径超出容差被否决；split-bf16 以三条 mma 的代价把误差压回容差内，乘积残差约 2⁻¹⁷、比 tf32 低约 30 倍，dkb 内核同时从 0.96 提速到 0.25 毫秒。</figcaption>
 </figure>
 <h2
 id="三十二算法级改写扫描的仿射携带形式">三十二、算法级改写：扫描的仿射携带形式</h2>
@@ -4184,7 +4434,7 @@ PRE-update and what dkb/dqkwg consume), and
 <p>GPU 侧的变换全部写成 Python 发射结构的改写：一个 kernel
 的发射函数换成四个 kernel
 的发射函数，中间量的全局契约（A_all、M_all、B_all、dh_all）同步写进发射清单与
-harness。没有运行时开关、没有两套代码并存——发射结构即规格，第十四章"生成器即未来
+harness。没有运行时开关、没有两套代码并存——发射结构即规格，第二十三章"生成器即未来
 L1 展开 pass 的可执行规格"在算法层的投影。CPU
 孪生同时把二级段分解（段内零种子局部走、段算子复合、串行边界链、后缀积修正）对每个段数取值验证到同样的
 2 至 3
@@ -4197,7 +4447,7 @@ fp64 参考重新对照的通道始终在场。旧 kernel 退役后在文件中�
 <p>扫描族整体 3.13 毫秒降到约 1.02 毫秒，占反向端到端约
 46%。边界同样测绘清楚：把扫描按 K 维拆到多 warp 或多 CTA
 的三个独立数据点均在 0.88 至 0.99
-之间（第三十五章的负结果物理）；段切分在超收缩分布下数学可行、经济为负。改写后的收益上限被串行步的延迟瘦身提前吃掉——这条边界与第十九章的合并陈述一致：把工作移出串行链、压缩每步暴露延迟、纯列并行增开
+之间（第三十五章的负结果物理）；段切分在超收缩分布下数学可行、经济为负。改写后的收益上限被串行步的延迟瘦身提前吃掉——这条边界与第二十八章的合并陈述一致：把工作移出串行链、压缩每步暴露延迟、纯列并行增开
 CTA，是扫描类结构上仅有的三类有效手段。</p>
 <h2
 id="三十三数据通路staging乒乓warp-专化与-tma">三十三、数据通路：staging、乒乓、warp
@@ -4447,7 +4697,7 @@ tile 一次分配、地址互不重叠，而"生存期不重叠的 tile
 <p>识别按尺寸、按唯一性：LLVM 会重排 malloc
 序列，尺寸是唯一稳定的锚；同一尺寸出现多次即整体弃用别名。弃用的形态与无别名构建完全一致——设计立场是别名属于纯增益变换，失败模式必须是"不省"，绝不允许"算错"。识别与回退的完整机制、PTX
 前后对照与三条硬规则（分裂永不别名自身源、epilogue
-跨界写读的栅栏、异步落地的消费纪律）在第十九章。</p>
+跨界写读的栅栏、异步落地的消费纪律）在第二十八章。</p>
 <h3 id="3-三个池压缩">3. 三个池压缩</h3>
 <p>别名与退役（第三十一章 caryA 的四 tile 整体退役）合力把三个大 kernel
 压过门槛：</p>
@@ -4488,25 +4738,29 @@ F1KS）。别名与退役是同一谱系的两端——前者复用字节，后�
 的案例说明当生存期结构不允许合法别名时，换一套更省 tile
 的算法形态才是出路。</p>
 <figure>
-<svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
-  <text x="30" y="24" font-size="12" fill="#5b6b7a">新形状的调度/调优时间（秒，对数刻度）</text>
-  <line x1="40" y1="180" x2="720" y2="180" stroke="#1c2733"/>
-  <g stroke="#b8c2cc">
-    <line x1="40" y1="180" x2="40" y2="45"/><line x1="134" y1="180" x2="134" y2="45"/><line x1="229" y1="180" x2="229" y2="45"/><line x1="323" y1="180" x2="323" y2="45"/><line x1="417" y1="180" x2="417" y2="45"/><line x1="511" y1="180" x2="511" y2="45"/><line x1="606" y1="180" x2="606" y2="45"/><line x1="700" y1="180" x2="700" y2="45"/>
-  </g>
-  <g font-size="10.5" fill="#5b6b7a" text-anchor="middle">
-    <text x="40" y="196">10⁻⁴</text><text x="134" y="196">10⁻³</text><text x="229" y="196">10⁻²</text><text x="323" y="196">10⁻¹</text><text x="417" y="196">1</text><text x="511" y="196">10</text><text x="606" y="196">10²</text>
-  </g>
-  <rect x="40" y="58" width="41" height="26" fill="#0f5a8a"/>
-  <text x="90" y="76" font-size="12" fill="#10222f">本方冷启动发射 27 µs（AOT cubin，无调优）</text>
-  <rect x="40" y="98" width="463" height="26" fill="#0f5a8a"/>
-  <text x="512" y="116" font-size="12" fill="#10222f">本方新形状调度 0.8 s（纯 CPU，GPU 时间为零）</text>
-  <rect x="40" y="138" width="543" height="26" fill="#c89492"/>
-  <text x="592" y="156" font-size="12" fill="#10222f">fla 缓存摊销后 0.65–5.67 s</text>
-  <rect x="40" y="205" width="622" height="26" fill="#c0504d"/>
-  <text x="670" y="223" font-size="12" fill="#10222f">fla 首次搜索 39.8 s（48 配置上机）</text>
+<svg viewBox="0 0 740 240" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">反向三大 kernel 的静态共享内存池（KB）</text>
+  <line x1="423" y1="36" x2="423" y2="212" stroke="#8a1f1c" stroke-dasharray="6 5"/>
+  <text x="415" y="50" text-anchor="end" font-size="11" fill="#8a1f1c">双 CTA 驻留门槛 50.2 KB</text>
+  <text x="180" y="76" text-anchor="end" font-size="12" fill="#10222f">dqkwg</text>
+  <rect x="190" y="62" width="468" height="20" fill="#b8c2cc"/>
+  <rect x="190" y="86" width="221" height="20" fill="#0f5a8a"/>
+  <text x="664" y="77" font-size="11" fill="#5b6b7a" class="num">100.9</text>
+  <text x="417" y="101" font-size="11" fill="#0f5a8a" class="num">47.6</text>
+  <text x="180" y="134" text-anchor="end" font-size="12" fill="#10222f">caryA</text>
+  <rect x="190" y="120" width="381" height="20" fill="#b8c2cc"/>
+  <rect x="190" y="144" width="133" height="20" fill="#0f5a8a"/>
+  <text x="577" y="135" font-size="11" fill="#5b6b7a" class="num">82.2</text>
+  <text x="329" y="159" font-size="11" fill="#0f5a8a" class="num">28.6</text>
+  <text x="180" y="192" text-anchor="end" font-size="12" fill="#10222f">wyb</text>
+  <rect x="190" y="178" width="464" height="20" fill="#b8c2cc"/>
+  <rect x="190" y="202" width="209" height="20" fill="#0f5a8a"/>
+  <text x="660" y="193" font-size="11" fill="#5b6b7a" class="num">100.1</text>
+  <text x="405" y="217" font-size="11" fill="#0f5a8a" class="num">45.1</text>
+  <rect x="190" y="226" width="14" height="10" fill="#b8c2cc"/><text x="210" y="235" font-size="11" fill="#5b6b7a">别名前</text>
+  <rect x="270" y="226" width="14" height="10" fill="#0f5a8a"/><text x="290" y="235" font-size="11" fill="#5b6b7a">别名后</text>
 </svg>
-<figcaption>图 6：调度成本对比（B1·T2048·H16 实测，对数刻度）。fla 首搜 39.8 秒由 48 个 Triton 配置逐个上机构成。</figcaption>
+<figcaption>图 6：生存期别名将三个最大 kernel 的静态池压过双 CTA 驻留门槛。</figcaption>
 </figure>
 <h3 id="4-maxnreg-与-setmaxnreg-的分工">4. .maxnreg 与 setmaxnreg
 的分工</h3>
@@ -4514,7 +4768,7 @@ F1KS）。别名与退役是同一谱系的两端——前者复用字节，后�
 后处理注入的逐 kernel 寄存器上限：ptxas-blackwell 忽略命令行旗标、遵循
 PTX 源内的 .maxnreg 指令，且装着多个 kernel 的单一 cubin
 本来就需要逐入口注入——f3 想要 168、f2 想要 128
-时，一个文件级旗标给不出两个数。注入工具按环境变量表对入口名做子串匹配、未匹配显式告警；对账必须读改写后第二次编译的报告（第二十章的双遍陷阱）。注入后占用从
+时，一个文件级旗标给不出两个数。注入工具按环境变量表对入口名做子串匹配、未匹配显式告警；对账必须读改写后第二次编译的报告（第二十九章的双遍陷阱）。注入后占用从
 15.02% 升到 29.17%、每 SM warp 数从 8.00 升到 14.23。gdn.setmaxnreg 是
 kernel 内部的运行时寄存器再分配：warp 专化下生产者 warp
 让出寄存器、消费者 warp
@@ -4591,7 +4845,7 @@ kernel
 </tbody>
 </table>
 <p>表 7
-的四行即塔的四层。配置层是纯静态的一层（第二十章），全算子层的统计裁决在下一章；本章展开塔基、fp64
+的四行即塔的四层。配置层是纯静态的一层（第二十九章），全算子层的统计裁决在下一章；本章展开塔基、fp64
 参考纪律、结构不变量与塔顶。</p>
 <h3 id="2-塔基jax-fp64-规约与三方交叉闭合">2. 塔基：JAX fp64
 规约与三方交叉闭合</h3>
@@ -4630,7 +4884,7 @@ kernel
 <p>fla naive 对照的一个细节：fla 的 naive 参考内部固定 fp32，对照经 fp64
 JAX 中转后取 fp32 口径。三条边都落到各自量程的地板（打印精度、fp32
 舍入、fp64
-舍入），三方闭合成立——任何一个实现在作弊，闭合形态都无法维持。这份闭合是全塔的锚：第二十六章以降的所有验证结论，最终都折算回这份
+舍入），三方闭合成立——任何一个实现在作弊，闭合形态都无法维持。这份闭合是全塔的锚：第九章以降的所有验证结论，最终都折算回这份
 fp64 规约。</p>
 <h3 id="3-fp64-参考的两条纪律">3. fp64 参考的两条纪律</h3>
 <p>阶段层的尺子是 fp64 numpy 参考，它有两条纪律。其一，位相同输入：被测
@@ -4682,7 +4936,7 @@ ulp，其中两个曾被更高的驻留占用掩盖；进程内循环对它们�
 <p>塔的最后一层在编译端。求解器固定声明序、固定种子
 7、资源上限固定，两次完整编译逐字节一致；生成器同种子两次生成的 MLIR
 哈希相同；全部旋钮关断时产物与默认配置逐字节等价（27/27 payload、18/18
-cubin）。完整的机制展开见第二十六章；从验证视角它只贡献一件事：验证塔的每一个结论都附着在字节可复现的工件上——今天验证通过的
+cubin）。完整的机制展开见第九章；从验证视角它只贡献一件事：验证塔的每一个结论都附着在字节可复现的工件上——今天验证通过的
 cubin 与明天 CI 里重新编译出的 cubin
 是同一串字节，验证结论因此可存档、可
 diff、可断言，而无需随构建漂移重测。</p>
@@ -5015,7 +5269,8 @@ stmatrix：它按测量关闭——参考实现用它做片段态存储，本方
 <p>本方是三者中唯一同时发射两个家族签名的生成方。tf32 那一行是逃生舱
 gdn.mma.tf32k8 的全部意义：树内 NVVM 表列封顶 K=4，fla 的 K=8
 拼写只能经内联汇编触达，其工程全案（早占用约束、A
-片寄存器序的硬件探针）见第十七章。预算 5 个、支出 1 个——其余计划中的直通
+片寄存器序的硬件探针）见第二十六章。预算 5 个、支出 1
+个——其余计划中的直通
 op（setmaxnreg、elect、mbarrier、TMA、prefetch）经查全部已在 2026-10
 主干表列，薄封装即可下降，这正是"预算克制"的证据结构。</p>
 <h3 id="5-t2结构匹配与风格可达性限度">5.
@@ -5087,7 +5342,7 @@ fp32 中间量字节主导，fla 的边际成本由更少的字节主导，因�
 倍更深（优化把它推得更远）。预测在前的方法论价值：形状负载对性能比值的走向可以在编译期知道，GPU
 只负责确认，无需在硬件上试遍阶梯。</p>
 <h3 id="2-天花板算术">2. 天花板算术</h3>
-<p>屋顶线模型先定义清楚：以第二十七章标定表的一次性带宽数字为唯一约束，把终态字节集合（出货内核实际搬运的全部中间量）除以带宽，得到的时间下界就是理想执行——它不假设任何调度改进的可能，只假设带宽用满。这个口径刻意保守于本方：真实
+<p>屋顶线模型先定义清楚：以第十章标定表的一次性带宽数字为唯一约束，把终态字节集合（出货内核实际搬运的全部中间量）除以带宽，得到的时间下界就是理想执行——它不假设任何调度改进的可能，只假设带宽用满。这个口径刻意保守于本方：真实
 kernel 还有发射、同步与驻留的开销，屋顶线一概不计。三段横条：</p>
 <figure>
 <svg viewBox="0 0 740 200" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
@@ -5138,7 +5393,7 @@ kernel，中间量留在共享内存。定价三重否定，全部基于实测�
 129,792B 的池（不可构建），可行最优构建只有
 97,024B，可消灭的搬运字节只有完美融合需求的
 82%——全物化屏障下真正同时活跃的 tile
-撑不进门槛，第十九章的别名机制在此无能为力。其二，占用反转：融合体的单
+撑不进门槛，第二十八章的别名机制在此无能为力。其二，占用反转：融合体的单
 CTA 占用实测慢 1.155–1.26 倍。其三，净时间：u=8
 的净时间差最好、中位、最差为 +0.62、−0.11、−0.83
 毫秒——围绕零的摆动。即便不可实现的完美融合，也被字节算术限制在约 0.54
@@ -5225,12 +5480,12 @@ cp.async 写入的共享内存 tile，用 ld.shared 读回全部正确、用 ldm
 读回错误，损坏仅命中与构建调度相关的行块子集；st.shared
 写入安全。影响：这是数值验证难以定位的一类静默缺陷。对策：mma 操作数
 tile 一律经 st.shared 写入，cp.async
-仅服务标量读路径（第十三章；evidence/G5/bwd_report.md 缺陷清单第 5
+仅服务标量读路径（第二十二章；evidence/G5/bwd_report.md 缺陷清单第 5
 条）。</p>
 <p><strong>6. ptxas 跨入口静默合并重名 .shared 符号。</strong> 现象：多
 kernel cubin 中同名符号被合并，一个 kernel 经另一 kernel
 更小的符号越界写共享内存。影响：单 kernel 验证全过、装进单一 cubin
-后损坏。对策：合并时逐 kernel 改名（第十八章；compute-sanitizer
+后损坏。对策：合并时逐 kernel 改名（第二十七章；compute-sanitizer
 定位记录在 evidence/G5/fwd_report.md:238）。</p>
 <p><strong>7. 模块加载顺序决定 .global 布局。</strong>
 现象：同进程内谁第二个装载模块、认领全局区，谁就在访存最重 kernel
@@ -5254,7 +5509,7 @@ kernel cubin 中同名符号被合并，一个 kernel 经另一 kernel
 四元组合法地分配到 A 四元组上，操作数损坏（整型探针 118/128
 单元确定性失败）；早占用约束后消失。A-fragment 寄存器序为 row-half
 外层，由 16×8×8 整型探针在真机确认。影响：对任何在 mma 上使用 inline asm
-的实现成立。对策：逃生舱以早占用约束发射，附硬件探针存证（第十七章；完整论证
+的实现成立。对策：逃生舱以早占用约束发射，附硬件探针存证（第二十六章；完整论证
 evidence/G6/coverage_hatch_summary.md §3）。</p>
 <p>十一条的共性值得点破：其中九条（1–6、10、11
 加合并改名）只在"生成代码、读反汇编、逐位对照"的工作方式下可见——文档不载、编译不报错、数值验证多无感。清单本身就是第二十审计方法学与第三十六章验证塔的战利品清单。</p>
@@ -5337,7 +5592,7 @@ evidence/G6/coverage_hatch_summary.md，其每格又指回 G2 覆盖矩阵与 G0
 GPU。语义与求解两大部分（G1、G2 的核心）完全纯 CPU，不需要
 GPU——这是分层设计的直接红利：第三十六章的塔基与求解器的合法性枚举在笔记本上即可复验。GPU
 部分对标 RTX 5090
-Laptop（sm_120a，24GB）；标定表（第二十七章）随设备重跑自动更新，排序门槛与验证结论不绑定具体卡型号。GPU
+Laptop（sm_120a，24GB）；标定表（第十章）随设备重跑自动更新，排序门槛与验证结论不绑定具体卡型号。GPU
 使用另有协调约定：正确性短跑可与他人共享窗口（显存低于
 2GB），计时测量只在登记过的窗口进行——这是第三十七章双窗口口径的执行侧对应物。</p>
 <h3 id="4-资源纪律">4. 资源纪律</h3>
@@ -5430,7 +5685,7 @@ TileLang 的 Ascend 实践。移植时上移了一层：TileLang
 尺寸、warps、流水深度、融合边界等），时槽级的展开交给 stock MLIR 的调度
 pass。上移的收益是解空间小到可全枚举（阻塞子句穷尽，unsat
 背书完备性），代价是粒度变粗——这一权衡在 CUDA
-侧无先例，第二十一章记录了完整论证。第二笔，验证塔的组织借鉴 XLA
+侧无先例，第四章记录了完整论证。第二笔，验证塔的组织借鉴 XLA
 的分层可验证哲学：每层一套独立验证、语义单一事实源、编译期确定性。本仓的增益是把哲学落到具体协议上——三方交叉闭合的数字地板（第三十六章）、交错终判的符号检验（第三十七章）、纯
 CPU 的 PTX 覆盖证明（第三十八章）。第三笔，与 LLVM
 主干的关系是双向的：本仓以薄封装过渡的 12 个直通 op
