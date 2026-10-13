@@ -1577,21 +1577,22 @@ ms（反向）恰落 G5
 秒是对本方旋钮空间排序的成本；出货配置的最终裁定另有逐杠杆 GPU
 对照（工程归因），与搜索分属两件事。</p>
 <figure>
-<svg viewBox="0 0 740 200" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
-  <text x="30" y="24" font-size="12" fill="#5b6b7a">dkb 位点 dk 输出误差（对 fp64 参考，对数刻度）</text>
-  <line x1="90" y1="150" x2="720" y2="150" stroke="#1c2733"/>
-  <g stroke="#b8c2cc"><line x1="90" y1="150" x2="90" y2="40"/><line x1="377" y1="150" x2="377" y2="40"/><line x1="664" y1="150" x2="664" y2="40"/></g>
-  <g font-size="10.5" fill="#5b6b7a" text-anchor="middle">
-    <text x="90" y="166">10⁻⁴</text><text x="377" y="166">10⁻³</text><text x="664" y="166">10⁻²</text>
+<svg viewBox="0 0 740 210" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">F1 逐段成本（T8192，删除探针，微秒）</text>
+  <g font-size="12">
+  <text x="118" y="63" text-anchor="end">uw 段</text>
+  <rect x="126" y="50" width="420" height="22" fill="#0f5a8a"/><text x="554" y="66" font-size="12" fill="#10222f" class="num">116.5</text>
+  <text x="118" y="97" text-anchor="end">kkt</text>
+  <rect x="126" y="84" width="215" height="22" fill="#3d7fa8"/><text x="349" y="100" font-size="12" fill="#10222f" class="num">59.5</text>
+  <text x="118" y="131" text-anchor="end">solve</text>
+  <rect x="126" y="118" width="149" height="22" fill="#6a9fbe"/><text x="283" y="134" font-size="12" fill="#10222f" class="num">41.3</text>
+  <text x="118" y="165" text-anchor="end">gc 扫描</text>
+  <rect x="126" y="152" width="64" height="22" fill="#96bfd6"/><text x="198" y="168" font-size="12" fill="#10222f" class="num">17.6</text>
+  <text x="118" y="199" text-anchor="end">phase-0</text>
+  <rect x="126" y="186" width="30" height="22" fill="#c2d9e8"/><text x="164" y="202" font-size="12" fill="#10222f" class="num">8.4</text>
   </g>
-  <line x1="636" y1="36" x2="636" y2="150" stroke="#8a1f1c" stroke-dasharray="6 5"/>
-  <text x="628" y="52" text-anchor="end" font-size="11" fill="#8a1f1c">容差 8e-3</text>
-  <rect x="90" y="62" width="579" height="26" fill="#c0504d"/>
-  <text x="680" y="80" font-size="12" fill="#10222f" class="num">tf32 单精度路径 1.04e-2</text>
-  <rect x="90" y="104" width="355" height="26" fill="#0f5a8a"/>
-  <text x="455" y="122" font-size="12" fill="#10222f" class="num">split-bf16 路径 1.73e-3</text>
 </svg>
-<figcaption>图 3：split-bf16 与 tf32 的数值对比（dkb 位点）。tf32 路径超出容差被否决；split-bf16 以三条 mma 的代价把误差压回容差内，乘积残差约 2⁻¹⁷、比 tf32 低约 30 倍，dkb 内核同时从 0.96 提速到 0.25 毫秒。</figcaption>
+<figcaption>图 3：F1 在 T8192 下约 227 微秒的逐段成本。优化杠杆集中于 uw 段与驻留。</figcaption>
 </figure>
 <p>三章合起来回答主文第二支柱的凭什么：分母来自一次性标定（第十章），分子来自编译期精确计数（第十一章），质量与成本在本章度量和记账——秩相关
 0.8962
@@ -4188,29 +4189,21 @@ uw 段，本章五个杠杆的作用点也集中于此。探针同时给后续�
 staging 流实测折合 826GB/s，超过同窗 D2D 拷贝标定的 765GB/s
 器件聚合上限，该段以算法最小流量顶在带宽屋顶线上，作为性能之门关闭。</p>
 <figure>
-<svg viewBox="0 0 740 240" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
-  <text x="30" y="24" font-size="12" fill="#5b6b7a">反向三大 kernel 的静态共享内存池（KB）</text>
-  <line x1="423" y1="36" x2="423" y2="212" stroke="#8a1f1c" stroke-dasharray="6 5"/>
-  <text x="415" y="50" text-anchor="end" font-size="11" fill="#8a1f1c">双 CTA 驻留门槛 50.2 KB</text>
-  <text x="180" y="76" text-anchor="end" font-size="12" fill="#10222f">dqkwg</text>
-  <rect x="190" y="62" width="468" height="20" fill="#b8c2cc"/>
-  <rect x="190" y="86" width="221" height="20" fill="#0f5a8a"/>
-  <text x="664" y="77" font-size="11" fill="#5b6b7a" class="num">100.9</text>
-  <text x="417" y="101" font-size="11" fill="#0f5a8a" class="num">47.6</text>
-  <text x="180" y="134" text-anchor="end" font-size="12" fill="#10222f">caryA</text>
-  <rect x="190" y="120" width="381" height="20" fill="#b8c2cc"/>
-  <rect x="190" y="144" width="133" height="20" fill="#0f5a8a"/>
-  <text x="577" y="135" font-size="11" fill="#5b6b7a" class="num">82.2</text>
-  <text x="329" y="159" font-size="11" fill="#0f5a8a" class="num">28.6</text>
-  <text x="180" y="192" text-anchor="end" font-size="12" fill="#10222f">wyb</text>
-  <rect x="190" y="178" width="464" height="20" fill="#b8c2cc"/>
-  <rect x="190" y="202" width="209" height="20" fill="#0f5a8a"/>
-  <text x="660" y="193" font-size="11" fill="#5b6b7a" class="num">100.1</text>
-  <text x="405" y="217" font-size="11" fill="#0f5a8a" class="num">45.1</text>
-  <rect x="190" y="226" width="14" height="10" fill="#b8c2cc"/><text x="210" y="235" font-size="11" fill="#5b6b7a">别名前</text>
-  <rect x="270" y="226" width="14" height="10" fill="#0f5a8a"/><text x="290" y="235" font-size="11" fill="#5b6b7a">别名后</text>
+<svg viewBox="0 0 740 200" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">dkb 位点 dk 输出误差（对 fp64 参考，对数刻度）</text>
+  <line x1="90" y1="150" x2="720" y2="150" stroke="#1c2733"/>
+  <g stroke="#b8c2cc"><line x1="90" y1="150" x2="90" y2="40"/><line x1="377" y1="150" x2="377" y2="40"/><line x1="664" y1="150" x2="664" y2="40"/></g>
+  <g font-size="10.5" fill="#5b6b7a" text-anchor="middle">
+    <text x="90" y="166">10⁻⁴</text><text x="377" y="166">10⁻³</text><text x="664" y="166">10⁻²</text>
+  </g>
+  <line x1="636" y1="36" x2="636" y2="150" stroke="#8a1f1c" stroke-dasharray="6 5"/>
+  <text x="628" y="52" text-anchor="end" font-size="11" fill="#8a1f1c">容差 8e-3</text>
+  <rect x="90" y="62" width="579" height="26" fill="#c0504d"/>
+  <text x="680" y="80" font-size="12" fill="#10222f" class="num">tf32 单精度路径 1.04e-2</text>
+  <rect x="90" y="104" width="355" height="26" fill="#0f5a8a"/>
+  <text x="455" y="122" font-size="12" fill="#10222f" class="num">split-bf16 路径 1.73e-3</text>
 </svg>
-<figcaption>图 4：生存期别名将三个最大 kernel 的静态池压过双 CTA 驻留门槛。</figcaption>
+<figcaption>图 4：split-bf16 与 tf32 的数值对比（dkb 位点）。tf32 路径超出容差被否决；split-bf16 以三条 mma 的代价把误差压回容差内，乘积残差约 2⁻¹⁷、比 tf32 低约 30 倍，dkb 内核同时从 0.96 提速到 0.25 毫秒。</figcaption>
 </figure>
 <h2
 id="三十一数值到指令split-bf16-的完整工程">三十一、数值到指令：split-bf16
@@ -4331,25 +4324,29 @@ fp32 乘积的精度、两条恒等式换来的 mma
 截断的初等性质，没有任何一条依赖输入分布；这个"不挑食"的特性使它可以无条件铺满全链，而
 tf32 的逐位点门（24 个位点里 8 个被否决）必须逐个测量放行。</p>
 <figure>
-<svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
-  <text x="30" y="24" font-size="12" fill="#5b6b7a">新形状的调度/调优时间（秒，对数刻度）</text>
-  <line x1="40" y1="180" x2="720" y2="180" stroke="#1c2733"/>
-  <g stroke="#b8c2cc">
-    <line x1="40" y1="180" x2="40" y2="45"/><line x1="134" y1="180" x2="134" y2="45"/><line x1="229" y1="180" x2="229" y2="45"/><line x1="323" y1="180" x2="323" y2="45"/><line x1="417" y1="180" x2="417" y2="45"/><line x1="511" y1="180" x2="511" y2="45"/><line x1="606" y1="180" x2="606" y2="45"/><line x1="700" y1="180" x2="700" y2="45"/>
-  </g>
-  <g font-size="10.5" fill="#5b6b7a" text-anchor="middle">
-    <text x="40" y="196">10⁻⁴</text><text x="134" y="196">10⁻³</text><text x="229" y="196">10⁻²</text><text x="323" y="196">10⁻¹</text><text x="417" y="196">1</text><text x="511" y="196">10</text><text x="606" y="196">10²</text>
-  </g>
-  <rect x="40" y="58" width="41" height="26" fill="#0f5a8a"/>
-  <text x="90" y="76" font-size="12" fill="#10222f">本方冷启动发射 27 µs（AOT cubin，无调优）</text>
-  <rect x="40" y="98" width="463" height="26" fill="#0f5a8a"/>
-  <text x="512" y="116" font-size="12" fill="#10222f">本方新形状调度 0.8 s（纯 CPU，GPU 时间为零）</text>
-  <rect x="40" y="138" width="543" height="26" fill="#c89492"/>
-  <text x="592" y="156" font-size="12" fill="#10222f">fla 缓存摊销后 0.65–5.67 s</text>
-  <rect x="40" y="205" width="622" height="26" fill="#c0504d"/>
-  <text x="670" y="223" font-size="12" fill="#10222f">fla 首次搜索 39.8 s（48 配置上机）</text>
+<svg viewBox="0 0 740 240" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">反向三大 kernel 的静态共享内存池（KB）</text>
+  <line x1="423" y1="36" x2="423" y2="212" stroke="#8a1f1c" stroke-dasharray="6 5"/>
+  <text x="415" y="50" text-anchor="end" font-size="11" fill="#8a1f1c">双 CTA 驻留门槛 50.2 KB</text>
+  <text x="180" y="76" text-anchor="end" font-size="12" fill="#10222f">dqkwg</text>
+  <rect x="190" y="62" width="468" height="20" fill="#b8c2cc"/>
+  <rect x="190" y="86" width="221" height="20" fill="#0f5a8a"/>
+  <text x="664" y="77" font-size="11" fill="#5b6b7a" class="num">100.9</text>
+  <text x="417" y="101" font-size="11" fill="#0f5a8a" class="num">47.6</text>
+  <text x="180" y="134" text-anchor="end" font-size="12" fill="#10222f">caryA</text>
+  <rect x="190" y="120" width="381" height="20" fill="#b8c2cc"/>
+  <rect x="190" y="144" width="133" height="20" fill="#0f5a8a"/>
+  <text x="577" y="135" font-size="11" fill="#5b6b7a" class="num">82.2</text>
+  <text x="329" y="159" font-size="11" fill="#0f5a8a" class="num">28.6</text>
+  <text x="180" y="192" text-anchor="end" font-size="12" fill="#10222f">wyb</text>
+  <rect x="190" y="178" width="464" height="20" fill="#b8c2cc"/>
+  <rect x="190" y="202" width="209" height="20" fill="#0f5a8a"/>
+  <text x="660" y="193" font-size="11" fill="#5b6b7a" class="num">100.1</text>
+  <text x="405" y="217" font-size="11" fill="#0f5a8a" class="num">45.1</text>
+  <rect x="190" y="226" width="14" height="10" fill="#b8c2cc"/><text x="210" y="235" font-size="11" fill="#5b6b7a">别名前</text>
+  <rect x="270" y="226" width="14" height="10" fill="#0f5a8a"/><text x="290" y="235" font-size="11" fill="#5b6b7a">别名后</text>
 </svg>
-<figcaption>图 5：调度成本对比（B1·T2048·H16 实测，对数刻度）。fla 首搜 39.8 秒由 48 个 Triton 配置逐个上机构成。</figcaption>
+<figcaption>图 5：生存期别名将三个最大 kernel 的静态池压过双 CTA 驻留门槛。</figcaption>
 </figure>
 <h2
 id="三十二算法级改写扫描的仿射携带形式">三十二、算法级改写：扫描的仿射携带形式</h2>
@@ -4718,22 +4715,25 @@ F1KS）。别名与退役是同一谱系的两端——前者复用字节，后�
 的案例说明当生存期结构不允许合法别名时，换一套更省 tile
 的算法形态才是出路。</p>
 <figure>
-<svg viewBox="0 0 740 210" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
-  <text x="30" y="24" font-size="12" fill="#5b6b7a">F1 逐段成本（T8192，删除探针，微秒）</text>
-  <g font-size="12">
-  <text x="118" y="63" text-anchor="end">uw 段</text>
-  <rect x="126" y="50" width="420" height="22" fill="#0f5a8a"/><text x="554" y="66" font-size="12" fill="#10222f" class="num">116.5</text>
-  <text x="118" y="97" text-anchor="end">kkt</text>
-  <rect x="126" y="84" width="215" height="22" fill="#3d7fa8"/><text x="349" y="100" font-size="12" fill="#10222f" class="num">59.5</text>
-  <text x="118" y="131" text-anchor="end">solve</text>
-  <rect x="126" y="118" width="149" height="22" fill="#6a9fbe"/><text x="283" y="134" font-size="12" fill="#10222f" class="num">41.3</text>
-  <text x="118" y="165" text-anchor="end">gc 扫描</text>
-  <rect x="126" y="152" width="64" height="22" fill="#96bfd6"/><text x="198" y="168" font-size="12" fill="#10222f" class="num">17.6</text>
-  <text x="118" y="199" text-anchor="end">phase-0</text>
-  <rect x="126" y="186" width="30" height="22" fill="#c2d9e8"/><text x="164" y="202" font-size="12" fill="#10222f" class="num">8.4</text>
+<svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">新形状的调度/调优时间（秒，对数刻度）</text>
+  <line x1="40" y1="180" x2="720" y2="180" stroke="#1c2733"/>
+  <g stroke="#b8c2cc">
+    <line x1="40" y1="180" x2="40" y2="45"/><line x1="134" y1="180" x2="134" y2="45"/><line x1="229" y1="180" x2="229" y2="45"/><line x1="323" y1="180" x2="323" y2="45"/><line x1="417" y1="180" x2="417" y2="45"/><line x1="511" y1="180" x2="511" y2="45"/><line x1="606" y1="180" x2="606" y2="45"/><line x1="700" y1="180" x2="700" y2="45"/>
   </g>
+  <g font-size="10.5" fill="#5b6b7a" text-anchor="middle">
+    <text x="40" y="196">10⁻⁴</text><text x="134" y="196">10⁻³</text><text x="229" y="196">10⁻²</text><text x="323" y="196">10⁻¹</text><text x="417" y="196">1</text><text x="511" y="196">10</text><text x="606" y="196">10²</text>
+  </g>
+  <rect x="40" y="58" width="41" height="26" fill="#0f5a8a"/>
+  <text x="90" y="76" font-size="12" fill="#10222f">本方冷启动发射 27 µs（AOT cubin，无调优）</text>
+  <rect x="40" y="98" width="463" height="26" fill="#0f5a8a"/>
+  <text x="512" y="116" font-size="12" fill="#10222f">本方新形状调度 0.8 s（纯 CPU，GPU 时间为零）</text>
+  <rect x="40" y="138" width="543" height="26" fill="#c89492"/>
+  <text x="592" y="156" font-size="12" fill="#10222f">fla 缓存摊销后 0.65–5.67 s</text>
+  <rect x="40" y="205" width="622" height="26" fill="#c0504d"/>
+  <text x="670" y="223" font-size="12" fill="#10222f">fla 首次搜索 39.8 s（48 配置上机）</text>
 </svg>
-<figcaption>图 6：F1 在 T8192 下约 227 微秒的逐段成本。优化杠杆集中于 uw 段与驻留。</figcaption>
+<figcaption>图 6：调度成本对比（B1·T2048·H16 实测，对数刻度）。fla 首搜 39.8 秒由 48 个 Triton 配置逐个上机构成。</figcaption>
 </figure>
 <h3 id="4-maxnreg-与-setmaxnreg-的分工">4. .maxnreg 与 setmaxnreg
 的分工</h3>
