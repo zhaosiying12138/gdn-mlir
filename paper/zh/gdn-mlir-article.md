@@ -766,7 +766,7 @@ ls -la "$BUILD/bin/gdn-opt" || exit "$RC"
 
 2. 期望输出测试：让 IR 回归可自动化
 
-MLIR 树内使用 FileCheck 做模式匹配测试：测试文件里写若干 `// CHECK:` 行，逐行断言输出中包含指定的 IR 片段。它匹配的是结构片段而非全文快照，所以 IR 的无关变动（例如值编号重排）不会误报。本项目的测试策略分两层：方言层用 smoke 文件加脚本断言（parse/verify/改写三级），管线层直接以树内的 sm_80 transform-mma 集成测试做冒烟——它编译一个真实的 mma kernel 走完 transform 解释器与 NVVM 下译，能在不涉及自定义方言的情况下确认本机 LLVM 构建的这条主干链路完好；第十五章会说明为什么 sm_80 的测试可以覆盖 sm_120 管线的正确性。
+MLIR 树内使用 FileCheck 做模式匹配测试：测试文件里写若干 `// CHECK:` 行，逐行断言输出中包含指定的 IR 片段。它匹配的是结构片段而非全文快照，所以 IR 的无关变动（例如值编号重排）不会误报。本项目的测试策略分两层：方言层用 smoke 文件加脚本断言（parse/verify/改写三级），管线层直接以树内的 sm_80 transform-mma 集成测试做冒烟——文件名沿用上游目录名，chip 重定向为 sm_120a 后在 5090 上编译运行；sm_120 的张量核即 Ampere 风格 mma.sync，同指令族故该测试有效（第十五章展开）。它编译一个真实的 mma kernel 走完 transform 解释器与 NVVM 下译，能在不涉及自定义方言的情况下确认本机 LLVM 构建的这条主干链路完好。
 
 3. 把证据落盘作为默认动作
 
@@ -1222,7 +1222,7 @@ e("}")
 
 十五、下译到 NVVM：gpu-lower-to-nvvm-pipeline 的旋钮
 
-调度好的 IR 离硬件还有最后一层距离。L2 的 transform 工件解释完毕后，IR 里是 linalg、scf、nvgpu、nvvm 混合的 gpu.func；这些 op 仍然带着方言语义，GPU 无法直接装载。完成"方言 IR 到目标代码"这一步的，是 stock MLIR 的 gpu-lower-to-nvvm-pipeline。先解释这条管线的内部构成：它把 GPU 方言的控制流与启动骨架、nvgpu 方言的机器 op、NVVM 方言的内在函数统一转换为 LLVM 方言的 IR，把 kernel 体从模块中勾勒（outlining）为 gpu.binary 目标对象，同时在主机侧留下 gpu.launch_func 调用点，最后交给 LLVM 的 NVPTX 后端产出汇编文本。本编译器在此处只做选择：chip 定哪一代硬件、features 声明哪一级指令集、format 决定产物以什么形态交出。三个旋钮拼成一行选项，位于整条命令链的最末端，也是 PTX 文本被抽出的位置——后处理层（第十八章）的入口。本章讲清这行选项的每个字段、七步命令链的每一步分工，以及为什么用它冒烟整条管线的测试来自 sm_80。
+调度好的 IR 离硬件还有最后一层距离。L2 的 transform 工件解释完毕后，IR 里是 linalg、scf、nvgpu、nvvm 混合的 gpu.func；这些 op 仍然带着方言语义，GPU 无法直接装载。完成"方言 IR 到目标代码"这一步的，是 stock MLIR 的 gpu-lower-to-nvvm-pipeline。先解释这条管线的内部构成：它把 GPU 方言的控制流与启动骨架、nvgpu 方言的机器 op、NVVM 方言的内在函数统一转换为 LLVM 方言的 IR，把 kernel 体从模块中勾勒（outlining）为 gpu.binary 目标对象，同时在主机侧留下 gpu.launch_func 调用点，最后交给 LLVM 的 NVPTX 后端产出汇编文本。本编译器在此处只做选择：chip 定哪一代硬件、features 声明哪一级指令集、format 决定产物以什么形态交出。三个旋钮拼成一行选项，位于整条命令链的最末端，也是 PTX 文本被抽出的位置——后处理层（第十八章）的入口。本章讲清这行选项的每个字段、七步命令链的每一步分工，以及为什么用它冒烟整条管线的测试来自 sm_80（文件名沿用上游目录名，chip 重定向为 sm_120a 在 5090 上运行，见本章第 3 节）。
 
 1. 完整命令链：从 payload 到 SASS
 
@@ -3104,7 +3104,7 @@ paper/zh/         深挖论文与本文
 
 | 门 | 内容 | 设备与成本 |
 |---|---|---|
-| G0 | 双环境、LLVM 构建、sm_80 GPU 冒烟、fla 与 FlashQLA PTX 收割 | 纯 CPU（冷启约 2–2.5 小时，GPU 仅 1 分钟） |
+| G0 | 双环境、LLVM 构建、管线冒烟（上游 sm_80 测试重定向 sm_120a 在 5090 运行）、fla 与 FlashQLA PTX 收割 | 纯 CPU（冷启约 2–2.5 小时，GPU 仅 1 分钟） |
 | G1 | 语义三方闭合：JAX 规约自检 44 项、MLIR L1 前反向、方言构建冒烟 | 纯 CPU，约 15 分钟 |
 | G2 | 旋钮矩阵：20 配置生成编译加 PTX 覆盖分析 | 纯 CPU，约 25 分钟 |
 | G3 | 标定加排序门槛：sm_120 标定表、20 配置上机计时、Spearman 门 | 两步 GPU，约 45 分钟 |
