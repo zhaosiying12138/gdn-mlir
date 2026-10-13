@@ -203,7 +203,7 @@ MLIR 语义完整下译之后、ptxas 定案之前，stock 流水线遗留四个
 
 ### L4 目标层
 
-`gpu-lower-to-nvvm-pipeline="cubin-chip=sm_120a ..."` → PTX 抽取 → `gdn_smem_fix.py` → `ptxas-blackwell -v` →（审计）nvdisasm SASS。全链在 5090 上以树内 sm_80 transform-mma 集成测试冒烟通过。
+`gpu-lower-to-nvvm-pipeline="cubin-chip=sm_120a ..."` → PTX 抽取 → `gdn_smem_fix.py` → `ptxas-blackwell -v` →（审计）nvdisasm SASS。全链以树内 sm_80 transform-mma 集成测试冒烟：测试文件取自上游（现成的独立裁判），chip 重定向为 sm_120a 后在 5090 上编译运行——sm_120 的张量核即 Ampere 风格 mma.sync，同指令族故该测试有效（`scripts/smoke_sm80.sh`）。
 
 ---
 
