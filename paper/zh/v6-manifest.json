@@ -2,7 +2,7 @@
   "format": "gdn-mlir-article-v6",
   "chapter_count": 32,
   "figure_count": 12,
-  "source_revision": "9ab68e7e9bdf9091a1e86d44d00ffa40f6a1afb8",
+  "source_revision": "e470298d3584aaf1d70d7e634a6f804c832cd20c",
   "chapter_sources": {
     "paper/zh/v6parts/CH01-ir-foundations.md": "e23f769ce5b1bdaf08b7f40f6aa7e5d03e137ff026cb9101e1a801082162cc60",
     "paper/zh/v6parts/CH02-dialect-ods.md": "efab620ce0c68e0f1bf437f436233c78026fb0a3dc0b60778dccd36e5effd5cd",
