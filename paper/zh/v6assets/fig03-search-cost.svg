@@ -1,0 +1,18 @@
+<svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">新形状的调度/调优时间（秒，对数刻度）</text>
+  <line x1="40" y1="180" x2="720" y2="180" stroke="#1c2733"/>
+  <g stroke="#b8c2cc">
+    <line x1="40" y1="180" x2="40" y2="45"/><line x1="134" y1="180" x2="134" y2="45"/><line x1="229" y1="180" x2="229" y2="45"/><line x1="323" y1="180" x2="323" y2="45"/><line x1="417" y1="180" x2="417" y2="45"/><line x1="511" y1="180" x2="511" y2="45"/><line x1="606" y1="180" x2="606" y2="45"/><line x1="700" y1="180" x2="700" y2="45"/>
+  </g>
+  <g font-size="10.5" fill="#5b6b7a" text-anchor="middle">
+    <text x="40" y="196">10⁻⁴</text><text x="134" y="196">10⁻³</text><text x="229" y="196">10⁻²</text><text x="323" y="196">10⁻¹</text><text x="417" y="196">1</text><text x="511" y="196">10</text><text x="606" y="196">10²</text>
+  </g>
+  <rect x="40" y="58" width="41" height="26" fill="#0f5a8a"/>
+  <text x="90" y="76" font-size="12" fill="#10222f">本方冷启动发射 27 µs（AOT cubin，无调优）</text>
+  <rect x="40" y="98" width="463" height="26" fill="#0f5a8a"/>
+  <text x="512" y="116" font-size="12" fill="#10222f">本方新形状调度 0.8 s（纯 CPU，GPU 时间为零）</text>
+  <rect x="40" y="138" width="543" height="26" fill="#c89492"/>
+  <text x="592" y="156" font-size="12" fill="#10222f">fla 缓存摊销后 0.65–5.67 s</text>
+  <rect x="40" y="205" width="622" height="26" fill="#c0504d"/>
+  <text x="670" y="223" font-size="12" fill="#10222f">fla 首次搜索 39.8 s（48 配置上机）</text>
+</svg>

@@ -1,0 +1,72 @@
+=== payload/transform evidence ===
+/home/zhaosiying/codebase/gdn-mlir/evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/payload.mlir:214:    %sa0 = memref.alloc() : memref<64x32xbf16, #gpu.address_space<workgroup>>
+/home/zhaosiying/codebase/gdn-mlir/evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/payload.mlir:215:    %sb0 = memref.alloc() : memref<64x32xbf16, #gpu.address_space<workgroup>>
+/home/zhaosiying/codebase/gdn-mlir/evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/payload.mlir:256:    %lr0_0, %lr0_1, %lr0_2, %lr0_3, %lr0_4, %lr0_5, %lr0_6, %lr0_7 = scf.for %k0 = %c0 to %c128 step %c32 iter_args(%ia0_0 = %z0_0, %ia0_1 = %z0_1, %ia0_2 = %z1_0, %ia0_3 = %z1_1, %ia0_4 = %z2_0, %ia0_5 = %z2_1, %ia0_6 = %z3_0, %ia0_7 = %z3_1) -> (vector<2x2xf32>, vector<2x2xf32>, vector<2x2xf32>, vector<2x2xf32>, vector<2x2xf32>, vector<2x2xf32>, vector<2x2xf32>, vector<2x2xf32>) {
+/home/zhaosiying/codebase/gdn-mlir/evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/transform.mlir:3:    %allocs = transform.structured.match ops{["memref.alloc"]} in %arg0
+/home/zhaosiying/codebase/gdn-mlir/evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/transform.mlir:4:      : (!transform.any_op) -> !transform.op<"memref.alloc">
+/home/zhaosiying/codebase/gdn-mlir/evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/transform.mlir:5:    transform.memref.multibuffer %allocs <factor = 2, skip_analysis>
+/home/zhaosiying/codebase/gdn-mlir/evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/transform.mlir:6:      : (!transform.op<"memref.alloc">) -> !transform.any_op
+/home/zhaosiying/codebase/gdn-mlir/evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/transform.mlir:9:    transform.nvgpu.create_async_groups %func bypass_l1 : (!transform.any_op) -> (!transform.any_op)
+/home/zhaosiying/codebase/gdn-mlir/evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/transform.mlir:10:    %loops = transform.structured.match ops{["scf.for"]} in %arg0
+/home/zhaosiying/codebase/gdn-mlir/evidence/G2/gen/kkt_bf16_mma_p2_t64x64x32_w4/transform.mlir:12:    transform.nvgpu.pipeline_shared_memory_copies failures(propagate) %loops depth = 2 peel_epilogue : (!transform.any_op) -> !transform.any_op
+=== scheduled IR evidence ===
+214:      %alloc = memref.alloc() : memref<2x64x32xbf16, #gpu.address_space<workgroup>>
+215:      %alloc_0 = memref.alloc() : memref<2x64x32xbf16, #gpu.address_space<workgroup>>
+267:      %186 = nvgpu.device_async_copy %arg0[%12, %182], %subview_3[%c0, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+268:      %187 = nvgpu.device_async_copy %arg0[%12, %183], %subview_3[%c0, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+269:      %188 = nvgpu.device_async_copy %arg0[%12, %184], %subview_3[%c0, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+270:      %189 = nvgpu.device_async_copy %arg0[%12, %185], %subview_3[%c0, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+271:      %190 = nvgpu.device_async_copy %arg0[%13, %182], %subview_3[%c1, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+272:      %191 = nvgpu.device_async_copy %arg0[%13, %183], %subview_3[%c1, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+273:      %192 = nvgpu.device_async_copy %arg0[%13, %184], %subview_3[%c1, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+274:      %193 = nvgpu.device_async_copy %arg0[%13, %185], %subview_3[%c1, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+275:      %194 = nvgpu.device_async_copy %arg0[%14, %182], %subview_3[%c2, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+276:      %195 = nvgpu.device_async_copy %arg0[%14, %183], %subview_3[%c2, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+277:      %196 = nvgpu.device_async_copy %arg0[%14, %184], %subview_3[%c2, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+278:      %197 = nvgpu.device_async_copy %arg0[%14, %185], %subview_3[%c2, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+279:      %198 = nvgpu.device_async_copy %arg0[%15, %182], %subview_3[%c3, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+280:      %199 = nvgpu.device_async_copy %arg0[%15, %183], %subview_3[%c3, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+281:      %200 = nvgpu.device_async_copy %arg0[%15, %184], %subview_3[%c3, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+282:      %201 = nvgpu.device_async_copy %arg0[%15, %185], %subview_3[%c3, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+283:      %202 = nvgpu.device_async_copy %arg0[%16, %182], %subview_3[%c4, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+284:      %203 = nvgpu.device_async_copy %arg0[%16, %183], %subview_3[%c4, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+285:      %204 = nvgpu.device_async_copy %arg0[%16, %184], %subview_3[%c4, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+286:      %205 = nvgpu.device_async_copy %arg0[%16, %185], %subview_3[%c4, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+287:      %206 = nvgpu.device_async_copy %arg0[%17, %182], %subview_3[%c5, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+288:      %207 = nvgpu.device_async_copy %arg0[%17, %183], %subview_3[%c5, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+289:      %208 = nvgpu.device_async_copy %arg0[%17, %184], %subview_3[%c5, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+290:      %209 = nvgpu.device_async_copy %arg0[%17, %185], %subview_3[%c5, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+291:      %210 = nvgpu.device_async_copy %arg0[%18, %182], %subview_3[%c6, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+292:      %211 = nvgpu.device_async_copy %arg0[%18, %183], %subview_3[%c6, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+293:      %212 = nvgpu.device_async_copy %arg0[%18, %184], %subview_3[%c6, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+294:      %213 = nvgpu.device_async_copy %arg0[%18, %185], %subview_3[%c6, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+295:      %214 = nvgpu.device_async_copy %arg0[%19, %182], %subview_3[%c7, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+296:      %215 = nvgpu.device_async_copy %arg0[%19, %183], %subview_3[%c7, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+297:      %216 = nvgpu.device_async_copy %arg0[%19, %184], %subview_3[%c7, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+298:      %217 = nvgpu.device_async_copy %arg0[%19, %185], %subview_3[%c7, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+299:      %218 = nvgpu.device_async_copy %arg0[%20, %182], %subview_3[%c8, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+300:      %219 = nvgpu.device_async_copy %arg0[%20, %183], %subview_3[%c8, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+301:      %220 = nvgpu.device_async_copy %arg0[%20, %184], %subview_3[%c8, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+302:      %221 = nvgpu.device_async_copy %arg0[%20, %185], %subview_3[%c8, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+303:      %222 = nvgpu.device_async_copy %arg0[%21, %182], %subview_3[%c9, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+304:      %223 = nvgpu.device_async_copy %arg0[%21, %183], %subview_3[%c9, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+305:      %224 = nvgpu.device_async_copy %arg0[%21, %184], %subview_3[%c9, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+306:      %225 = nvgpu.device_async_copy %arg0[%21, %185], %subview_3[%c9, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+307:      %226 = nvgpu.device_async_copy %arg0[%22, %182], %subview_3[%c10, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+308:      %227 = nvgpu.device_async_copy %arg0[%22, %183], %subview_3[%c10, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+309:      %228 = nvgpu.device_async_copy %arg0[%22, %184], %subview_3[%c10, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+310:      %229 = nvgpu.device_async_copy %arg0[%22, %185], %subview_3[%c10, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+311:      %230 = nvgpu.device_async_copy %arg0[%23, %182], %subview_3[%c11, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+312:      %231 = nvgpu.device_async_copy %arg0[%23, %183], %subview_3[%c11, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+313:      %232 = nvgpu.device_async_copy %arg0[%23, %184], %subview_3[%c11, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+314:      %233 = nvgpu.device_async_copy %arg0[%23, %185], %subview_3[%c11, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+315:      %234 = nvgpu.device_async_copy %arg0[%24, %182], %subview_3[%c12, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+316:      %235 = nvgpu.device_async_copy %arg0[%24, %183], %subview_3[%c12, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+317:      %236 = nvgpu.device_async_copy %arg0[%24, %184], %subview_3[%c12, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+318:      %237 = nvgpu.device_async_copy %arg0[%24, %185], %subview_3[%c12, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+319:      %238 = nvgpu.device_async_copy %arg0[%25, %182], %subview_3[%c13, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+320:      %239 = nvgpu.device_async_copy %arg0[%25, %183], %subview_3[%c13, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+321:      %240 = nvgpu.device_async_copy %arg0[%25, %184], %subview_3[%c13, %c16], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+322:      %241 = nvgpu.device_async_copy %arg0[%25, %185], %subview_3[%c13, %c24], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+323:      %242 = nvgpu.device_async_copy %arg0[%26, %182], %subview_3[%c14, %c0], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>
+324:      %243 = nvgpu.device_async_copy %arg0[%26, %183], %subview_3[%c14, %c8], 8 bypassL1 : memref<64x128xbf16> to memref<64x32xbf16, strided<[32, 1], offset: ?>, #gpu.address_space<workgroup>>

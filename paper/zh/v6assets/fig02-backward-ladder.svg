@@ -1,0 +1,28 @@
+<svg viewBox="0 0 740 320" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">反向端到端时间对形状负载参数 u（毫秒，线性刻度）</text>
+  <line x1="70" y1="270" x2="700" y2="270" stroke="#1c2733"/>
+  <line x1="70" y1="270" x2="70" y2="40" stroke="#1c2733"/>
+  <g stroke="#e5e9ed"><line x1="70" y1="218" x2="700" y2="218"/><line x1="70" y1="166" x2="700" y2="166"/><line x1="70" y1="114" x2="700" y2="114"/><line x1="70" y1="62" x2="700" y2="62"/></g>
+  <g font-size="10.5" fill="#5b6b7a" text-anchor="end">
+    <text x="64" y="274">0</text><text x="64" y="222">4</text><text x="64" y="170">8</text><text x="64" y="118">12</text><text x="64" y="66">16</text>
+  </g>
+  <polyline points="100,262.8 216,241.6 332,216.2 448,166.8 564,164.6 680,60.9" fill="none" stroke="#0f5a8a" stroke-width="2.5"/>
+  <polyline points="100,254.3 216,252.8 332,248.9 448,230.2 564,228.2 680,187.1" fill="none" stroke="#c0504d" stroke-width="2.5"/>
+  <polyline points="680,60.9 680,112.9" stroke="#0f5a8a" stroke-width="1.6" stroke-dasharray="4 4"/>
+  <circle cx="680" cy="112.9" r="5" fill="#fff" stroke="#0f5a8a" stroke-width="2"/>
+  <circle cx="680" cy="197.3" r="5" fill="#fff" stroke="#c0504d" stroke-width="2"/>
+  <polyline points="680,187.1 680,197.3" stroke="#c0504d" stroke-width="1.6" stroke-dasharray="4 4"/>
+  <g fill="#0f5a8a"><circle cx="100" cy="262.8" r="4"/><circle cx="216" cy="241.6" r="4"/><circle cx="332" cy="216.2" r="4"/><circle cx="448" cy="166.8" r="4"/><circle cx="564" cy="164.6" r="4"/><circle cx="680" cy="60.9" r="4"/></g>
+  <g fill="#c0504d"><circle cx="100" cy="254.3" r="4"/><circle cx="216" cy="252.8" r="4"/><circle cx="332" cy="248.9" r="4"/><circle cx="448" cy="230.2" r="4"/><circle cx="564" cy="228.2" r="4"/><circle cx="680" cy="187.1" r="4"/></g>
+  <g font-size="11" fill="#5b6b7a" text-anchor="middle">
+    <text x="100" y="290">B1·T512·H4</text><text x="100" y="304">u=1/16</text>
+    <text x="216" y="290">B1·T2048·H16</text><text x="216" y="304">u=1</text>
+    <text x="332" y="290">B1·T2048·H32</text><text x="332" y="304">u=2</text>
+    <text x="448" y="290">B4·T2048·H16</text><text x="448" y="304">u=4</text>
+    <text x="564" y="290">B1·T8192·H16</text><text x="564" y="304">u=4</text>
+    <text x="680" y="290">B1·T16384·H16</text><text x="680" y="304">u=8</text>
+  </g>
+  <line x1="90" y1="96" x2="150" y2="96" stroke="#0f5a8a" stroke-width="2.5"/><text x="158" y="100" font-size="11.5" fill="#10222f">本方</text>
+  <line x1="90" y1="116" x2="150" y2="116" stroke="#c0504d" stroke-width="2.5"/><text x="158" y="120" font-size="11.5" fill="#10222f">fla Triton</text>
+  <circle cx="128" cy="136" r="5" fill="#fff" stroke="#0f5a8a" stroke-width="2"/><text x="158" y="140" font-size="11.5" fill="#10222f">终态（另一窗口复测，u=8）</text>
+</svg>

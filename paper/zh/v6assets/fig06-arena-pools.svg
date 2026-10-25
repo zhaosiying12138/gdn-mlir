@@ -1,0 +1,22 @@
+<svg viewBox="0 0 740 240" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">反向三大 kernel 的静态共享内存池（KB）</text>
+  <line x1="423" y1="36" x2="423" y2="212" stroke="#8a1f1c" stroke-dasharray="6 5"/>
+  <text x="415" y="50" text-anchor="end" font-size="11" fill="#8a1f1c">双 CTA 驻留门槛 50.2 KB</text>
+  <text x="180" y="76" text-anchor="end" font-size="12" fill="#10222f">dqkwg</text>
+  <rect x="190" y="62" width="468" height="20" fill="#b8c2cc"/>
+  <rect x="190" y="86" width="221" height="20" fill="#0f5a8a"/>
+  <text x="664" y="77" font-size="11" fill="#5b6b7a" class="num">100.9</text>
+  <text x="417" y="101" font-size="11" fill="#0f5a8a" class="num">47.6</text>
+  <text x="180" y="134" text-anchor="end" font-size="12" fill="#10222f">caryA</text>
+  <rect x="190" y="120" width="381" height="20" fill="#b8c2cc"/>
+  <rect x="190" y="144" width="133" height="20" fill="#0f5a8a"/>
+  <text x="577" y="135" font-size="11" fill="#5b6b7a" class="num">82.2</text>
+  <text x="329" y="159" font-size="11" fill="#0f5a8a" class="num">28.6</text>
+  <text x="180" y="192" text-anchor="end" font-size="12" fill="#10222f">wyb</text>
+  <rect x="190" y="178" width="464" height="20" fill="#b8c2cc"/>
+  <rect x="190" y="202" width="209" height="20" fill="#0f5a8a"/>
+  <text x="660" y="193" font-size="11" fill="#5b6b7a" class="num">100.1</text>
+  <text x="405" y="217" font-size="11" fill="#0f5a8a" class="num">45.1</text>
+  <rect x="190" y="226" width="14" height="10" fill="#b8c2cc"/><text x="210" y="235" font-size="11" fill="#5b6b7a">别名前</text>
+  <rect x="270" y="226" width="14" height="10" fill="#0f5a8a"/><text x="290" y="235" font-size="11" fill="#5b6b7a">别名后</text>
+</svg>

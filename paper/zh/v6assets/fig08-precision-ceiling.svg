@@ -1,0 +1,13 @@
+<svg viewBox="0 0 740 200" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12">
+  <text x="30" y="24" font-size="12" fill="#5b6b7a">u=8 的流量下界算术（毫秒，空闲窗口口径）</text>
+  <text x="36" y="72" font-size="12" fill="#10222f">fla Triton（分母）</text>
+  <rect x="200" y="56" width="241" height="26" fill="#c0504d"/>
+  <text x="450" y="74" font-size="12" fill="#10222f" class="num">5.62 → 1.00×</text>
+  <text x="36" y="122" font-size="12" fill="#10222f">本方理想执行（100% 屋顶线）</text>
+  <rect x="200" y="106" width="283" height="26" fill="#7ab0d0"/>
+  <rect x="461" y="106" width="22" height="26" fill="#7ab0d0" opacity="0.45"/>
+  <text x="492" y="124" font-size="12" fill="#10222f" class="num">6.1–6.6 → 上限 0.85–0.92×</text>
+  <text x="36" y="172" font-size="12" fill="#10222f">本方实测</text>
+  <rect x="200" y="156" width="520" height="26" fill="#0f5a8a"/>
+  <text x="640" y="174" font-size="12" fill="#10222f" class="num" text-anchor="end">12.15 → 0.462×</text>
+</svg>
